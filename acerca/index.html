@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Acerca de · ISSASODA</title>
+    <meta name="description" content="Qué es ISSASODA, cómo se explora su universo, qué está implementado y qué falta por implementar.">
+    <link rel="canonical" href="https://issasodaweb.com/acerca/">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" sizes="16x16 32x32 48x48 64x64 96x96">
+    <link rel="manifest" href="../manifiesto.json">
+    <meta name="theme-color" content="#080B10">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <script src="../comun/estilo.js"></script>
+    <script src="../comun/astros.js"></script>
+    <style>
+        :root {
+            --panel: rgba(10, 14, 22, 0.88);
+            --border: rgba(255, 255, 255, 0.12);
+            --text: #E9ECF1;
+            --muted: #9AA3B2;
+            --accent: #FFC857;
+            --font-title: 'Arial', sans-serif;
+            --font-text: 'Arial', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #080B10;
+            color: var(--text);
+            font-family: var(--font-text);
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+        }
+
+        /* El objeto del universo, en la mitad libre */
+        #fondo {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .name-tag {
+            position: fixed;
+            z-index: 2;
+            top: 16px;
+            left: 16px;
+            max-width: calc(54vw - 32px);
+            padding: 8px 14px;
+            border-radius: 12px;
+            background: rgba(10, 14, 22, 0.7);
+            font-size: 13px;
+            line-height: 1.4;
+            pointer-events: none;
+        }
+
+            .name-tag b {
+                display: block;
+                font-size: 15px;
+            }
+
+            .name-tag span {
+                color: var(--muted);
+            }
+
+        /* Panel: derecha en horizontal, abajo en vertical */
+        .panel {
+            position: fixed;
+            z-index: 3;
+            top: 12px;
+            right: 12px;
+            bottom: 12px;
+            width: 46%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--panel);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .panel-head {
+            padding: 16px 20px 8px;
+        }
+
+            .panel-head .row {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .panel-head a.back {
+                padding: 4px 10px;
+                border: 1px solid var(--border);
+                border-radius: 999px;
+                color: var(--text);
+                font-size: 13px;
+                text-decoration: none;
+                white-space: nowrap;
+            }
+
+            .panel-head h1 {
+                margin: 0;
+                font-family: var(--font-title);
+                font-weight: normal;
+                font-size: clamp(26px, 3.4vw, 40px);
+                color: var(--accent);
+            }
+
+            .panel-head .version {
+                margin: 2px 0 0;
+                font-size: 12px;
+                color: var(--muted);
+            }
+
+        .popup-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+            .popup-buttons button {
+                padding: 7px 14px;
+                border: 1px solid var(--c);
+                border-radius: 999px;
+                background: none;
+                color: var(--c);
+                cursor: pointer;
+            }
+
+                .popup-buttons button:hover,
+                .popup-buttons button:focus-visible {
+                    background: var(--c);
+                    color: #080B10;
+                }
+
+        hr {
+            margin: 8px 20px 0;
+            border: none;
+            border-top: 1px solid var(--border);
+        }
+
+        .panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 20px 20px;
+            line-height: 1.6;
+        }
+
+        .about-section {
+            margin-top: 18px;
+        }
+
+            .about-section h2 {
+                margin: 0 0 8px;
+                font-family: var(--f);
+                font-weight: normal;
+                font-size: 22px;
+                color: var(--c);
+            }
+
+            .about-section p {
+                margin: 0 0 10px;
+            }
+
+            .about-section ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .about-section li {
+                position: relative;
+                margin: 0 0 8px;
+                padding-left: 18px;
+            }
+
+                .about-section li::before {
+                    content: '';
+                    position: absolute;
+                    left: 2px;
+                    top: 0.62em;
+                    width: 7px;
+                    height: 7px;
+                    border-radius: 50%;
+                    background: var(--c);
+                }
+
+            .about-section code {
+                font-size: 0.92em;
+                color: var(--c);
+            }
+
+        dialog {
+            width: min(720px, calc(100vw - 32px));
+            max-height: 82vh;
+            padding: 0;
+            border: 1px solid var(--c, var(--border));
+            border-radius: 18px;
+            background: #0C1017;
+            color: var(--text);
+        }
+
+            dialog::backdrop {
+                background: rgba(0, 0, 0, 0.6);
+            }
+
+            dialog header {
+                position: sticky;
+                top: 0;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 16px 20px;
+                border-bottom: 1px solid var(--border);
+                background: #0C1017;
+            }
+
+                dialog header h2 {
+                    margin: 0;
+                    font-family: var(--f);
+                    font-weight: normal;
+                    color: var(--c);
+                }
+
+                dialog header button {
+                    padding: 6px 12px;
+                    border: 1px solid var(--border);
+                    border-radius: 999px;
+                    background: none;
+                    cursor: pointer;
+                }
+
+            dialog .body {
+                padding: 8px 20px 20px;
+                line-height: 1.6;
+            }
+
+            dialog ol {
+                padding-left: 22px;
+            }
+
+            dialog li {
+                margin-bottom: 10px;
+            }
+
+            dialog h3 {
+                margin: 18px 0 4px;
+                font-size: 14px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--c);
+            }
+
+            dialog table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 13px;
+            }
+
+            dialog td {
+                padding: 3px 6px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            }
+
+                dialog td:nth-child(2) {
+                    color: var(--muted);
+                    white-space: nowrap;
+                }
+
+                dialog td:nth-child(3) {
+                    white-space: nowrap;
+                    text-align: right;
+                }
+
+        .summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 8px 0;
+        }
+
+            .summary div {
+                flex: 1 1 140px;
+                padding: 10px 12px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+            }
+
+            .summary b {
+                display: block;
+                font-size: 26px;
+                font-family: var(--f);
+                font-weight: normal;
+                color: var(--c);
+            }
+
+        @media (orientation: portrait), (max-width: 799px) {
+            .panel {
+                top: auto;
+                left: 12px;
+                width: auto;
+                height: 68%;
+            }
+
+            .name-tag {
+                max-width: calc(100vw - 32px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fondo" aria-hidden="true" title="Otro objeto"></canvas>
+    <p class="name-tag" id="name-tag" aria-hidden="true"></p>
+
+    <main class="panel">
+        <div class="panel-head">
+            <div class="row">
+                <a class="back" href="../">&larr; Universo</a>
+                <div>
+                    <h1>ISSASODA</h1>
+                    <p class="version">Versión 2026.10.17 · web · issasodaweb.com</p>
+                </div>
+            </div>
+            <!-- Lo que aún no existe vive en ventanas aparte, como en el About de las apps -->
+            <div class="popup-buttons">
+                <button data-open="pendiente">Pendiente</button>
+                <button data-open="objetos">Objetos del universo</button>
+            </div>
+        </div>
+        <hr>
+        <div class="panel-body">
+            <section class="about-section">
+                <h2>Qué es ISSASODA</h2>
+                <p>ISSASODA es un proyecto de educación para personas de todas las edades. Esta página es su casa: un universo que se explora como se aprende, de lo más grande a lo más pequeño, y el lugar donde se verá el avance de cada estudiante.</p>
+                <p>Cada rincón del universo puede convertirse en una página propia, así que la web crece sin salir de su dominio: siempre hay un objeto más que explicar.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>Cómo se explora</h2>
+                <ul>
+                    <li>Arrastra el universo para moverte; usa la rueda del ratón o pellizca para acercarte.</li>
+                    <li>Elige un destino en el menú, haz clic en un astro o usa las flechas <code>←</code> <code>→</code>: la página se aleja y vuelve a acercarse al nuevo punto.</li>
+                    <li>En la Escala del universo busca cualquier objeto, ábrelo desde la lista, pulsa <code>Viaje</code> para recorrer todas las escalas o usa <code>←</code> <code>→</code> para ir de un objeto al siguiente.</li>
+                    <li>Cada objeto tiene su dirección, por ejemplo <a href="../universo/#molecula-de-agua">issasodaweb.com/universo/#molecula-de-agua</a>.</li>
+                    <li>Si tu sistema pide reducir el movimiento, la página salta de un punto a otro sin animación.</li>
+                </ul>
+            </section>
+
+            <section class="about-section">
+                <h2>Qué hay en cada astro</h2>
+                <ul>
+                    <li><b>ISSASODA</b>, el sol del inicio: qué es el proyecto.</li>
+                    <li><b>GUAT</b>, una galaxia hecha con los datos reales del proyecto universitario: cada brazo es un estudiante y cada estrella un tema o una fórmula, con el color de su calificación. Lleva al árbol GUAT, a las fórmulas y al ejercicio de regresión lineal.</li>
+                    <li><b>Progreso</b>, una nebulosa donde nacerá la estrella de cada estudiante.</li>
+                    <li><b>Proyectos</b>, un planeta por aplicación de ISSASODA; hoy, EmuGaMind.</li>
+                    <li><b>Escala</b>, un agujero negro hacia los 307 objetos del universo, del universo observable a la longitud de Planck.</li>
+                </ul>
+            </section>
+
+            <section class="about-section">
+                <h2>Ya implementado</h2>
+                <ul>
+                    <li>Dominio propio con HTTPS: issasodaweb.com (www lleva a la misma página).</li>
+                    <li>Universo de inicio explorable, con viajes de zoom suave entre sus cinco astros.</li>
+                    <li>Escala del universo: 307 objetos, cada uno con su tamaño típico, su tipo, su dibujo y su dirección; búsqueda, lista, viaje automático y regla de escala.</li>
+                    <li>GUAT: el árbol de estudiantes, cursos y clases, las fórmulas y el ejercicio de regresión lineal.</li>
+                    <li>Tipografías de Google Fonts distintas en cada visita y colores legibles en cada sección.</li>
+                    <li>Funciona sin conexión después de la primera visita y se puede instalar como aplicación.</li>
+                    <li>Se adapta a teléfonos y respeta la preferencia de reducir el movimiento.</li>
+                </ul>
+            </section>
+
+            <section class="about-section">
+                <h2>Cómo está hecho</h2>
+                <ul>
+                    <li>Páginas estáticas (HTML, CSS y JavaScript), sin servidor propio, publicadas con GitHub Pages desde el repositorio <a href="https://github.com/Ataraxiainc2/GUAT" target="_blank" rel="noopener">Ataraxiainc2/GUAT</a>; el dominio está en Cloudflare.</li>
+                    <li>Todo se dibuja con D3.js 7.9: zoom y viajes (d3-zoom, interpolateZoom), la galaxia GUAT (d3-hierarchy), la nebulosa (d3-contour), los planetas (d3-geo), los clics (d3-delaunay), las moléculas (d3-force), los núcleos atómicos (d3.packSiblings) y las escalas de color.</li>
+                    <li>El universo usa semillas fijas: es el mismo en cada visita; solo cambian las tipografías.</li>
+                    <li>Los tamaños son órdenes de magnitud típicos y aproximados. Los objetos que no tienen un tamaño único (campos, estados de la materia, conceptos) y las partículas puntuales se colocan en una escala representativa y lo indican en su ficha.</li>
+                </ul>
+            </section>
+
+            <section class="about-section">
+                <h2>Tus datos</h2>
+                <ul>
+                    <li>Sin cuentas, sin cookies, sin analítica y sin anuncios. La página no guarda nada sobre ti.</li>
+                    <li>Tu navegador guarda una copia de las páginas para que funcionen sin conexión; puedes borrarla desde su configuración.</li>
+                    <li>Las tipografías vienen de Google Fonts y la librería D3 de cdnjs (Cloudflare): como cualquier petición web, esos servicios ven tu dirección IP.</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <dialog id="pendiente" aria-labelledby="pendiente-titulo">
+        <header>
+            <h2 id="pendiente-titulo">Pendiente</h2>
+            <button data-close>Cerrar</button>
+        </header>
+        <div class="body">
+            <p>Lo que falta por implementar, en el orden en que tiene más sentido hacerlo.</p>
+            <ol>
+                <li><b>Una página para cada objeto del universo.</b> Qué es, datos reales con sus fuentes, imágenes y dónde vive en la escala, empezando por los más conocidos. Hoy los 307 tienen lugar, tamaño, dibujo y dirección, pero no ficha propia.</li>
+                <li><b>Progreso de estudiantes.</b> La estrella de cada estudiante en la nebulosa, con sus cursos, ejercicios y logros. Antes hay que decidir dónde se guardan esos datos y qué se muestra en público, porque puede haber menores.</li>
+                <li><b>GUAT con el estilo nuevo.</b> El árbol, las fórmulas y los ejercicios dentro del universo. En la página de fórmulas, cada fórmula debe llevar a su propia explicación: hoy todas enlazan al mismo artículo.</li>
+                <li><b>Más ejercicios interactivos</b> como el de regresión lineal.</li>
+                <li><b>Más planetas en Proyectos:</b> las demás aplicaciones de ISSASODA, como ISSASTUDENT y BookCompass.</li>
+                <li><b>Tamaños con fuente y rango.</b> Pasar del orden de magnitud típico al rango real (mínimo y máximo) de cada objeto, con la referencia citada.</li>
+                <li><b>Idiomas:</b> inglés y portugués, como en las aplicaciones.</li>
+                <li><b>Accesibilidad:</b> recorrer la escala solo con teclado y con descripciones para lectores de pantalla.</li>
+                <li><b>Contacto:</b> un correo propio del dominio para dudas y sugerencias.</li>
+            </ol>
+        </div>
+    </dialog>
+
+    <dialog id="objetos" aria-labelledby="objetos-titulo">
+        <header>
+            <h2 id="objetos-titulo">Objetos del universo</h2>
+            <button data-close>Cerrar</button>
+        </header>
+        <div class="body">
+            <div class="summary" id="resumen"></div>
+            <p>Estado de cada objeto: todos tienen lugar en la escala, tamaño y dibujo; la ficha propia está pendiente. Toca un nombre para verlo en la escala.</p>
+            <div id="tabla"></div>
+        </div>
+    </dialog>
+
+    <script>
+        (async function () {
+            'use strict';
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !new URLSearchParams(location.search).has('motion');
+            const PANEL = '#0E131C';
+
+            // ---------- Estilo de la visita: una tipografía y un color por sección ----------
+            const sectionEls = Array.from(document.querySelectorAll('.about-section'));
+            const dialogs = Array.from(document.querySelectorAll('dialog'));
+            const look = IssaEstilo.fonts(1 + sectionEls.length + dialogs.length);
+            const colors = IssaEstilo.palette(1 + sectionEls.length + dialogs.length, PANEL);
+            const stack = IssaEstilo.stack;
+            document.documentElement.style.setProperty('--font-text', stack(look.text));
+            document.documentElement.style.setProperty('--font-title', stack(look.display[0]));
+            document.documentElement.style.setProperty('--accent', colors[0]);
+            sectionEls.forEach((el, i) => {
+                el.style.setProperty('--f', stack(look.display[1 + i]));
+                el.style.setProperty('--c', colors[1 + i]);
+            });
+            dialogs.forEach((dialog, i) => {
+                const n = 1 + sectionEls.length + i;
+                dialog.style.setProperty('--f', stack(look.display[n]));
+                dialog.style.setProperty('--c', colors[n]);
+                const button = document.querySelector(`[data-open="${dialog.id}"]`);
+                button.style.setProperty('--c', colors[n]);
+                button.addEventListener('click', () => dialog.showModal());
+                dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
+            });
+
+            // ---------- Un objeto del universo al azar, en la mitad libre ----------
+            const objects = await d3.json('../universo/objetos.json');
+            const canvas = document.getElementById('fondo');
+            const ctx = canvas.getContext('2d');
+            const tag = document.getElementById('name-tag');
+            let width = 0, height = 0, dpr = 1, time = 0, current = null, lastTouch = 0;
+
+            function pick() {
+                let next;
+                do next = objects[Math.floor(Math.random() * objects.length)]; while (next === current && objects.length > 1);
+                current = next;
+                tag.innerHTML = '';
+                const name = document.createElement('b');
+                name.textContent = current.n;
+                const size = document.createElement('span');
+                size.textContent = IssaEstilo.size(current.s);
+                tag.append(name, size);
+                lastTouch = time;
+            }
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = Math.round(width * dpr);
+                canvas.height = Math.round(height * dpr);
+            }
+
+            // Zona libre: la mitad izquierda en horizontal, la franja de arriba en vertical
+            function freeArea() {
+                const portrait = height > width || width < 800;
+                return portrait ? { x: width / 2, y: height * 0.17, r: Math.min(width, height * 0.32) * 0.36 }
+                    : { x: width * 0.27, y: height / 2, r: Math.min(width * 0.54, height) * 0.32 };
+            }
+
+            function draw() {
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const bg = ctx.createRadialGradient(width * 0.3, height * 0.4, 0, width * 0.3, height * 0.4, Math.max(width, height));
+                bg.addColorStop(0, '#151A24');
+                bg.addColorStop(1, '#05070A');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, width, height);
+                const area = freeArea();
+                IssaAstros.draw(ctx, current, area.x, area.y, area.r, time);
+            }
+
+            canvas.addEventListener('click', () => {
+                pick();
+                if (reduceMotion) draw();
+            });
+            window.addEventListener('resize', () => {
+                resize();
+                draw();
+            });
+            ['pointermove', 'keydown', 'wheel'].forEach(type => window.addEventListener(type, () => { lastTouch = time; }, { passive: true }));
+
+            resize();
+            pick();
+            if (reduceMotion) {
+                draw();
+            } else {
+                let last = 0;
+                d3.timer(elapsed => {
+                    time += Math.min(0.05, (elapsed - last) / 1000);
+                    last = elapsed;
+                    // Cambia de objeto tras un minuto sin tocar nada
+                    if (time - lastTouch > 60) pick();
+                    draw();
+                });
+            }
+
+            // ---------- Estado de los objetos ----------
+            const REALMS = [
+                [22, 28, 'Cosmos'], [19, 22, 'Galaxias'], [14.5, 19, 'Nebulosas'], [10, 14.5, 'Sistemas estelares'],
+                [7.5, 10, 'Estrellas'], [5.5, 7.5, 'Planetas'], [1, 5.5, 'Montañas y asteroides'], [-5, 1, 'Rocas y granos'],
+                [-8.5, -5, 'Microscópico'], [-11, -8.5, 'Moléculas y átomos'], [-16.5, -11, 'Núcleos'],
+                [-19, -16.5, 'Partículas'], [-33, -19, 'Lo desconocido'], [-36, -33, 'Planck']
+            ];
+            const summary = d3.select('#resumen');
+            [[objects.length, 'objetos en la escala'], [objects.length, 'con tamaño y dibujo'], [0, 'con ficha propia']].forEach(([n, label]) => {
+                const box = summary.append('div');
+                box.append('b').text(n);
+                box.append('span').text(label);
+            });
+            const table = d3.select('#tabla');
+            REALMS.forEach(realm => {
+                const members = objects.filter(o => o.s >= realm[0] && o.s < realm[1]).sort((a, b) => b.s - a.s);
+                if (!members.length) return;
+                table.append('h3').text(`${realm[2]} (${members.length})`);
+                const rows = table.append('table').selectAll('tr').data(members).join('tr');
+                rows.append('td').append('a').attr('href', o => '../universo/#' + IssaEstilo.slug(o.n)).text(o => o.n);
+                rows.append('td').text(o => IssaEstilo.size(o.s));
+                rows.append('td').text('Ficha pendiente');
+            });
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('../ServiceWorker.js').catch(error => {
+                    console.error('Fallo al registrar el Service Worker:', error);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
