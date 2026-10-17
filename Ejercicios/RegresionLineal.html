@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Aboreto&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share&Tech&Mono&display=swap">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6" defer></script>
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <title>Regresión Lineal Interactiva</title>
     <style>
@@ -452,13 +451,6 @@
 
     // Redibujar gráfico
     draw(points);
-}
-
-        if (!('fetch' in window)) {
-  // Cargar polyfill sólo si 'fetch' no está presente
-  var script = document.createElement('script');
-  script.src = 'https://polyfill.io/v3/polyfill.min.js?features=es6';
-  document.head.appendChild(script);
 }
 
 window.addEventListener("resize", handleResize);

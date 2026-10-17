@@ -72,7 +72,7 @@
         let baseFontSize = Math.min(windowWidth, windowHeight) * 0.020;
 
         // Carga de datos y creación de la visualización
-        d3.json("https://raw.githubusercontent.com/Ataraxiainc2/GUAT/main/index.json").then(function (data) {
+        d3.json("index.json").then(function (data) {
             const padding = 2;
             const width = document.documentElement.clientWidth - 2 * padding;
             const height = document.documentElement.clientHeight - 2 * padding;
