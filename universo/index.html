@@ -3,9 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Escala del universo · ISSASODA</title>
-    <meta name="description" content="Un viaje por todos los objetos del universo, desde el universo observable hasta la longitud de Planck, cada uno a su tamaño real en potencias de diez.">
+    <title data-en="Scale of the universe · ISSASODA" data-pt="Escala do universo · ISSASODA">Escala del universo · ISSASODA</title>
+    <meta name="description" content="Un viaje por todos los objetos del universo, desde el universo observable hasta la longitud de Planck, cada uno a su tamaño real en potencias de diez."
+          data-en="A journey through every object of the universe, from the observable universe to the Planck length, each at its real size in powers of ten."
+          data-pt="Uma viagem por todos os objetos do universo, do universo observável ao comprimento de Planck, cada um em seu tamanho real em potências de dez.">
     <link rel="canonical" href="https://issasodaweb.com/universo/">
+    <link rel="alternate" hreflang="es-419" href="https://issasodaweb.com/universo/?lang=es">
+    <link rel="alternate" hreflang="en-US" href="https://issasodaweb.com/universo/?lang=en">
+    <link rel="alternate" hreflang="pt-BR" href="https://issasodaweb.com/universo/?lang=pt">
+    <link rel="alternate" hreflang="x-default" href="https://issasodaweb.com/universo/">
+    <script src="../comun/idioma.js"></script>
     <link rel="icon" type="image/x-icon" href="../favicon.ico" sizes="16x16 32x32 48x48 64x64 96x96">
     <link rel="manifest" href="../manifiesto.json">
     <meta name="theme-color" content="#0D0F14">
@@ -28,6 +35,45 @@
         * {
             box-sizing: border-box;
         }
+
+        /* Tres idiomas: solo se ve el activo (sin JavaScript, el español) */
+        html:not([data-lang]) .tr:not([lang="es"]),
+        html[data-lang="es"] .tr:not([lang="es"]),
+        html[data-lang="en"] .tr:not([lang="en"]),
+        html[data-lang="pt"] .tr:not([lang="pt"]) {
+            display: none !important;
+        }
+
+        .idiomas {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+        }
+
+            .idiomas a {
+                color: var(--muted);
+                text-decoration: none;
+            }
+
+                .idiomas a[aria-current="true"],
+                .idiomas a:hover {
+                    color: var(--text);
+                }
+
+        .card .issa {
+            margin: 8px 0 0;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: rgba(255, 200, 87, 0.1);
+            font-size: 13px;
+            color: #FFE29A;
+        }
+
+            .card .issa a {
+                color: #FFC857;
+            }
 
         html, body {
             height: 100%;
@@ -379,43 +425,45 @@
     <nav class="site-nav" aria-label="Secciones">
         <a class="brand" href="../">ISSASODA</a>
         <ul>
-            <li><a href="../#inicio">Universo</a></li>
-            <li><a href="./" aria-current="page">Escala</a></li>
-            <li><a href="../acerca/">Acerca de</a></li>
+            <li><a href="../#inicio"><span class="tr" lang="es">Universo</span><span class="tr" lang="en">Universe</span><span class="tr" lang="pt">Universo</span></a></li>
+            <li><a href="./" aria-current="page"><span class="tr" lang="es">Escala</span><span class="tr" lang="en">Scale</span><span class="tr" lang="pt">Escala</span></a></li>
+            <li><a href="../acerca/"><span class="tr" lang="es">Acerca de</span><span class="tr" lang="en">About</span><span class="tr" lang="pt">Sobre</span></a></li>
         </ul>
+        <span class="idiomas" data-idiomas></span>
     </nav>
 
-    <canvas id="escala" aria-label="Escala del universo: usa la búsqueda, la lista o las flechas del teclado"></canvas>
+    <canvas id="escala"></canvas>
     <svg id="track" aria-hidden="true"></svg>
 
     <section class="card" id="card" aria-live="polite">
         <p class="eyebrow" id="card-type"></p>
-        <h1 id="card-name">Escala del universo</h1>
+        <h1 id="card-name"><span class="tr" lang="es">Escala del universo</span><span class="tr" lang="en">Scale of the universe</span><span class="tr" lang="pt">Escala do universo</span></h1>
         <p class="size" id="card-size"></p>
         <p class="sci" id="card-sci"></p>
         <p class="note" id="card-note" hidden></p>
-        <p class="pending">Ficha propia de este objeto: pendiente.</p>
+        <p class="issa" id="card-issa" hidden></p>
+        <p class="pending"><span class="tr" lang="es">Ficha propia de este objeto: pendiente.</span><span class="tr" lang="en">This object's own page: pending.</span><span class="tr" lang="pt">Página própria deste objeto: pendente.</span></p>
     </section>
 
     <div class="ruler" aria-hidden="true"><div class="bar" id="ruler-bar"></div><span id="ruler-label"></span></div>
 
     <div class="controls">
-        <label class="visually-hidden" for="buscar">Buscar un objeto</label>
-        <input id="buscar" type="search" list="nombres" placeholder="Buscar: galaxia, quark, Luna…" autocomplete="off">
+        <label class="visually-hidden" for="buscar"><span class="tr" lang="es">Buscar un objeto</span><span class="tr" lang="en">Search for an object</span><span class="tr" lang="pt">Buscar um objeto</span></label>
+        <input id="buscar" type="search" list="nombres" autocomplete="off">
         <datalist id="nombres"></datalist>
-        <button id="mayor" title="Al universo (Inicio)">⇡ Universo</button>
-        <button id="anterior" title="Objeto más grande (←)">◀</button>
-        <button id="siguiente" title="Objeto más pequeño (→)">▶</button>
-        <button id="menor" title="A la longitud de Planck (Fin)">Planck ⇣</button>
-        <button id="viaje" aria-pressed="false" title="Viaje automático (espacio)">▶ Viaje</button>
-        <button id="ver-lista">Lista</button>
+        <button id="mayor">⇡ <span class="tr" lang="es">Universo</span><span class="tr" lang="en">Universe</span><span class="tr" lang="pt">Universo</span></button>
+        <button id="anterior">◀</button>
+        <button id="siguiente">▶</button>
+        <button id="menor">Planck ⇣</button>
+        <button id="viaje" aria-pressed="false"></button>
+        <button id="ver-lista"><span class="tr" lang="es">Lista</span><span class="tr" lang="en">List</span><span class="tr" lang="pt">Lista</span></button>
         <span class="count" id="count"></span>
     </div>
 
     <dialog id="lista" aria-labelledby="lista-titulo">
         <header>
-            <h2 id="lista-titulo">Todos los objetos</h2>
-            <button id="cerrar-lista">Cerrar</button>
+            <h2 id="lista-titulo"><span class="tr" lang="es">Todos los objetos</span><span class="tr" lang="en">All objects</span><span class="tr" lang="pt">Todos os objetos</span></h2>
+            <button id="cerrar-lista"><span class="tr" lang="es">Cerrar</span><span class="tr" lang="en">Close</span><span class="tr" lang="pt">Fechar</span></button>
         </header>
         <div class="body" id="lista-cuerpo"></div>
     </dialog>
@@ -424,6 +472,7 @@
         (async function () {
             'use strict';
 
+            const T = IssaIdioma.t;
             const params = new URLSearchParams(location.search);
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !params.has('motion');
             const FOCUS = 0.4;          // el objeto en foco ocupa 10^-0.4 ≈ 40 % del ancho
@@ -432,31 +481,44 @@
 
             // Reinos de tamaño: agrupan la lista y el eje de la derecha
             const REALMS = [
-                [22, 28, 'Cosmos'], [19, 22, 'Galaxias'], [14.5, 19, 'Nebulosas'], [10, 14.5, 'Sistemas estelares'],
-                [7.5, 10, 'Estrellas'], [5.5, 7.5, 'Planetas'], [1, 5.5, 'Montañas y asteroides'], [-5, 1, 'Rocas y granos'],
-                [-8.5, -5, 'Microscópico'], [-11, -8.5, 'Moléculas y átomos'], [-16.5, -11, 'Núcleos'],
-                [-19, -16.5, 'Partículas'], [-33, -19, 'Lo desconocido'], [-36, -33, 'Planck']
+                [22, 28, T('Cosmos', 'Cosmos', 'Cosmos')], [19, 22, T('Galaxias', 'Galaxies', 'Galáxias')],
+                [14.5, 19, T('Nebulosas', 'Nebulae', 'Nebulosas')], [10, 14.5, T('Sistemas estelares', 'Star systems', 'Sistemas estelares')],
+                [7.5, 10, T('Estrellas', 'Stars', 'Estrelas')], [5.5, 7.5, T('Planetas', 'Planets', 'Planetas')],
+                [1, 5.5, T('Montañas y asteroides', 'Mountains and asteroids', 'Montanhas e asteroides')],
+                [-5, 1, T('Rocas y granos', 'Rocks and grains', 'Rochas e grãos')], [-8.5, -5, T('Microscópico', 'Microscopic', 'Microscópico')],
+                [-11, -8.5, T('Moléculas y átomos', 'Molecules and atoms', 'Moléculas e átomos')], [-16.5, -11, T('Núcleos', 'Nuclei', 'Núcleos')],
+                [-19, -16.5, T('Partículas', 'Particles', 'Partículas')], [-33, -19, T('Lo desconocido', 'The unknown', 'O desconhecido')],
+                [-36, -33, T('Planck', 'Planck', 'Planck')]
             ];
             const TYPE_LABEL = {
-                'cosmos': 'Estructura cósmica', 'vacio': 'Vacío cósmico', 'cumulo-galaxias': 'Agrupación de galaxias',
-                'galaxia': 'Galaxia', 'parte-galaxia': 'Parte de una galaxia', 'corriente': 'Corriente de estrellas',
-                'nube': 'Nube o nebulosa', 'nebulosa-planetaria': 'Nebulosa', 'remanente-sn': 'Restos de una explosión',
-                'burbuja': 'Burbuja interestelar', 'cumulo': 'Cúmulo de estrellas', 'sistema': 'Sistema', 'disco': 'Disco',
-                'estrella': 'Estrella', 'compacta': 'Estrella compacta', 'agujero': 'Agujero negro', 'chorro': 'Chorro',
-                'planeta': 'Planeta', 'luna': 'Luna', 'anillo': 'Anillo', 'roca': 'Roca espacial', 'cometa': 'Cometa',
-                'helado': 'Cuerpo helado', 'relieve': 'Paisaje planetario', 'atmosfera': 'Atmósfera',
-                'interior-estelar': 'Capa de una estrella', 'interior-planetario': 'Capa de un planeta', 'material': 'Material',
-                'gas': 'Estado de la materia', 'campo': 'Campo', 'onda': 'Onda', 'flujo': 'Flujo de partículas',
-                'actividad': 'Actividad estelar', 'evento': 'Explosión', 'pilar': 'Pilar de gas y polvo', 'choque': 'Onda de choque',
-                'filamento': 'Filamento', 'materia-oscura': 'Materia oscura', 'particula': 'Partícula elemental',
-                'hadron': 'Partícula compuesta', 'nucleo': 'Núcleo atómico', 'atomo': 'Átomo', 'molecula': 'Molécula',
-                'agregado': 'Agregado de moléculas', 'cuasiparticula': 'Cuasipartícula', 'cuantico': 'Fenómeno cuántico'
+                'cosmos': T('Estructura cósmica', 'Cosmic structure', 'Estrutura cósmica'), 'vacio': T('Vacío cósmico', 'Cosmic void', 'Vazio cósmico'),
+                'cumulo-galaxias': T('Agrupación de galaxias', 'Group of galaxies', 'Agrupamento de galáxias'), 'galaxia': T('Galaxia', 'Galaxy', 'Galáxia'),
+                'parte-galaxia': T('Parte de una galaxia', 'Part of a galaxy', 'Parte de uma galáxia'), 'corriente': T('Corriente de estrellas', 'Stream of stars', 'Corrente de estrelas'),
+                'nube': T('Nube o nebulosa', 'Cloud or nebula', 'Nuvem ou nebulosa'), 'nebulosa-planetaria': T('Nebulosa', 'Nebula', 'Nebulosa'),
+                'remanente-sn': T('Restos de una explosión', 'Remains of an explosion', 'Restos de uma explosão'), 'burbuja': T('Burbuja interestelar', 'Interstellar bubble', 'Bolha interestelar'),
+                'cumulo': T('Cúmulo de estrellas', 'Star cluster', 'Aglomerado de estrelas'), 'sistema': T('Sistema', 'System', 'Sistema'), 'disco': T('Disco', 'Disk', 'Disco'),
+                'estrella': T('Estrella', 'Star', 'Estrela'), 'compacta': T('Estrella compacta', 'Compact star', 'Estrela compacta'),
+                'agujero': T('Agujero negro', 'Black hole', 'Buraco negro'), 'chorro': T('Chorro', 'Jet', 'Jato'), 'planeta': T('Planeta', 'Planet', 'Planeta'),
+                'luna': T('Luna', 'Moon', 'Lua'), 'anillo': T('Anillo', 'Ring', 'Anel'), 'roca': T('Roca espacial', 'Space rock', 'Rocha espacial'),
+                'cometa': T('Cometa', 'Comet', 'Cometa'), 'helado': T('Cuerpo helado', 'Icy body', 'Corpo gelado'),
+                'relieve': T('Paisaje planetario', 'Planetary landscape', 'Paisagem planetária'), 'atmosfera': T('Atmósfera', 'Atmosphere', 'Atmosfera'),
+                'interior-estelar': T('Capa de una estrella', 'Layer of a star', 'Camada de uma estrela'), 'interior-planetario': T('Capa de un planeta', 'Layer of a planet', 'Camada de um planeta'),
+                'material': T('Material', 'Material', 'Material'), 'gas': T('Estado de la materia', 'State of matter', 'Estado da matéria'),
+                'campo': T('Campo', 'Field', 'Campo'), 'onda': T('Onda', 'Wave', 'Onda'), 'flujo': T('Flujo de partículas', 'Particle flow', 'Fluxo de partículas'),
+                'actividad': T('Actividad estelar', 'Stellar activity', 'Atividade estelar'), 'evento': T('Explosión', 'Explosion', 'Explosão'),
+                'pilar': T('Pilar de gas y polvo', 'Pillar of gas and dust', 'Pilar de gás e poeira'), 'choque': T('Onda de choque', 'Shock wave', 'Onda de choque'),
+                'filamento': T('Filamento', 'Filament', 'Filamento'), 'materia-oscura': T('Materia oscura', 'Dark matter', 'Matéria escura'),
+                'particula': T('Partícula elemental', 'Elementary particle', 'Partícula elementar'), 'hadron': T('Partícula compuesta', 'Composite particle', 'Partícula composta'),
+                'nucleo': T('Núcleo atómico', 'Atomic nucleus', 'Núcleo atômico'), 'atomo': T('Átomo', 'Atom', 'Átomo'), 'molecula': T('Molécula', 'Molecule', 'Molécula'),
+                'agregado': T('Agregado de moléculas', 'Molecular aggregate', 'Agregado de moléculas'), 'cuasiparticula': T('Cuasipartícula', 'Quasiparticle', 'Quase-partícula'),
+                'cuantico': T('Fenómeno cuántico', 'Quantum phenomenon', 'Fenômeno quântico')
             };
             const NOTES = {
-                rep: 'No tiene un tamaño único: se muestra en un orden de magnitud típico.',
-                pt: 'Es puntual: no tiene tamaño medido, se muestra en el límite experimental (unos 10⁻¹⁸ m).',
-                hip: 'Hipotético: todavía no se ha observado.'
+                rep: T('No tiene un tamaño único: se muestra en un orden de magnitud típico.', 'It has no single size: it is shown at a typical order of magnitude.', 'Não tem um tamanho único: aparece numa ordem de grandeza típica.'),
+                pt: T('Es puntual: no tiene tamaño medido, se muestra en el límite experimental (unos 10⁻¹⁸ m).', 'It is point-like: it has no measured size and is shown at the experimental limit (about 10⁻¹⁸ m).', 'É pontual: não tem tamanho medido e aparece no limite experimental (cerca de 10⁻¹⁸ m).'),
+                hip: T('Hipotético: todavía no se ha observado.', 'Hypothetical: not observed yet.', 'Hipotético: ainda não foi observado.')
             };
+            const name = o => T(o.n, o.en, o.pt);
 
             // ---------- Estilo de la visita ----------
             const PANEL = '#0D0F14';
@@ -468,13 +530,41 @@
 
             // ---------- Datos ----------
             const objects = await d3.json('objetos.json');
+            const issa = await d3.json('issasoda.json').catch(() => null);
             const slug = IssaEstilo.slug;
             objects.forEach((o, i) => {
                 o.order = i;
                 o.slug = slug(o.n);
+                o.slugs = [o.slug, slug(o.en || ''), slug(o.pt || '')];
                 o.realm = REALMS.findIndex(r => o.s >= r[0] && o.s < r[1]);
                 o.q = o.q || [];
             });
+            // ---------- El universo de ISSASODA: lo que ya significan algunos objetos ----------
+            const meanings = new Map();
+            if (issa) {
+                const t = issa.totales, f = t.funciones, num = IssaEstilo.number;
+                const list = names => names.length > 1 ? names.slice(0, -1).join(', ') + T(' y ', ' and ', ' e ') + names[names.length - 1] : names.join('');
+                const growing = issa.proyectos.filter(p => p.funciones && p.funciones.some(x => x[0] === 'p' || x[0] === 'v')).map(p => p.nombre);
+                const withSite = issa.proyectos.filter(p => p.tipo === 'app' && p.sitio).map(p => p.nombre);
+                const apps = issa.proyectos.filter(p => p.tipo === 'app').length;
+                const add = (n, text, href) => meanings.set(n, { text: text, href: href });
+                add('Universo', T('ISSASODA entero: lo que ya existe y todo lo que falta.', 'All of ISSASODA: what already exists and everything still missing.', 'A ISSASODA inteira: o que já existe e tudo o que falta.'), '../#inicio');
+                add('Universo observable', T(`Lo que hoy existe en GitHub: ${t.proyectos} repositorios y ${num(t.commits)} commits.`, `What exists on GitHub today: ${t.proyectos} repositories and ${num(t.commits)} commits.`, `O que existe hoje no GitHub: ${t.proyectos} repositórios e ${num(t.commits)} commits.`), '../#proyectos');
+                add('Cúmulo de galaxias', T(`El cúmulo ISSASODA: nuestros ${t.proyectos} proyectos, juntos.`, `The ISSASODA cluster: our ${t.proyectos} projects together.`, `O aglomerado ISSASODA: nossos ${t.proyectos} projetos juntos.`), '../#proyectos');
+                add('Galaxia', T('Cada proyecto es una galaxia.', 'Each project is a galaxy.', 'Cada projeto é uma galáxia.'), '../#proyectos');
+                add('Sistema planetario', T(`Las apps Android de ISSASODA: ${apps}, como planetas que giran alrededor de la misma estrella.`, `ISSASODA's Android apps: ${apps}, like planets around the same star.`, `Os apps Android da ISSASODA: ${apps}, como planetas ao redor da mesma estrela.`), '../#proyectos');
+                add('Planeta', T(`Cada app con sitio web propio es un planeta habitado: ${list(withSite)}.`, `Each app with its own website is an inhabited planet: ${list(withSite)}.`, `Cada app com site próprio é um planeta habitado: ${list(withSite)}.`), '../#proyectos');
+                add('Estrella', T(`Cada función implementada es una estrella encendida: hay ${num(f.h)}.`, `Each implemented feature is a lit star: there are ${num(f.h)}.`, `Cada função implementada é uma estrela acesa: são ${num(f.h)}.`), '../#proyectos');
+                add('Protoestrella', T(`Cada función en validación es una protoestrella: ${num(f.v)}.`, `Each feature being validated is a protostar: ${num(f.v)}.`, `Cada função em validação é uma protoestrela: ${num(f.v)}.`), '../#proyectos');
+                add('Nube molecular', T(`Las funciones planeadas son el gas del que nacerán estrellas: ${num(f.p)}.`, `Planned features are the gas stars will be born from: ${num(f.p)}.`, `As funções planejadas são o gás de que nascerão estrelas: ${num(f.p)}.`), '../#proyectos');
+                add('Región de formación estelar', T(`Los proyectos donde hoy nacen funciones: ${list(growing)}.`, `The projects where features are being born today: ${list(growing)}.`, `Os projetos onde hoje nascem funções: ${list(growing)}.`), '../#proyectos');
+                add('Enana marrón', T(`Las funciones bloqueadas: estrellas que aún no logran encenderse (${num(f.b)}).`, `Blocked features: stars that cannot light up yet (${num(f.b)}).`, `As funções bloqueadas: estrelas que ainda não conseguem acender (${num(f.b)}).`), '../#proyectos');
+                add('Nebulosa oscura', T(`Los proyectos privados: se ven sus datos, no su código (${t.proyectos - t.publicos}).`, `Private projects: you see their data, not their code (${t.proyectos - t.publicos}).`, `Os projetos privados: vemos seus dados, não seu código (${t.proyectos - t.publicos}).`), '../#proyectos');
+                add('Molécula', T(`Cada commit es una molécula de nuestro universo: ${num(t.commits)} en GitHub.`, `Each commit is a molecule of our universe: ${num(t.commits)} on GitHub.`, `Cada commit é uma molécula do nosso universo: ${num(t.commits)} no GitHub.`), '../#proyectos');
+                add('Nebulosa', T('El progreso de los estudiantes: la nebulosa donde nacerá la estrella de cada uno.', "Student progress: the nebula where each student's star will be born.", 'O progresso dos estudantes: a nebulosa onde nascerá a estrela de cada um.'), '../#progreso');
+                add('Vacío cósmico', T('Todo lo que aún no hemos construido: casi todo el universo.', 'Everything we have not built yet: almost the whole universe.', 'Tudo o que ainda não construímos: quase todo o universo.'), '../acerca/');
+            }
+
             const sorted = objects.slice().sort((a, b) => a.s - b.s || a.order - b.order);
             const bySlug = new Map(objects.map(o => [o.slug, o]));
 
@@ -594,6 +684,16 @@
                     const fadeOut = Math.min(1, (maxDim * 3 - v.r) / (maxDim * 1.5));
                     ctx.globalAlpha = Math.max(0, Math.min(fadeIn, fadeOut));
                     IssaAstros.draw(ctx, v.o, v.x, v.y, v.r, time);
+                    if (meanings.has(v.o.n) && v.r > 6) {
+                        ctx.save();
+                        ctx.strokeStyle = 'rgba(255, 200, 87, 0.75)';
+                        ctx.setLineDash([6, 6]);
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.arc(v.x, v.y, Math.min(v.r * 1.12, Math.max(width, height)), 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.restore();
+                    }
                 });
                 ctx.globalAlpha = 1;
                 drawLabels();
@@ -613,12 +713,12 @@
                         if (y > height - 30) return;
                         const size = v.o === selected ? 16 : 13;
                         ctx.font = `${size}px ${stack(realmFont(v.o.realm))}`;
-                        const w = ctx.measureText(v.o.n).width;
+                        const w = ctx.measureText(name(v.o)).width;
                         const box = [v.x - w / 2 - 4, y - 2, v.x + w / 2 + 4, y + size + 4];
                         if (boxes.some(b => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1])) return;
                         boxes.push(box);
                         ctx.fillStyle = v.o === selected ? '#FFFFFF' : 'rgba(233, 236, 241, 0.85)';
-                        ctx.fillText(v.o.n, v.x, y);
+                        ctx.fillText(name(v.o), v.x, y);
                     });
                 ctx.shadowBlur = 0;
             }
@@ -630,7 +730,8 @@
                 name: document.getElementById('card-name'),
                 size: document.getElementById('card-size'),
                 sci: document.getElementById('card-sci'),
-                note: document.getElementById('card-note')
+                note: document.getElementById('card-note'),
+                issa: document.getElementById('card-issa')
             };
 
             function updateFocus() {
@@ -658,8 +759,9 @@
             function showCard(o) {
                 if (!o) {
                     card.type.textContent = REALMS[Math.max(0, REALMS.findIndex(r => E - FOCUS >= r[0] && E - FOCUS < r[1]))][2];
-                    card.name.textContent = 'Espacio entre escalas';
-                    card.size.textContent = 'Nada conocido de este tamaño: sigue viajando.';
+                    card.name.textContent = T('Espacio entre escalas', 'Space between scales', 'Espaço entre escalas');
+                    card.size.textContent = T('Nada conocido de este tamaño: sigue viajando.', 'Nothing known of this size: keep traveling.', 'Nada conhecido deste tamanho: continue viajando.');
+                    card.issa.hidden = true;
                     card.sci.textContent = scientific(E - FOCUS);
                     card.note.hidden = true;
                     return;
@@ -668,10 +770,19 @@
                 card.el.style.setProperty('--accent', color);
                 card.el.style.setProperty('--font-title', stack(realmFont(o.realm)));
                 card.type.textContent = (TYPE_LABEL[o.t] || o.t) + ' · ' + REALMS[o.realm][2];
-                card.name.textContent = o.n;
+                card.name.textContent = name(o);
                 card.size.textContent = human(o.s);
-                card.sci.textContent = scientific(o.s) + ' · objeto ' + (sorted.length - o.rank) + ' de ' + sorted.length;
-                const notes = o.q.map(q => NOTES[q]).concat(o.nota || []).filter(Boolean);
+                card.sci.textContent = scientific(o.s) + T(' · objeto ', ' · object ', ' · objeto ') + (sorted.length - o.rank) + T(' de ', ' of ', ' de ') + sorted.length;
+                const meaning = meanings.get(o.n);
+                card.issa.hidden = !meaning;
+                if (meaning) {
+                    card.issa.textContent = T('En ISSASODA: ', 'In ISSASODA: ', 'Na ISSASODA: ') + meaning.text + ' ';
+                    const a = document.createElement('a');
+                    a.href = meaning.href;
+                    a.textContent = T('Ver →', 'See →', 'Ver →');
+                    card.issa.appendChild(a);
+                }
+                const notes = o.q.map(q => NOTES[q]).concat(o.nota ? IssaIdioma.pick(o.nota) : []).filter(Boolean);
                 card.note.hidden = !notes.length;
                 card.note.textContent = notes.join(' ');
             }
@@ -689,8 +800,12 @@
             let trackY = null;
             function drawTrack() {
                 const h = track.node().clientHeight;
-                trackY = d3.scaleLinear().domain([TOP, -36]).range([6, h - 6]);
                 track.selectAll('*').remove();
+                if (h < 60) {
+                    trackY = null;
+                    return;
+                }
+                trackY = d3.scaleLinear().domain([TOP, -36]).range([6, h - 6]);
                 track.append('g')
                     .selectAll('rect')
                     .data(REALMS)
@@ -783,7 +898,7 @@
             const tourButton = document.getElementById('viaje');
             function setTour(on) {
                 tourButton.setAttribute('aria-pressed', on ? 'true' : 'false');
-                tourButton.textContent = on ? '❚❚ Pausa' : '▶ Viaje';
+                tourButton.textContent = on ? T('❚❚ Pausa', '❚❚ Pause', '❚❚ Pausa') : T('▶ Viaje', '▶ Journey', '▶ Viagem');
             }
             tourButton.addEventListener('click', () => {
                 if (tourButton.getAttribute('aria-pressed') === 'true') {
@@ -796,6 +911,7 @@
                 flyTo(BOTTOM, [0, 0], null, (E - BOTTOM) * 2400).on('end.tour', () => setTour(false));
             });
             if (reduceMotion) tourButton.hidden = true;
+            setTour(false);
 
             document.getElementById('mayor').addEventListener('click', () => focusOn(sorted[sorted.length - 1]));
             document.getElementById('menor').addEventListener('click', () => focusOn(sorted[0]));
@@ -871,14 +987,22 @@
             const datalist = document.getElementById('nombres');
             objects.forEach(o => {
                 const option = document.createElement('option');
-                option.value = o.n;
+                option.value = name(o);
                 datalist.appendChild(option);
             });
+            // Se busca en los tres idiomas
             function findByText(text) {
                 const q = slug(text);
                 if (!q) return null;
-                return bySlug.get(q) || objects.find(o => o.slug.startsWith(q)) || objects.find(o => o.slug.includes(q));
+                return objects.find(o => o.slugs.includes(q)) || objects.find(o => o.slugs.some(x => x.startsWith(q))) || objects.find(o => o.slugs.some(x => x.includes(q)));
             }
+            search.placeholder = T('Buscar: galaxia, quark, Luna…', 'Search: galaxy, quark, Moon…', 'Buscar: galáxia, quark, Lua…');
+            document.getElementById('mayor').title = T('Al universo (Inicio)', 'To the universe (Home)', 'Ao universo (Home)');
+            document.getElementById('anterior').title = T('Objeto más grande (←)', 'Larger object (←)', 'Objeto maior (←)');
+            document.getElementById('siguiente').title = T('Objeto más pequeño (→)', 'Smaller object (→)', 'Objeto menor (→)');
+            document.getElementById('menor').title = T('A la longitud de Planck (Fin)', 'To the Planck length (End)', 'Ao comprimento de Planck (End)');
+            document.getElementById('viaje').title = T('Viaje automático (espacio)', 'Automatic journey (space)', 'Viagem automática (espaço)');
+            canvas.setAttribute('aria-label', T('Escala del universo: usa la búsqueda, la lista o las flechas del teclado', 'Scale of the universe: use the search, the list or the arrow keys', 'Escala do universo: use a busca, a lista ou as setas do teclado'));
             search.addEventListener('change', () => {
                 const o = findByText(search.value);
                 if (o) {
@@ -905,12 +1029,15 @@
                         dialog.close();
                         focusOn(o);
                     })
-                    .call(b => b.append('b').style('font-weight', 'normal').text(o => o.n))
+                    .call(b => b.append('b').style('font-weight', 'normal').text(o => name(o) + (meanings.has(o.n) ? ' ✦' : '')))
                     .call(b => b.append('span').text(o => human(o.s)));
             });
             document.getElementById('ver-lista').addEventListener('click', () => dialog.showModal());
             document.getElementById('cerrar-lista').addEventListener('click', () => dialog.close());
-            document.getElementById('count').textContent = objects.length + ' objetos, de ' + pow10(27) + ' a ' + pow10(-35) + ' m';
+            document.getElementById('count').textContent = T(
+                `${objects.length} objetos · ${meanings.size} ya significan algo en ISSASODA (✦): el resto está por construir`,
+                `${objects.length} objects · ${meanings.size} already mean something in ISSASODA (✦): the rest is still to be built`,
+                `${objects.length} objetos · ${meanings.size} já significam algo na ISSASODA (✦): o resto está por construir`);
 
             // ---------- Arranque ----------
             window.addEventListener('resize', () => {

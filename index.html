@@ -3,9 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ISSASODA</title>
-    <meta name="description" content="ISSASODA: educación para personas de todas las edades. Un universo de cursos, ejercicios interactivos y el avance de cada estudiante.">
+    <title data-en="ISSASODA" data-pt="ISSASODA">ISSASODA</title>
+    <meta name="description" content="ISSASODA: educación para personas de todas las edades. Un universo de cursos, ejercicios interactivos, proyectos y el avance de cada estudiante."
+          data-en="ISSASODA: education for all ages. A universe of courses, interactive exercises, projects and each student's progress."
+          data-pt="ISSASODA: educação para todas as idades. Um universo de cursos, exercícios interativos, projetos e o progresso de cada estudante.">
     <link rel="canonical" href="https://issasodaweb.com/">
+    <link rel="alternate" hreflang="es-419" href="https://issasodaweb.com/?lang=es">
+    <link rel="alternate" hreflang="en-US" href="https://issasodaweb.com/?lang=en">
+    <link rel="alternate" hreflang="pt-BR" href="https://issasodaweb.com/?lang=pt">
+    <link rel="alternate" hreflang="x-default" href="https://issasodaweb.com/">
+    <script src="comun/idioma.js"></script>
     <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64 96x96">
     <link rel="manifest" href="manifiesto.json">
     <meta name="theme-color" content="#0D0F14">
@@ -28,6 +35,64 @@
 
         * {
             box-sizing: border-box;
+        }
+
+        /* Tres idiomas: solo se ve el activo (sin JavaScript, el español) */
+        html:not([data-lang]) .tr:not([lang="es"]),
+        html[data-lang="es"] .tr:not([lang="es"]),
+        html[data-lang="en"] .tr:not([lang="en"]),
+        html[data-lang="pt"] .tr:not([lang="pt"]) {
+            display: none !important;
+        }
+
+        .idiomas {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+        }
+
+            .idiomas a {
+                color: var(--muted);
+                text-decoration: none;
+            }
+
+                .idiomas a[aria-current="true"],
+                .idiomas a:hover {
+                    color: var(--text);
+                }
+
+        .stack-bar {
+            display: flex;
+            height: 10px;
+            margin: 6px 0 4px;
+            overflow: hidden;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 14px;
+            margin: 0 0 12px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+            .legend i {
+                display: inline-block;
+                width: 9px;
+                height: 9px;
+                margin-right: 5px;
+                border-radius: 50%;
+            }
+
+        .facts {
+            margin: 0 0 12px;
+            font-size: 14px;
+            color: var(--muted);
         }
 
         html, body {
@@ -287,6 +352,12 @@
                     gap: 16px;
                 }
 
+            .idiomas {
+                position: absolute;
+                top: 15px;
+                right: 16px;
+            }
+
             html.js .panel {
                 top: auto;
                 bottom: 16px;
@@ -318,13 +389,14 @@
     <nav class="site-nav" aria-label="Secciones">
         <a class="brand" href="#inicio">ISSASODA</a>
         <ul>
-            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#inicio"><span class="tr" lang="es">Inicio</span><span class="tr" lang="en">Home</span><span class="tr" lang="pt">Início</span></a></li>
             <li><a href="#guat">GUAT</a></li>
-            <li><a href="#progreso">Progreso</a></li>
-            <li><a href="#proyectos">Proyectos</a></li>
-            <li><a href="#escala">Escala</a></li>
-            <li><a href="acerca/">Acerca de</a></li>
+            <li><a href="#progreso"><span class="tr" lang="es">Progreso</span><span class="tr" lang="en">Progress</span><span class="tr" lang="pt">Progresso</span></a></li>
+            <li><a href="#proyectos"><span class="tr" lang="es">Proyectos</span><span class="tr" lang="en">Projects</span><span class="tr" lang="pt">Projetos</span></a></li>
+            <li><a href="#escala"><span class="tr" lang="es">Escala</span><span class="tr" lang="en">Scale</span><span class="tr" lang="pt">Escala</span></a></li>
+            <li><a href="acerca/"><span class="tr" lang="es">Acerca de</span><span class="tr" lang="en">About</span><span class="tr" lang="pt">Sobre</span></a></li>
         </ul>
+        <span class="idiomas" data-idiomas></span>
     </nav>
 
     <canvas id="universe" aria-hidden="true"></canvas>
@@ -337,101 +409,231 @@
             data-size = ancho del encuadre al visitarla, data-hit = radio para hacer clic
         -->
         <section class="panel" id="inicio" data-label="ISSASODA" data-kind="sol" data-x="0" data-y="0" data-size="430" data-hit="180" data-color="#FFC857">
-            <p class="eyebrow">Educación para todas las edades</p>
+            <p class="eyebrow"><span class="tr" lang="es">Educación para todas las edades</span><span class="tr" lang="en">Education for all ages</span><span class="tr" lang="pt">Educação para todas as idades</span></p>
             <h1>ISSASODA</h1>
-            <p>Aprender no tiene edad. ISSASODA reúne cursos, ejercicios interactivos y recursos para estudiantes de cualquier etapa, y pronto mostrará el avance de cada uno.</p>
-            <p class="hint">Este universo es el mapa de ISSASODA: arrástralo para explorarlo, acércate con la rueda o elige un destino.</p>
+            <p class="tr" lang="es">Aprender no tiene edad. ISSASODA reúne cursos, ejercicios interactivos y recursos para estudiantes de cualquier etapa, y pronto mostrará el avance de cada uno.</p>
+            <p class="tr" lang="en">Learning has no age. ISSASODA brings together courses, interactive exercises and resources for students at any stage, and will soon show each student's progress.</p>
+            <p class="tr" lang="pt">Aprender não tem idade. A ISSASODA reúne cursos, exercícios interativos e recursos para estudantes de qualquer fase e em breve mostrará o progresso de cada um.</p>
+            <p class="hint tr" lang="es">Este universo enseña y a la vez es el universo de ISSASODA: nuestros proyectos son los astros encendidos, y todo lo demás es lo que falta por construir. Arrástralo, acércate con la rueda o elige un destino.</p>
+            <p class="hint tr" lang="en">This universe teaches, and it is also ISSASODA's universe: our projects are the lit bodies, and everything else is what is still to be built. Drag it, zoom with the wheel or pick a destination.</p>
+            <p class="hint tr" lang="pt">Este universo ensina e, ao mesmo tempo, é o universo da ISSASODA: nossos projetos são os astros acesos, e todo o resto é o que falta construir. Arraste, aproxime com a roda ou escolha um destino.</p>
             <div class="actions">
-                <a class="primary" href="#guat">Viajar a GUAT</a>
-                <a href="#progreso">Progreso de estudiantes</a>
+                <a class="primary" href="#proyectos"><span class="tr" lang="es">Ver nuestros proyectos</span><span class="tr" lang="en">See our projects</span><span class="tr" lang="pt">Ver nossos projetos</span></a>
+                <a href="#guat"><span class="tr" lang="es">Viajar a GUAT</span><span class="tr" lang="en">Travel to GUAT</span><span class="tr" lang="pt">Viajar para GUAT</span></a>
             </div>
         </section>
 
         <section class="panel" id="guat" data-label="GUAT" data-kind="galaxia" data-x="950" data-y="-520" data-size="470" data-hit="200" data-color="#A99BFF">
-            <p class="eyebrow">Proyecto universitario</p>
+            <p class="eyebrow"><span class="tr" lang="es">Proyecto universitario</span><span class="tr" lang="en">University project</span><span class="tr" lang="pt">Projeto universitário</span></p>
             <h2>GUAT</h2>
-            <p>GUAT University: un árbol con los estudiantes, sus cursos y sus clases, con lecturas, podcasts y las fórmulas de cada tema.</p>
-            <p class="hint">Esta galaxia está hecha con esos datos: cada brazo es un estudiante y cada estrella un tema o una fórmula, con el color de su calificación. Pasa el cursor sobre una estrella.</p>
+            <p class="tr" lang="es">GUAT University: un árbol con los estudiantes, sus cursos y sus clases, con lecturas, podcasts y las fórmulas de cada tema.</p>
+            <p class="tr" lang="en">GUAT University: a tree of students, their courses and their classes, with readings, podcasts and the formulas of each topic.</p>
+            <p class="tr" lang="pt">GUAT University: uma árvore com os estudantes, seus cursos e suas aulas, com leituras, podcasts e as fórmulas de cada tema.</p>
+            <p class="hint tr" lang="es">Esta galaxia está hecha con esos datos: cada brazo es un estudiante y cada estrella un tema o una fórmula, con el color de su calificación. Pasa el cursor sobre una estrella. Los contenidos de GUAT están en español.</p>
+            <p class="hint tr" lang="en">This galaxy is made from that data: each arm is a student and each star a topic or a formula, colored by its grade. Hover over a star. GUAT's content is in Spanish.</p>
+            <p class="hint tr" lang="pt">Esta galáxia é feita com esses dados: cada braço é um estudante e cada estrela um tema ou uma fórmula, com a cor da sua nota. Passe o cursor sobre uma estrela. O conteúdo do GUAT está em espanhol.</p>
             <div class="actions">
-                <a class="primary" href="guat/" data-dive>Abrir el árbol GUAT</a>
-                <a href="Formulas.html" data-dive>Fórmulas</a>
-                <a href="Ejercicios/RegresionLineal.html" data-dive>Ejercicio: regresión lineal</a>
+                <a class="primary" href="guat/" data-dive><span class="tr" lang="es">Abrir el árbol GUAT</span><span class="tr" lang="en">Open the GUAT tree</span><span class="tr" lang="pt">Abrir a árvore GUAT</span></a>
+                <a href="Formulas.html" data-dive><span class="tr" lang="es">Fórmulas</span><span class="tr" lang="en">Formulas</span><span class="tr" lang="pt">Fórmulas</span></a>
+                <a href="Ejercicios/RegresionLineal.html" data-dive><span class="tr" lang="es">Ejercicio: regresión lineal</span><span class="tr" lang="en">Exercise: linear regression</span><span class="tr" lang="pt">Exercício: regressão linear</span></a>
             </div>
         </section>
 
-        <section class="panel" id="progreso" data-label="Progreso" data-kind="nebulosa" data-x="-900" data-y="560" data-size="440" data-hit="180" data-color="#3EE6B0">
-            <p class="eyebrow">Próximamente</p>
-            <h2>Progreso de estudiantes</h2>
-            <p>Esta nebulosa es una guardería de estrellas: aquí nacerá la estrella de cada estudiante y crecerá con los cursos que tome, los ejercicios que resuelva y lo que logre.</p>
+        <section class="panel" id="progreso" data-label="Progreso" data-label-en="Progress" data-label-pt="Progresso" data-kind="nebulosa" data-x="-900" data-y="560" data-size="440" data-hit="180" data-color="#3EE6B0">
+            <p class="eyebrow"><span class="tr" lang="es">Próximamente</span><span class="tr" lang="en">Coming soon</span><span class="tr" lang="pt">Em breve</span></p>
+            <h2><span class="tr" lang="es">Progreso de estudiantes</span><span class="tr" lang="en">Student progress</span><span class="tr" lang="pt">Progresso dos estudantes</span></h2>
+            <p class="tr" lang="es">Esta nebulosa es una guardería de estrellas: aquí nacerá la estrella de cada estudiante y crecerá con los cursos que tome, los ejercicios que resuelva y lo que logre.</p>
+            <p class="tr" lang="en">This nebula is a stellar nursery: each student's star will be born here and will grow with the courses they take, the exercises they solve and what they achieve.</p>
+            <p class="tr" lang="pt">Esta nebulosa é um berçário de estrelas: aqui nascerá a estrela de cada estudante, que crescerá com os cursos que fizer, os exercícios que resolver e o que conquistar.</p>
             <div class="actions">
-                <a href="#inicio">Volver al inicio</a>
+                <a href="#inicio"><span class="tr" lang="es">Volver al inicio</span><span class="tr" lang="en">Back to home</span><span class="tr" lang="pt">Voltar ao início</span></a>
             </div>
         </section>
 
-        <section class="panel" id="proyectos" data-label="Proyectos" data-kind="planeta" data-x="820" data-y="700" data-size="320" data-hit="130" data-color="#FF6B9A">
-            <p class="eyebrow">Apps de ISSASODA</p>
-            <h2>Proyectos</h2>
-            <p>Cada planeta de este sistema es una aplicación creada por ISSASODA.</p>
-            <div class="actions">
-                <a href="https://emugamind.issasodaweb.com" target="_blank" rel="noopener">EmuGaMind</a>
-            </div>
+        <section class="panel" id="proyectos" data-label="Proyectos" data-label-en="Projects" data-label-pt="Projetos" data-kind="cumulo" data-x="820" data-y="700" data-size="620" data-hit="260" data-color="#FF6B9A">
+            <p class="eyebrow"><span class="tr" lang="es">El cúmulo ISSASODA</span><span class="tr" lang="en">The ISSASODA cluster</span><span class="tr" lang="pt">O aglomerado ISSASODA</span></p>
+            <h2><span class="tr" lang="es">Proyectos</span><span class="tr" lang="en">Projects</span><span class="tr" lang="pt">Projetos</span></h2>
+            <p class="tr" lang="es">Cada galaxia es un proyecto que existe en GitHub. Su polvo son los commits; sus estrellas, las funciones de su catálogo: encendidas las implementadas, tenues las que faltan. Los privados llevan un velo: se ven sus datos, nunca su código.</p>
+            <p class="tr" lang="en">Each galaxy is a project that exists on GitHub. Its dust is its commits; its stars are the features in its catalog: lit when implemented, faint when still to come. Private ones wear a veil: you see their data, never their code.</p>
+            <p class="tr" lang="pt">Cada galáxia é um projeto que existe no GitHub. Sua poeira são os commits; suas estrelas, as funções do seu catálogo: acesas as implementadas, tênues as que faltam. Os privados usam um véu: vemos seus dados, nunca seu código.</p>
+            <p class="hint" id="cumulo-resumen"></p>
+            <div class="actions" id="cumulo-lista"></div>
         </section>
 
-        <section class="panel" id="escala" data-label="Escala" data-kind="portal" data-x="-850" data-y="-480" data-size="340" data-hit="150" data-color="#7FD1FF">
-            <p class="eyebrow">De lo más grande a lo más pequeño</p>
-            <h2>Escala del universo</h2>
-            <p>Un agujero hacia todas las escalas: 307 objetos del universo, desde el universo observable (10²⁷ m) hasta la longitud de Planck (10⁻³⁵ m), cada uno a su tamaño real.</p>
-            <p class="hint">Cada objeto tendrá su propia página. Por ahora todos tienen su lugar, su tamaño, su dibujo y su dirección.</p>
+        <section class="panel" id="escala" data-label="Escala" data-label-en="Scale" data-label-pt="Escala" data-kind="portal" data-x="-850" data-y="-480" data-size="340" data-hit="150" data-color="#7FD1FF">
+            <p class="eyebrow"><span class="tr" lang="es">De lo más grande a lo más pequeño</span><span class="tr" lang="en">From the largest to the smallest</span><span class="tr" lang="pt">Do maior ao menor</span></p>
+            <h2><span class="tr" lang="es">Escala del universo</span><span class="tr" lang="en">Scale of the universe</span><span class="tr" lang="pt">Escala do universo</span></h2>
+            <p class="tr" lang="es">Un agujero hacia todas las escalas: 307 objetos del universo, desde el universo observable (10²⁷ m) hasta la longitud de Planck (10⁻³⁵ m), cada uno a su tamaño real. Algunos ya significan algo en ISSASODA; casi todos esperan su proyecto.</p>
+            <p class="tr" lang="en">A hole into every scale: 307 objects of the universe, from the observable universe (10²⁷ m) to the Planck length (10⁻³⁵ m), each at its real size. A few already mean something in ISSASODA; almost all are waiting for their project.</p>
+            <p class="tr" lang="pt">Um buraco para todas as escalas: 307 objetos do universo, do universo observável (10²⁷ m) ao comprimento de Planck (10⁻³⁵ m), cada um em seu tamanho real. Alguns já significam algo na ISSASODA; quase todos esperam seu projeto.</p>
             <div class="actions">
-                <a class="primary" href="universo/" data-dive>Entrar en la escala</a>
-                <a href="universo/#lista" data-dive>Ver los 307 objetos</a>
+                <a class="primary" href="universo/" data-dive><span class="tr" lang="es">Entrar en la escala</span><span class="tr" lang="en">Enter the scale</span><span class="tr" lang="pt">Entrar na escala</span></a>
+                <a href="universo/#lista" data-dive><span class="tr" lang="es">Ver los 307 objetos</span><span class="tr" lang="en">See the 307 objects</span><span class="tr" lang="pt">Ver os 307 objetos</span></a>
             </div>
         </section>
     </main>
 
     <p class="corner font-credit" id="font-credit"></p>
-    <p class="corner explore-hint">Arrastra para explorar · rueda para acercar · <kbd>&larr;</kbd> <kbd>&rarr;</kbd> secciones</p>
+    <p class="corner explore-hint"><span class="tr" lang="es">Arrastra para explorar · rueda para acercar ·</span><span class="tr" lang="en">Drag to explore · wheel to zoom ·</span><span class="tr" lang="pt">Arraste para explorar · roda para aproximar ·</span> <kbd>&larr;</kbd> <kbd>&rarr;</kbd> <span class="tr" lang="es">secciones</span><span class="tr" lang="en">sections</span><span class="tr" lang="pt">seções</span></p>
 
     <script>
-        (function () {
+        (async function () {
             'use strict';
 
             const TAU = Math.PI * 2;
+            const T = IssaIdioma.t;
             const params = new URLSearchParams(location.search);
             // Sin animación si el sistema pide reducir el movimiento (?motion en la URL la fuerza, para probar)
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !params.has('motion');
 
             // ---------- Tipografías de Google Fonts, distintas en cada visita (comun/estilo.js) ----------
             const stack = IssaEstilo.stack;
-            const sectionEls = Array.from(document.querySelectorAll('.panel'));
-            const look = IssaEstilo.fonts(sectionEls.length + 1);
+            const mainEls = Array.from(document.querySelectorAll('.panel'));
+            const look = IssaEstilo.fonts(mainEls.length + 1);
             const displayFonts = look.display;
             const textFont = look.text;
             document.documentElement.style.setProperty('--font-brand', stack(displayFonts[0]));
             document.documentElement.style.setProperty('--font-text', stack(textFont));
 
+            // ---------- El universo de ISSASODA: proyectos de GitHub (universo/issasoda.json) ----------
+            const issa = await d3.json('universo/issasoda.json').catch(() => null);
+            const STATUS = {
+                h: { color: '#FFE9A8', size: 1.8, label: T('Implementadas', 'Implemented', 'Implementadas'), one: T('Implementada', 'Implemented', 'Implementada') },
+                v: { color: '#7FD1FF', size: 1.6, label: T('En validación', 'Being validated', 'Em validação'), one: T('En validación', 'Being validated', 'Em validação') },
+                p: { color: '#5C6680', size: 0.9, label: T('Planeadas', 'Planned', 'Planejadas'), one: T('Planeada', 'Planned', 'Planejada') },
+                b: { color: '#A0522D', size: 1.4, label: T('Bloqueadas', 'Blocked', 'Bloqueadas'), one: T('Bloqueada', 'Blocked', 'Bloqueada') }
+            };
+            const number = IssaEstilo.number;
+            const date = iso => new Date(iso + 'T12:00:00').toLocaleDateString(IssaIdioma.code, { year: 'numeric', month: 'short', day: 'numeric' });
+
+            function el(tag, className, text) {
+                const node = document.createElement(tag);
+                if (className) node.className = className;
+                if (text != null) node.textContent = text;
+                return node;
+            }
+
+            function link(href, text, primary, external) {
+                const a = el('a', primary ? 'primary' : '', text);
+                a.href = href;
+                if (external) {
+                    a.target = '_blank';
+                    a.rel = 'noopener';
+                }
+                return a;
+            }
+
+            function statusBar(counts, total) {
+                const bar = el('div', 'stack-bar');
+                const legend = el('p', 'legend');
+                ['h', 'v', 'p', 'b'].forEach(k => {
+                    if (!counts[k]) return;
+                    const part = el('span');
+                    part.style.width = (counts[k] / total * 100) + '%';
+                    part.style.background = STATUS[k].color;
+                    bar.appendChild(part);
+                    const item = el('span');
+                    const dot = el('i');
+                    dot.style.background = STATUS[k].color;
+                    item.append(dot, `${STATUS[k].label}: ${number(counts[k])}`);
+                    legend.appendChild(item);
+                });
+                return [bar, legend];
+            }
+
+            // Panel propio de cada proyecto, en el idioma activo
+            function projectPanel(p) {
+                const panel = el('section', 'panel');
+                panel.id = 'p-' + p.id;
+                panel.dataset.proyecto = p.id;
+                panel.appendChild(el('p', 'eyebrow', [T('Proyecto', 'Project', 'Projeto'), p.publico ? T('público', 'public', 'público') : T('privado', 'private', 'privado'), p.lenguaje].filter(Boolean).join(' · ')));
+                panel.appendChild(el('h2', '', p.nombre));
+                panel.appendChild(el('p', '', IssaIdioma.pick(p.desc)));
+                panel.appendChild(el('p', 'facts', `${number(p.commits)} commits · ${T('creado', 'created', 'criado')} ${date(p.creado)} · ${T('último cambio', 'last change', 'última mudança')} ${date(p.actualizado)}`));
+                if (p.funciones) {
+                    const counts = d3.rollup(p.funciones, v => v.length, f => f[0]);
+                    const c = { h: counts.get('h') || 0, v: counts.get('v') || 0, p: counts.get('p') || 0, b: counts.get('b') || 0 };
+                    panel.appendChild(el('p', 'facts', T(`Catálogo: ${number(p.funciones.length)} funciones. Pasa el cursor sobre sus estrellas.`, `Catalog: ${number(p.funciones.length)} features. Hover over its stars.`, `Catálogo: ${number(p.funciones.length)} funções. Passe o cursor sobre suas estrelas.`)));
+                    panel.append(...statusBar(c, p.funciones.length));
+                } else if (p.commits === 0) {
+                    panel.appendChild(el('p', 'hint', T('Su repositorio en GitHub aún está vacío: una nebulosa por encender.', 'Its GitHub repository is still empty: a nebula waiting to light up.', 'Seu repositório no GitHub ainda está vazio: uma nebulosa por acender.')));
+                } else {
+                    panel.appendChild(el('p', 'hint', T('Aún sin catálogo de funciones: sus estrellas aparecerán cuando lo tenga.', 'No feature catalog yet: its stars will appear once it has one.', 'Ainda sem catálogo de funções: suas estrelas aparecerão quando tiver um.')));
+                }
+                const actions = el('div', 'actions');
+                if (p.id === 'guat') actions.appendChild(link('#guat', T('Ver la galaxia GUAT', 'See the GUAT galaxy', 'Ver a galáxia GUAT'), true));
+                if (p.sitio && p.id !== 'guat') actions.appendChild(link(p.sitio, T('Sitio web', 'Website', 'Site'), true, true));
+                if (p.repo) actions.appendChild(link(p.repo, 'GitHub', false, true));
+                actions.appendChild(link('#proyectos', T('Volver al cúmulo', 'Back to the cluster', 'Voltar ao aglomerado')));
+                panel.appendChild(actions);
+                return panel;
+            }
+
+            const main = document.querySelector('main');
+            const clusterEl = document.getElementById('proyectos');
+            const clusterCenter = [+clusterEl.dataset.x, +clusterEl.dataset.y];
+            const projects = issa ? issa.proyectos.map(p => ({ p: p, r: 22 + 6.5 * Math.sqrt(p.commits + (p.funciones ? p.funciones.length / 3 : 0)) })) : [];
+            if (projects.length) {
+                // Galaxias del cúmulo, empaquetadas sin solaparse (d3.packSiblings)
+                const circles = projects.map(g => ({ r: g.r + 16, g: g }));
+                d3.packSiblings(circles);
+                circles.forEach(c => {
+                    c.g.x = clusterCenter[0] + c.x;
+                    c.g.y = clusterCenter[1] + c.y;
+                });
+                projects.forEach(g => main.appendChild(projectPanel(g.p)));
+                const t = issa.totales;
+                const total = t.funciones.h + t.funciones.v + t.funciones.p + t.funciones.b;
+                document.getElementById('cumulo-resumen').textContent = T(
+                    `${t.proyectos} proyectos en GitHub (${t.publicos} públicos) · ${number(t.commits)} commits · ${number(total)} funciones en catálogos: ${number(t.funciones.h)} encendidas, ${number(t.funciones.v)} en validación, ${number(t.funciones.p)} por nacer y ${number(t.funciones.b)} bloqueadas. Casi todo el universo está por construir.`,
+                    `${t.proyectos} projects on GitHub (${t.publicos} public) · ${number(t.commits)} commits · ${number(total)} features in catalogs: ${number(t.funciones.h)} lit, ${number(t.funciones.v)} being validated, ${number(t.funciones.p)} still to be born and ${number(t.funciones.b)} blocked. Almost all of the universe is still to be built.`,
+                    `${t.proyectos} projetos no GitHub (${t.publicos} públicos) · ${number(t.commits)} commits · ${number(total)} funções em catálogos: ${number(t.funciones.h)} acesas, ${number(t.funciones.v)} em validação, ${number(t.funciones.p)} por nascer e ${number(t.funciones.b)} bloqueadas. Quase todo o universo está por construir.`);
+                const list = document.getElementById('cumulo-lista');
+                projects.forEach(g => list.appendChild(link('#p-' + g.p.id, g.p.nombre)));
+            }
+
             // ---------- Secciones (astros) ----------
-            const sections = sectionEls.map((el, i) => ({
+            const sections = mainEls.map((el, i) => ({
                 id: el.id,
                 el: el,
-                label: el.dataset.label,
+                label: T(el.dataset.label, el.dataset.labelEn || el.dataset.label, el.dataset.labelPt || el.dataset.labelEn || el.dataset.label),
                 kind: el.dataset.kind,
                 color: el.dataset.color,
                 x: +el.dataset.x,
                 y: +el.dataset.y,
                 size: +el.dataset.size,
                 hit: +el.dataset.hit,
-                font: displayFonts[i + 1]
+                font: displayFonts[i + 1],
+                main: true
             }));
+            const clusterFont = displayFonts[1 + mainEls.indexOf(clusterEl)];
+            projects.forEach(g => {
+                g.section = {
+                    id: 'p-' + g.p.id,
+                    el: document.getElementById('p-' + g.p.id),
+                    label: g.p.nombre,
+                    kind: 'proyecto',
+                    color: g.p.color,
+                    x: g.x,
+                    y: g.y,
+                    size: g.r * 3.4,
+                    hit: g.r * 1.1,
+                    font: clusterFont,
+                    main: false,
+                    project: g
+                };
+                sections.push(g.section);
+            });
+            const mainSections = sections.filter(s => s.main);
             const byId = new Map(sections.map(s => [s.id, s]));
-            const byKind = new Map(sections.map(s => [s.kind, s]));
+            const byKind = new Map(mainSections.map(s => [s.kind, s]));
             const home = sections[0];
             sections.forEach(s => {
                 s.el.style.setProperty('--accent', s.color);
                 s.el.style.setProperty('--font-title', stack(s.font));
             });
             document.getElementById('font-credit').textContent =
-                'Tipografías de esta visita: ' + displayFonts.concat(textFont).join(' · ');
+                T('Tipografías de esta visita: ', 'Fonts of this visit: ', 'Fontes desta visita: ') + displayFonts.concat(textFont).join(' · ');
 
             function withAlpha(color, alpha) {
                 const c = d3.color(color);
@@ -539,20 +741,44 @@
                 };
             })(byKind.get('nebulosa'));
 
-            // Planeta de proyectos (d3-geo, proyección ortográfica que gira)
-            const planetProjection = d3.geoOrthographic().clipAngle(90).precision(0.6);
-            const planetPath = d3.geoPath(planetProjection);
-            const graticule = d3.geoGraticule10();
-            const continents = {
-                type: 'GeometryCollection',
-                geometries: d3.range(10).map(() => d3.geoCircle()
-                    .center([rng() * 360 - 180, rng() * 120 - 60])
-                    .radius(6 + rng() * 20)())
-            };
-            const moons = [
-                { r: 82, size: 5, speed: 0.6, phase: 1 },
-                { r: 114, size: 3.5, speed: 0.38, phase: 3.3 }
-            ];
+            // Galaxias de los proyectos: el polvo son sus commits y las estrellas las funciones de su catálogo
+            // (las implementadas hacia el núcleo, las planeadas en los brazos). Cada una con su semilla: su nombre.
+            function seedOf(name) {
+                let h = 2166136261;
+                for (let i = 0; i < name.length; i++) {
+                    h ^= name.charCodeAt(i);
+                    h = Math.imul(h, 16777619);
+                }
+                return (h >>> 0) / 4294967296;
+            }
+            const STATUS_ORDER = { h: 0, v: 1, b: 2, p: 3 };
+            projects.forEach(g => {
+                const r = d3.randomLcg(seedOf(g.p.nombre));
+                const n = d3.randomNormal.source(r)(0, 1);
+                g.tilt = r() * Math.PI;
+                g.squash = 0.45 + r() * 0.35;
+                g.spin = (r() < 0.5 ? -1 : 1) * (0.02 + r() * 0.03);
+                g.angle = r() * TAU;
+                g.dust = d3.range(Math.min(260, g.p.commits * 2)).map(() => {
+                    const t = r() ** 0.8;
+                    const a = Math.floor(r() * 2) * Math.PI + t * 3.6 + n() * 0.35;
+                    return [t * Math.cos(a), t * Math.sin(a), 0.15 + r() * 0.4];
+                });
+                g.stars = (g.p.funciones || []).map(f => ({ f: f, sx: 0, sy: 0 })).sort((a, b) => STATUS_ORDER[a.f[0]] - STATUS_ORDER[b.f[0]]);
+                g.stars.forEach((s, i) => {
+                    const t = Math.sqrt((i + 0.5) / g.stars.length);
+                    const a = (i % 2) * Math.PI + t * 3.8 + n() * 0.18;
+                    s.u = (0.1 + 0.9 * t) * Math.cos(a);
+                    s.v = (0.1 + 0.9 * t) * Math.sin(a);
+                });
+            });
+
+            // Título de una función en el idioma activo; si falta el portugués, en inglés y avisando
+            function featureTitle(f) {
+                if (IssaIdioma.lang === 'en') return f[2] || f[1];
+                if (IssaIdioma.lang === 'pt') return f[3] || (f[2] + ' (em inglês)');
+                return f[1] || f[2];
+            }
 
             // Galaxia GUAT: se construye con guat/index.json (d3.hierarchy + d3.cluster en espiral)
             const GUAT_RADIUS = 190;
@@ -877,59 +1103,93 @@
                 orbs.filter(o => !o.behind).forEach(orb);
             }
 
-            function drawPlanet() {
-                const s = byKind.get('planeta');
+            // El cúmulo ISSASODA: una galaxia por proyecto; los privados llevan velo
+            let hoveredFeature = null;
+            function drawProjects() {
                 const k = transform.k;
-                const [sx, sy] = toScreen(s);
-                if (offscreen(sx, sy, 140 * k)) return;
-                const R = 44 * k;
-                const moonPos = moons.map(m => {
-                    const a = m.phase + (reduceMotion ? 0 : time * m.speed);
-                    return { m: m, x: sx + Math.cos(a) * m.r * k, y: sy + Math.sin(a) * m.r * k * 0.35, behind: Math.sin(a) < 0 };
-                });
-                const moon = o => drawOrb(o.x, o.y, Math.max(1.2, o.m.size * k), '#FFFFFF', '#3A3550', sx - R * 3, sy - R * 3);
-                moonPos.filter(o => o.behind).forEach(moon);
-                let g = ctx.createRadialGradient(sx, sy, R * 0.95, sx, sy, R * 1.5);
-                g.addColorStop(0, withAlpha(s.color, 0.45));
-                g.addColorStop(1, withAlpha(s.color, 0));
-                ctx.fillStyle = g;
-                ctx.beginPath();
-                ctx.arc(sx, sy, R * 1.5, 0, TAU);
-                ctx.fill();
-                planetProjection.scale(R).translate([sx, sy]).rotate([reduceMotion ? 20 : time * 9, -18]);
-                planetPath.context(ctx);
-                g = ctx.createRadialGradient(sx - R * 0.4, sy - R * 0.4, R * 0.1, sx, sy, R);
-                g.addColorStop(0, '#5B4BA8');
-                g.addColorStop(1, '#1A1240');
-                ctx.beginPath();
-                planetPath({ type: 'Sphere' });
-                ctx.fillStyle = g;
-                ctx.fill();
-                ctx.beginPath();
-                planetPath(continents);
-                ctx.fillStyle = withAlpha(s.color, 0.85);
-                ctx.fill();
-                if (R > 25) {
+                const cluster = byKind.get('cumulo');
+                if (cluster) {
+                    const [cx, cy] = toScreen(cluster);
+                    if (!offscreen(cx, cy, 340 * k)) {
+                        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 340 * k);
+                        g.addColorStop(0, 'rgba(150, 110, 255, 0.10)');
+                        g.addColorStop(1, 'rgba(150, 110, 255, 0)');
+                        ctx.fillStyle = g;
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, 340 * k, 0, TAU);
+                        ctx.fill();
+                    }
+                }
+                const tmp = {};
+                projects.forEach(g => {
+                    const [sx, sy] = toScreen(g);
+                    const R = g.r * k;
+                    g.sx = sx;
+                    g.sy = sy;
+                    g.screenR = R;
+                    g.visible = !offscreen(sx, sy, R * 1.3);
+                    if (!g.visible) return;
+                    const cr = Math.cos(g.angle), sr = Math.sin(g.angle), ct = Math.cos(g.tilt), st = Math.sin(g.tilt);
+                    const place = (u, v, out) => {
+                        const x1 = u * cr - v * sr;
+                        const y1 = (u * sr + v * cr) * g.squash;
+                        out.sx = sx + (x1 * ct - y1 * st) * R;
+                        out.sy = sy + (x1 * st + y1 * ct) * R;
+                        return out;
+                    };
+                    const empty = !g.p.commits && !g.stars.length;
+                    ctx.globalCompositeOperation = 'lighter';
+                    const coreR = R * (empty ? 0.9 : 0.35);
+                    const core = ctx.createRadialGradient(sx, sy, 0, sx, sy, coreR);
+                    core.addColorStop(0, withAlpha(g.p.color, empty ? 0.16 : 0.6));
+                    core.addColorStop(1, withAlpha(g.p.color, 0));
+                    ctx.fillStyle = core;
                     ctx.beginPath();
-                    planetPath(graticule);
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-                    ctx.lineWidth = 0.6;
-                    ctx.stroke();
-                }
-                g = ctx.createLinearGradient(sx - R, sy - R, sx + R, sy + R);
-                g.addColorStop(0.45, 'rgba(0, 0, 0, 0)');
-                g.addColorStop(1, 'rgba(0, 0, 0, 0.6)');
-                ctx.beginPath();
-                ctx.arc(sx, sy, R, 0, TAU);
-                ctx.fillStyle = g;
-                ctx.fill();
-                moonPos.filter(o => !o.behind).forEach(moon);
-                if (R > 18) {
-                    ctx.font = `13px ${stack(textFont)}`;
-                    ctx.textAlign = 'center';
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                    ctx.fillText('EmuGaMind', sx, sy - R * 1.6);
-                }
+                    ctx.arc(sx, sy, coreR, 0, TAU);
+                    ctx.fill();
+                    ctx.fillStyle = g.p.color;
+                    g.dust.forEach(d => {
+                        place(d[0], d[1], tmp);
+                        ctx.globalAlpha = d[2];
+                        ctx.fillRect(tmp.sx - 0.6, tmp.sy - 0.6, 1.2, 1.2);
+                    });
+                    const grow = Math.max(0.6, Math.min(2.4, Math.pow(R / 40, 0.4)));
+                    g.stars.forEach(s => {
+                        place(s.u, s.v, s);
+                        const status = STATUS[s.f[0]];
+                        const size = status.size * grow * (s === hoveredFeature ? 2.4 : 1);
+                        ctx.fillStyle = status.color;
+                        if (s.f[0] !== 'p') {
+                            ctx.globalAlpha = 0.12;
+                            ctx.beginPath();
+                            ctx.arc(s.sx, s.sy, size * 2.2, 0, TAU);
+                            ctx.fill();
+                        }
+                        ctx.globalAlpha = s.f[0] === 'p' && s !== hoveredFeature ? 0.6 : 1;
+                        ctx.beginPath();
+                        ctx.arc(s.sx, s.sy, size, 0, TAU);
+                        ctx.fill();
+                    });
+                    ctx.globalAlpha = 1;
+                    ctx.globalCompositeOperation = 'source-over';
+                    if (!g.p.publico) {
+                        const veil = ctx.createRadialGradient(sx, sy, R * 0.2, sx, sy, R * 1.15);
+                        veil.addColorStop(0, 'rgba(10, 10, 18, 0.12)');
+                        veil.addColorStop(0.8, 'rgba(10, 10, 18, 0.42)');
+                        veil.addColorStop(1, 'rgba(10, 10, 18, 0)');
+                        ctx.fillStyle = veil;
+                        ctx.beginPath();
+                        ctx.arc(sx, sy, R * 1.15, 0, TAU);
+                        ctx.fill();
+                        ctx.strokeStyle = withAlpha(g.p.color, 0.4);
+                        ctx.setLineDash([4, 5]);
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.arc(sx, sy, R * 1.05, 0, TAU);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                });
             }
 
             // Portal a la escala del universo: un agujero negro con su disco y su anillo de luz
@@ -992,7 +1252,7 @@
                 ctx.textBaseline = 'middle';
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
                 ctx.shadowBlur = 8;
-                sections.forEach(s => {
+                mainSections.forEach(s => {
                     const [sx, sy] = toScreen(s);
                     const y = sy + Math.min(s.hit * transform.k, height * 0.3) + 26;
                     if (offscreen(sx, y, 120)) return;
@@ -1001,6 +1261,21 @@
                     ctx.fillStyle = s.color;
                     ctx.fillText(s.label, sx, y);
                 });
+                // Nombre de cada proyecto bajo su galaxia, cuando se ve lo bastante grande
+                projects.forEach(g => {
+                    if (!g.visible || g.screenR < 14) return;
+                    const y = g.sy + g.screenR * 0.8 + 14;
+                    ctx.font = `${g.section === hovered ? 16 : 13}px ${stack(clusterFont)}`;
+                    ctx.globalAlpha = g.section === active ? 0.6 : 1;
+                    ctx.fillStyle = g.p.color;
+                    ctx.fillText(g.p.nombre, g.sx, y);
+                    if (!g.p.publico && g.screenR > 22) {
+                        ctx.font = `11px ${stack(textFont)}`;
+                        ctx.fillStyle = 'rgba(233, 236, 241, 0.6)';
+                        ctx.fillText(T('privado', 'private', 'privado'), g.sx, y + 15);
+                    }
+                });
+                ctx.globalAlpha = 1;
                 // Nombres de los estudiantes al acercarse a la galaxia GUAT
                 if (guat && guat.visible && GUAT_RADIUS * transform.k > 250) {
                     ctx.font = `bold 13px ${stack(textFont)}`;
@@ -1056,8 +1331,8 @@
                 drawGuat();
                 ctx.globalCompositeOperation = 'source-over';
                 drawSun();
-                drawPlanet();
                 drawPortal();
+                drawProjects();
                 drawLabels();
                 drawComets(dt);
             }
@@ -1075,6 +1350,7 @@
             function updateHover() {
                 hovered = null;
                 hoveredStar = null;
+                hoveredFeature = null;
                 if (pointer) {
                     // d3.Delaunay encuentra el astro más cercano al puntero
                     const pts = sections.map(toScreen);
@@ -1087,10 +1363,30 @@
                         const d = guat.nodes[j];
                         if (Math.hypot(d.sx - pointer[0], d.sy - pointer[1]) < 12) hoveredStar = d;
                     }
+                    // Funciones de un proyecto: el título de la estrella más cercana
+                    const g = active && active.project;
+                    if (g && g.visible && g.stars.length && g.screenR > 110) {
+                        const j = d3.Delaunay.from(g.stars, s => s.sx, s => s.sy).find(pointer[0], pointer[1]);
+                        const s = g.stars[j];
+                        if (Math.hypot(s.sx - pointer[0], s.sy - pointer[1]) < 10) hoveredFeature = s;
+                    }
+                }
+                if (hoveredFeature) {
+                    tip.textContent = featureTitle(hoveredFeature.f);
+                    const small = document.createElement('small');
+                    small.textContent = STATUS[hoveredFeature.f[0]].one;
+                    small.style.color = STATUS[hoveredFeature.f[0]].color;
+                    tip.appendChild(small);
+                    tip.style.left = Math.min(pointer[0] + 14, width - 270) + 'px';
+                    tip.style.top = (pointer[1] + 14) + 'px';
+                    tip.hidden = false;
+                    canvas.style.cursor = '';
+                    requestDraw();
+                    return;
                 }
                 if (hoveredStar) {
                     tip.textContent = hoveredStar.name;
-                    const extra = [hoveredStar.grade ? 'Calificación ' + hoveredStar.grade : '', hoveredStar.url ? 'Clic para abrir' : ''].filter(Boolean).join(' · ');
+                    const extra = [hoveredStar.grade ? T('Calificación ', 'Grade ', 'Nota ') + hoveredStar.grade : '', hoveredStar.url ? T('Clic para abrir', 'Click to open', 'Clique para abrir') : ''].filter(Boolean).join(' · ');
                     if (extra) {
                         const small = document.createElement('small');
                         small.textContent = extra;
@@ -1111,8 +1407,9 @@
             }
 
             function updateNav(s) {
+                const navId = s && s.kind === 'proyecto' ? 'proyectos' : s && s.id;
                 navLinks.forEach(a => {
-                    if (s && a.getAttribute('href') === '#' + s.id) a.setAttribute('aria-current', 'page');
+                    if (s && a.getAttribute('href') === '#' + navId) a.setAttribute('aria-current', 'page');
                     else a.removeAttribute('aria-current');
                     if (s) a.style.setProperty('--link-color', s.color);
                 });
@@ -1198,8 +1495,10 @@
                 if (event.target.closest && event.target.closest('input, textarea, select')) return;
                 const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
                 if (!step) return;
-                const index = active ? sections.indexOf(active) : (step > 0 ? -1 : 0);
-                location.hash = sections[(index + step + sections.length) % sections.length].id;
+                // Las flechas recorren los astros principales; desde un proyecto, cuenta como el cúmulo
+                const current = active && active.kind === 'proyecto' ? byKind.get('cumulo') : active;
+                const index = current ? mainSections.indexOf(current) : (step > 0 ? -1 : 0);
+                location.hash = mainSections[(index + step + mainSections.length) % mainSections.length].id;
             });
 
             window.addEventListener('resize', () => {
@@ -1232,6 +1531,9 @@
                     time += dt;
                     // La galaxia GUAT se detiene mientras el cursor está sobre una de sus estrellas
                     if (guat && !hoveredStar) guat.spin += dt * 0.025;
+                    projects.forEach(g => {
+                        if (!hoveredFeature || !g.stars.includes(hoveredFeature)) g.angle += dt * g.spin;
+                    });
                     draw(dt);
                 });
             }

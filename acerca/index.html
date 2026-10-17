@@ -3,9 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Acerca de · ISSASODA</title>
-    <meta name="description" content="Qué es ISSASODA, cómo se explora su universo, qué está implementado y qué falta por implementar.">
+    <title data-en="About · ISSASODA" data-pt="Sobre · ISSASODA">Acerca de · ISSASODA</title>
+    <meta name="description" content="Qué es ISSASODA, cómo se explora su universo, qué está implementado y qué falta por implementar."
+          data-en="What ISSASODA is, how to explore its universe, what is implemented and what is still to be implemented."
+          data-pt="O que é a ISSASODA, como explorar seu universo, o que está implementado e o que falta implementar.">
     <link rel="canonical" href="https://issasodaweb.com/acerca/">
+    <link rel="alternate" hreflang="es-419" href="https://issasodaweb.com/acerca/?lang=es">
+    <link rel="alternate" hreflang="en-US" href="https://issasodaweb.com/acerca/?lang=en">
+    <link rel="alternate" hreflang="pt-BR" href="https://issasodaweb.com/acerca/?lang=pt">
+    <link rel="alternate" hreflang="x-default" href="https://issasodaweb.com/acerca/">
+    <script src="../comun/idioma.js"></script>
     <link rel="icon" type="image/x-icon" href="../favicon.ico" sizes="16x16 32x32 48x48 64x64 96x96">
     <link rel="manifest" href="../manifiesto.json">
     <meta name="theme-color" content="#080B10">
@@ -28,6 +35,32 @@
         * {
             box-sizing: border-box;
         }
+
+        /* Tres idiomas: solo se ve el activo (sin JavaScript, el español) */
+        html:not([data-lang]) .tr:not([lang="es"]),
+        html[data-lang="es"] .tr:not([lang="es"]),
+        html[data-lang="en"] .tr:not([lang="en"]),
+        html[data-lang="pt"] .tr:not([lang="pt"]) {
+            display: none !important;
+        }
+
+        .idiomas {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+        }
+
+            .idiomas a {
+                color: var(--muted);
+                text-decoration: none;
+            }
+
+                .idiomas a[aria-current="true"],
+                .idiomas a:hover {
+                    color: var(--text);
+                }
 
         html, body {
             height: 100%;
@@ -329,83 +362,161 @@
     </style>
 </head>
 <body>
-    <canvas id="fondo" aria-hidden="true" title="Otro objeto"></canvas>
+    <canvas id="fondo" aria-hidden="true"></canvas>
     <p class="name-tag" id="name-tag" aria-hidden="true"></p>
 
     <main class="panel">
         <div class="panel-head">
             <div class="row">
-                <a class="back" href="../">&larr; Universo</a>
+                <a class="back" href="../">&larr; <span class="tr" lang="es">Universo</span><span class="tr" lang="en">Universe</span><span class="tr" lang="pt">Universo</span></a>
                 <div>
                     <h1>ISSASODA</h1>
-                    <p class="version">Versión 2026.10.17 · web · issasodaweb.com</p>
+                    <p class="version"><span class="tr" lang="es">Versión</span><span class="tr" lang="en">Version</span><span class="tr" lang="pt">Versão</span> 2026.10.17 · web · issasodaweb.com</p>
                 </div>
+                <span class="idiomas" data-idiomas></span>
             </div>
             <!-- Lo que aún no existe vive en ventanas aparte, como en el About de las apps -->
             <div class="popup-buttons">
-                <button data-open="pendiente">Pendiente</button>
-                <button data-open="objetos">Objetos del universo</button>
+                <button data-open="pendiente"><span class="tr" lang="es">Pendiente</span><span class="tr" lang="en">Pending</span><span class="tr" lang="pt">Pendente</span></button>
+                <button data-open="objetos"><span class="tr" lang="es">Objetos del universo</span><span class="tr" lang="en">Objects of the universe</span><span class="tr" lang="pt">Objetos do universo</span></button>
             </div>
         </div>
         <hr>
         <div class="panel-body">
             <section class="about-section">
-                <h2>Qué es ISSASODA</h2>
-                <p>ISSASODA es un proyecto de educación para personas de todas las edades. Esta página es su casa: un universo que se explora como se aprende, de lo más grande a lo más pequeño, y el lugar donde se verá el avance de cada estudiante.</p>
-                <p>Cada rincón del universo puede convertirse en una página propia, así que la web crece sin salir de su dominio: siempre hay un objeto más que explicar.</p>
+                <h2><span class="tr" lang="es">Qué es ISSASODA</span><span class="tr" lang="en">What ISSASODA is</span><span class="tr" lang="pt">O que é a ISSASODA</span></h2>
+                <p class="tr" lang="es">ISSASODA es un proyecto de educación para personas de todas las edades. Esta página es su casa: un universo que se explora como se aprende, de lo más grande a lo más pequeño, y el lugar donde se verá el avance de cada estudiante.</p>
+                <p class="tr" lang="en">ISSASODA is an education project for people of all ages. This page is its home: a universe you explore the way you learn, from the largest to the smallest, and the place where each student's progress will be shown.</p>
+                <p class="tr" lang="pt">A ISSASODA é um projeto de educação para pessoas de todas as idades. Esta página é a sua casa: um universo que se explora como se aprende, do maior ao menor, e o lugar onde se verá o progresso de cada estudante.</p>
+                <p class="tr" lang="es">Es a la vez el universo de ISSASODA: nuestras apps, sus datos y sus funciones son los astros encendidos, y todo lo demás es lo que falta por construir. Hay tanto por hacer que nuestros proyectos todavía son muy pocos, y cada rincón puede convertirse en una página propia sin salir del dominio.</p>
+                <p class="tr" lang="en">It is also ISSASODA's own universe: our apps, their data and their features are the lit bodies, and everything else is what is still to be built. There is so much to do that our projects are still very few, and every corner can become a page of its own without leaving the domain.</p>
+                <p class="tr" lang="pt">É também o universo da ISSASODA: nossos apps, seus dados e suas funções são os astros acesos, e todo o resto é o que falta construir. Há tanto por fazer que nossos projetos ainda são muito poucos, e cada canto pode virar uma página própria sem sair do domínio.</p>
             </section>
 
             <section class="about-section">
-                <h2>Cómo se explora</h2>
+                <h2><span class="tr" lang="es">El universo de ISSASODA</span><span class="tr" lang="en">ISSASODA's universe</span><span class="tr" lang="pt">O universo da ISSASODA</span></h2>
+                <p class="tr" lang="es">Los datos salen de lo que existe en GitHub y de los catálogos de funciones de cada app:</p>
+                <p class="tr" lang="en">The data comes from what exists on GitHub and from each app's feature catalog:</p>
+                <p class="tr" lang="pt">Os dados vêm do que existe no GitHub e dos catálogos de funções de cada app:</p>
                 <ul>
-                    <li>Arrastra el universo para moverte; usa la rueda del ratón o pellizca para acercarte.</li>
-                    <li>Elige un destino en el menú, haz clic en un astro o usa las flechas <code>←</code> <code>→</code>: la página se aleja y vuelve a acercarse al nuevo punto.</li>
-                    <li>En la Escala del universo busca cualquier objeto, ábrelo desde la lista, pulsa <code>Viaje</code> para recorrer todas las escalas o usa <code>←</code> <code>→</code> para ir de un objeto al siguiente.</li>
-                    <li>Cada objeto tiene su dirección, por ejemplo <a href="../universo/#molecula-de-agua">issasodaweb.com/universo/#molecula-de-agua</a>.</li>
-                    <li>Si tu sistema pide reducir el movimiento, la página salta de un punto a otro sin animación.</li>
+                    <li class="tr" lang="es"><b>Galaxia</b>: un proyecto, uno por repositorio. Su polvo son los commits.</li>
+                    <li class="tr" lang="en"><b>Galaxy</b>: a project, one per repository. Its dust is its commits.</li>
+                    <li class="tr" lang="pt"><b>Galáxia</b>: um projeto, um por repositório. Sua poeira são os commits.</li>
+                    <li class="tr" lang="es"><b>Estrella encendida</b>: una función implementada. <b>Protoestrella</b>: en validación. <b>Gas de nube molecular</b>: planeada. <b>Enana marrón</b>: bloqueada.</li>
+                    <li class="tr" lang="en"><b>Lit star</b>: an implemented feature. <b>Protostar</b>: being validated. <b>Molecular cloud gas</b>: planned. <b>Brown dwarf</b>: blocked.</li>
+                    <li class="tr" lang="pt"><b>Estrela acesa</b>: uma função implementada. <b>Protoestrela</b>: em validação. <b>Gás de nuvem molecular</b>: planejada. <b>Anã marrom</b>: bloqueada.</li>
+                    <li class="tr" lang="es"><b>Velo o nebulosa oscura</b>: un repositorio privado. Se publican su nombre, su descripción, sus conteos y los títulos de sus funciones; nunca su código ni el enlace al repositorio.</li>
+                    <li class="tr" lang="en"><b>Veil or dark nebula</b>: a private repository. Its name, description, counts and feature titles are published; never its code or the link to the repository.</li>
+                    <li class="tr" lang="pt"><b>Véu ou nebulosa escura</b>: um repositório privado. Publicamos o nome, a descrição, as contagens e os títulos das funções; nunca o código nem o link do repositório.</li>
+                    <li class="tr" lang="es"><b>Planeta habitado</b>: una app con sitio web propio. <b>Vacío cósmico</b>: todo lo que aún no hemos construido.</li>
+                    <li class="tr" lang="en"><b>Inhabited planet</b>: an app with its own website. <b>Cosmic void</b>: everything we have not built yet.</li>
+                    <li class="tr" lang="pt"><b>Planeta habitado</b>: um app com site próprio. <b>Vazio cósmico</b>: tudo o que ainda não construímos.</li>
+                    <li class="tr" lang="es">En la Escala del universo, los objetos que ya significan algo en ISSASODA llevan un anillo dorado y la marca ✦.</li>
+                    <li class="tr" lang="en">In the Scale of the universe, the objects that already mean something in ISSASODA have a gold ring and the ✦ mark.</li>
+                    <li class="tr" lang="pt">Na Escala do universo, os objetos que já significam algo na ISSASODA têm um anel dourado e a marca ✦.</li>
+                </ul>
+                <p class="facts" id="issa-totales"></p>
+            </section>
+
+            <section class="about-section">
+                <h2><span class="tr" lang="es">Cómo se explora</span><span class="tr" lang="en">How to explore</span><span class="tr" lang="pt">Como explorar</span></h2>
+                <ul>
+                    <li class="tr" lang="es">Arrastra el universo para moverte; usa la rueda del ratón o pellizca para acercarte.</li>
+                    <li class="tr" lang="en">Drag the universe to move; use the mouse wheel or pinch to zoom in.</li>
+                    <li class="tr" lang="pt">Arraste o universo para se mover; use a roda do mouse ou faça pinça para aproximar.</li>
+                    <li class="tr" lang="es">Elige un destino en el menú, haz clic en un astro o usa las flechas <code>←</code> <code>→</code>: la página se aleja y vuelve a acercarse al nuevo punto.</li>
+                    <li class="tr" lang="en">Pick a destination in the menu, click a celestial body or use the <code>←</code> <code>→</code> keys: the page zooms out and back in to the new point.</li>
+                    <li class="tr" lang="pt">Escolha um destino no menu, clique num astro ou use as setas <code>←</code> <code>→</code>: a página se afasta e volta a se aproximar do novo ponto.</li>
+                    <li class="tr" lang="es">En el cúmulo de Proyectos, entra en una galaxia y pasa el cursor sobre sus estrellas para leer cada función.</li>
+                    <li class="tr" lang="en">In the Projects cluster, enter a galaxy and hover over its stars to read each feature.</li>
+                    <li class="tr" lang="pt">No aglomerado de Projetos, entre numa galáxia e passe o cursor sobre as estrelas para ler cada função.</li>
+                    <li class="tr" lang="es">En la Escala del universo busca cualquier objeto en cualquiera de los tres idiomas, ábrelo desde la lista, pulsa <code>Viaje</code> o usa <code>←</code> <code>→</code> para ir de un objeto al siguiente. Cada uno tiene su dirección, por ejemplo <a href="../universo/#molecula-de-agua">issasodaweb.com/universo/#molecula-de-agua</a>.</li>
+                    <li class="tr" lang="en">In the Scale of the universe, search for any object in any of the three languages, open it from the list, press <code>Journey</code> or use <code>←</code> <code>→</code> to go from one object to the next. Each one has its own address, for example <a href="../universo/#molecula-de-agua">issasodaweb.com/universo/#molecula-de-agua</a>.</li>
+                    <li class="tr" lang="pt">Na Escala do universo, busque qualquer objeto em qualquer um dos três idiomas, abra-o pela lista, aperte <code>Viagem</code> ou use <code>←</code> <code>→</code> para ir de um objeto ao seguinte. Cada um tem seu endereço, por exemplo <a href="../universo/#molecula-de-agua">issasodaweb.com/universo/#molecula-de-agua</a>.</li>
+                    <li class="tr" lang="es">Cambia de idioma con ES · EN · PT, arriba a la derecha. Si tu sistema pide reducir el movimiento, la página salta de un punto a otro sin animación.</li>
+                    <li class="tr" lang="en">Switch languages with ES · EN · PT, at the top right. If your system asks for reduced motion, the page jumps from point to point without animation.</li>
+                    <li class="tr" lang="pt">Troque de idioma com ES · EN · PT, no canto superior direito. Se o seu sistema pedir menos movimento, a página salta de um ponto a outro sem animação.</li>
                 </ul>
             </section>
 
             <section class="about-section">
-                <h2>Qué hay en cada astro</h2>
+                <h2><span class="tr" lang="es">Qué hay en cada astro</span><span class="tr" lang="en">What each body holds</span><span class="tr" lang="pt">O que há em cada astro</span></h2>
                 <ul>
-                    <li><b>ISSASODA</b>, el sol del inicio: qué es el proyecto.</li>
-                    <li><b>GUAT</b>, una galaxia hecha con los datos reales del proyecto universitario: cada brazo es un estudiante y cada estrella un tema o una fórmula, con el color de su calificación. Lleva al árbol GUAT, a las fórmulas y al ejercicio de regresión lineal.</li>
-                    <li><b>Progreso</b>, una nebulosa donde nacerá la estrella de cada estudiante.</li>
-                    <li><b>Proyectos</b>, un planeta por aplicación de ISSASODA; hoy, EmuGaMind.</li>
-                    <li><b>Escala</b>, un agujero negro hacia los 307 objetos del universo, del universo observable a la longitud de Planck.</li>
+                    <li class="tr" lang="es"><b>ISSASODA</b>, el sol del inicio: qué es el proyecto.</li>
+                    <li class="tr" lang="en"><b>ISSASODA</b>, the sun at home: what the project is.</li>
+                    <li class="tr" lang="pt"><b>ISSASODA</b>, o sol do início: o que é o projeto.</li>
+                    <li class="tr" lang="es"><b>GUAT</b>, una galaxia hecha con los datos reales del proyecto universitario: cada brazo es un estudiante y cada estrella un tema o una fórmula. Lleva al árbol GUAT, a las fórmulas y al ejercicio de regresión lineal (sus contenidos están en español).</li>
+                    <li class="tr" lang="en"><b>GUAT</b>, a galaxy made from the real data of the university project: each arm is a student and each star a topic or a formula. It leads to the GUAT tree, the formulas and the linear regression exercise (their content is in Spanish).</li>
+                    <li class="tr" lang="pt"><b>GUAT</b>, uma galáxia feita com os dados reais do projeto universitário: cada braço é um estudante e cada estrela um tema ou uma fórmula. Leva à árvore GUAT, às fórmulas e ao exercício de regressão linear (o conteúdo está em espanhol).</li>
+                    <li class="tr" lang="es"><b>Progreso</b>, una nebulosa donde nacerá la estrella de cada estudiante.</li>
+                    <li class="tr" lang="en"><b>Progress</b>, a nebula where each student's star will be born.</li>
+                    <li class="tr" lang="pt"><b>Progresso</b>, uma nebulosa onde nascerá a estrela de cada estudante.</li>
+                    <li class="tr" lang="es"><b>Proyectos</b>, el cúmulo ISSASODA: una galaxia por repositorio de GitHub, con su propia ficha.</li>
+                    <li class="tr" lang="en"><b>Projects</b>, the ISSASODA cluster: one galaxy per GitHub repository, each with its own panel.</li>
+                    <li class="tr" lang="pt"><b>Projetos</b>, o aglomerado ISSASODA: uma galáxia por repositório do GitHub, cada uma com seu painel.</li>
+                    <li class="tr" lang="es"><b>Escala</b>, un agujero negro hacia los 307 objetos del universo, del universo observable a la longitud de Planck.</li>
+                    <li class="tr" lang="en"><b>Scale</b>, a black hole into the 307 objects of the universe, from the observable universe to the Planck length.</li>
+                    <li class="tr" lang="pt"><b>Escala</b>, um buraco negro para os 307 objetos do universo, do universo observável ao comprimento de Planck.</li>
                 </ul>
             </section>
 
             <section class="about-section">
-                <h2>Ya implementado</h2>
+                <h2><span class="tr" lang="es">Ya implementado</span><span class="tr" lang="en">Already implemented</span><span class="tr" lang="pt">Já implementado</span></h2>
                 <ul>
-                    <li>Dominio propio con HTTPS: issasodaweb.com (www lleva a la misma página).</li>
-                    <li>Universo de inicio explorable, con viajes de zoom suave entre sus cinco astros.</li>
-                    <li>Escala del universo: 307 objetos, cada uno con su tamaño típico, su tipo, su dibujo y su dirección; búsqueda, lista, viaje automático y regla de escala.</li>
-                    <li>GUAT: el árbol de estudiantes, cursos y clases, las fórmulas y el ejercicio de regresión lineal.</li>
-                    <li>Tipografías de Google Fonts distintas en cada visita y colores legibles en cada sección.</li>
-                    <li>Funciona sin conexión después de la primera visita y se puede instalar como aplicación.</li>
-                    <li>Se adapta a teléfonos y respeta la preferencia de reducir el movimiento.</li>
+                    <li class="tr" lang="es">Dominio propio con HTTPS: issasodaweb.com (www lleva a la misma página).</li>
+                    <li class="tr" lang="en">Own domain with HTTPS: issasodaweb.com (www leads to the same page).</li>
+                    <li class="tr" lang="pt">Domínio próprio com HTTPS: issasodaweb.com (www leva à mesma página).</li>
+                    <li class="tr" lang="es">Toda la web en tres idiomas: español de Latinoamérica, inglés de EE. UU. y portugués de Brasil, con una dirección por idioma.</li>
+                    <li class="tr" lang="en">The whole site in three languages: Latin American Spanish, US English and Brazilian Portuguese, with one address per language.</li>
+                    <li class="tr" lang="pt">Todo o site em três idiomas: espanhol da América Latina, inglês dos EUA e português do Brasil, com um endereço por idioma.</li>
+                    <li class="tr" lang="es">Universo de inicio explorable, con viajes de zoom suave entre sus astros.</li>
+                    <li class="tr" lang="en">An explorable home universe, with smooth zoom journeys between its bodies.</li>
+                    <li class="tr" lang="pt">Universo de início explorável, com viagens de zoom suave entre seus astros.</li>
+                    <li class="tr" lang="es">El cúmulo ISSASODA con los 11 repositorios de GitHub, sus commits y las funciones de sus catálogos como estrellas.</li>
+                    <li class="tr" lang="en">The ISSASODA cluster with the 11 GitHub repositories, their commits and their catalog features as stars.</li>
+                    <li class="tr" lang="pt">O aglomerado ISSASODA com os 11 repositórios do GitHub, seus commits e as funções dos catálogos como estrelas.</li>
+                    <li class="tr" lang="es">Escala del universo: 307 objetos con su tamaño típico, su tipo, su dibujo y su dirección, y 15 de ellos ya con significado en ISSASODA; búsqueda, lista, viaje automático y regla de escala.</li>
+                    <li class="tr" lang="en">Scale of the universe: 307 objects with their typical size, type, drawing and address, 15 of them already meaningful in ISSASODA; search, list, automatic journey and scale ruler.</li>
+                    <li class="tr" lang="pt">Escala do universo: 307 objetos com tamanho típico, tipo, desenho e endereço, 15 deles já com significado na ISSASODA; busca, lista, viagem automática e régua de escala.</li>
+                    <li class="tr" lang="es">GUAT: el árbol de estudiantes, cursos y clases, las fórmulas y el ejercicio de regresión lineal.</li>
+                    <li class="tr" lang="en">GUAT: the tree of students, courses and classes, the formulas and the linear regression exercise.</li>
+                    <li class="tr" lang="pt">GUAT: a árvore de estudantes, cursos e aulas, as fórmulas e o exercício de regressão linear.</li>
+                    <li class="tr" lang="es">Tipografías de Google Fonts distintas en cada visita y colores legibles en cada sección.</li>
+                    <li class="tr" lang="en">Different Google Fonts on every visit and readable colors in each section.</li>
+                    <li class="tr" lang="pt">Fontes do Google Fonts diferentes a cada visita e cores legíveis em cada seção.</li>
+                    <li class="tr" lang="es">Funciona sin conexión después de la primera visita, se puede instalar como aplicación, se adapta a teléfonos y respeta la preferencia de reducir el movimiento.</li>
+                    <li class="tr" lang="en">Works offline after the first visit, can be installed as an app, adapts to phones and respects the reduced-motion preference.</li>
+                    <li class="tr" lang="pt">Funciona sem conexão depois da primeira visita, pode ser instalado como app, se adapta a celulares e respeita a preferência de reduzir o movimento.</li>
                 </ul>
             </section>
 
             <section class="about-section">
-                <h2>Cómo está hecho</h2>
+                <h2><span class="tr" lang="es">Cómo está hecho</span><span class="tr" lang="en">How it is built</span><span class="tr" lang="pt">Como é feito</span></h2>
                 <ul>
-                    <li>Páginas estáticas (HTML, CSS y JavaScript), sin servidor propio, publicadas con GitHub Pages desde el repositorio <a href="https://github.com/Ataraxiainc2/GUAT" target="_blank" rel="noopener">Ataraxiainc2/GUAT</a>; el dominio está en Cloudflare.</li>
-                    <li>Todo se dibuja con D3.js 7.9: zoom y viajes (d3-zoom, interpolateZoom), la galaxia GUAT (d3-hierarchy), la nebulosa (d3-contour), los planetas (d3-geo), los clics (d3-delaunay), las moléculas (d3-force), los núcleos atómicos (d3.packSiblings) y las escalas de color.</li>
-                    <li>El universo usa semillas fijas: es el mismo en cada visita; solo cambian las tipografías.</li>
-                    <li>Los tamaños son órdenes de magnitud típicos y aproximados. Los objetos que no tienen un tamaño único (campos, estados de la materia, conceptos) y las partículas puntuales se colocan en una escala representativa y lo indican en su ficha.</li>
+                    <li class="tr" lang="es">Páginas estáticas (HTML, CSS y JavaScript), sin servidor propio, publicadas con GitHub Pages desde el repositorio <a href="https://github.com/Ataraxiainc2/GUAT" target="_blank" rel="noopener">Ataraxiainc2/GUAT</a>; el dominio está en Cloudflare.</li>
+                    <li class="tr" lang="en">Static pages (HTML, CSS and JavaScript), with no server of our own, published with GitHub Pages from the <a href="https://github.com/Ataraxiainc2/GUAT" target="_blank" rel="noopener">Ataraxiainc2/GUAT</a> repository; the domain is on Cloudflare.</li>
+                    <li class="tr" lang="pt">Páginas estáticas (HTML, CSS e JavaScript), sem servidor próprio, publicadas com o GitHub Pages a partir do repositório <a href="https://github.com/Ataraxiainc2/GUAT" target="_blank" rel="noopener">Ataraxiainc2/GUAT</a>; o domínio está na Cloudflare.</li>
+                    <li class="tr" lang="es">Todo se dibuja con D3.js 7.9: zoom y viajes (d3-zoom, interpolateZoom), galaxias (d3-hierarchy), nebulosas (d3-contour), planetas (d3-geo), clics y estrellas bajo el cursor (d3-delaunay), moléculas (d3-force), núcleos y el cúmulo de proyectos (d3.packSiblings) y escalas de color.</li>
+                    <li class="tr" lang="en">Everything is drawn with D3.js 7.9: zoom and journeys (d3-zoom, interpolateZoom), galaxies (d3-hierarchy), nebulae (d3-contour), planets (d3-geo), clicks and stars under the cursor (d3-delaunay), molecules (d3-force), nuclei and the project cluster (d3.packSiblings) and color scales.</li>
+                    <li class="tr" lang="pt">Tudo é desenhado com D3.js 7.9: zoom e viagens (d3-zoom, interpolateZoom), galáxias (d3-hierarchy), nebulosas (d3-contour), planetas (d3-geo), cliques e estrelas sob o cursor (d3-delaunay), moléculas (d3-force), núcleos e o aglomerado de projetos (d3.packSiblings) e escalas de cor.</li>
+                    <li class="tr" lang="es">Los datos de ISSASODA se generan con <code>herramientas/issasoda_datos.py</code>, que lee GitHub y los catálogos <code>docs/features/catalog.tsv</code> de cada app.</li>
+                    <li class="tr" lang="en">ISSASODA's data is generated by <code>herramientas/issasoda_datos.py</code>, which reads GitHub and each app's <code>docs/features/catalog.tsv</code> catalog.</li>
+                    <li class="tr" lang="pt">Os dados da ISSASODA são gerados por <code>herramientas/issasoda_datos.py</code>, que lê o GitHub e o catálogo <code>docs/features/catalog.tsv</code> de cada app.</li>
+                    <li class="tr" lang="es">El universo usa semillas fijas: es el mismo en cada visita; solo cambian las tipografías. Los tamaños son órdenes de magnitud típicos y aproximados; lo que no tiene un tamaño único se coloca en una escala representativa y lo indica en su ficha.</li>
+                    <li class="tr" lang="en">The universe uses fixed seeds: it is the same on every visit; only the fonts change. Sizes are typical, approximate orders of magnitude; whatever has no single size sits at a representative scale and says so on its card.</li>
+                    <li class="tr" lang="pt">O universo usa sementes fixas: é o mesmo a cada visita; só as fontes mudam. Os tamanhos são ordens de grandeza típicas e aproximadas; o que não tem um tamanho único fica numa escala representativa e avisa no seu cartão.</li>
                 </ul>
             </section>
 
             <section class="about-section">
-                <h2>Tus datos</h2>
+                <h2><span class="tr" lang="es">Tus datos</span><span class="tr" lang="en">Your data</span><span class="tr" lang="pt">Seus dados</span></h2>
                 <ul>
-                    <li>Sin cuentas, sin cookies, sin analítica y sin anuncios. La página no guarda nada sobre ti.</li>
-                    <li>Tu navegador guarda una copia de las páginas para que funcionen sin conexión; puedes borrarla desde su configuración.</li>
-                    <li>Las tipografías vienen de Google Fonts y la librería D3 de cdnjs (Cloudflare): como cualquier petición web, esos servicios ven tu dirección IP.</li>
+                    <li class="tr" lang="es">Sin cuentas, sin cookies, sin analítica y sin anuncios. Tu navegador solo recuerda el idioma que elegiste y guarda una copia de las páginas para que funcionen sin conexión; puedes borrar ambas desde su configuración.</li>
+                    <li class="tr" lang="en">No accounts, no cookies, no analytics and no ads. Your browser only remembers the language you chose and keeps a copy of the pages so they work offline; you can delete both from its settings.</li>
+                    <li class="tr" lang="pt">Sem contas, sem cookies, sem análise e sem anúncios. Seu navegador só lembra o idioma que você escolheu e guarda uma cópia das páginas para funcionarem sem conexão; você pode apagar ambos nas configurações dele.</li>
+                    <li class="tr" lang="es">Las tipografías vienen de Google Fonts y la librería D3 de cdnjs (Cloudflare): como cualquier petición web, esos servicios ven tu dirección IP.</li>
+                    <li class="tr" lang="en">The fonts come from Google Fonts and the D3 library from cdnjs (Cloudflare): like any web request, those services see your IP address.</li>
+                    <li class="tr" lang="pt">As fontes vêm do Google Fonts e a biblioteca D3 do cdnjs (Cloudflare): como qualquer requisição web, esses serviços veem seu endereço IP.</li>
                 </ul>
             </section>
         </div>
@@ -413,33 +524,58 @@
 
     <dialog id="pendiente" aria-labelledby="pendiente-titulo">
         <header>
-            <h2 id="pendiente-titulo">Pendiente</h2>
-            <button data-close>Cerrar</button>
+            <h2 id="pendiente-titulo"><span class="tr" lang="es">Pendiente</span><span class="tr" lang="en">Pending</span><span class="tr" lang="pt">Pendente</span></h2>
+            <button data-close><span class="tr" lang="es">Cerrar</span><span class="tr" lang="en">Close</span><span class="tr" lang="pt">Fechar</span></button>
         </header>
         <div class="body">
-            <p>Lo que falta por implementar, en el orden en que tiene más sentido hacerlo.</p>
+            <p class="tr" lang="es">Lo que falta por implementar, en el orden en que tiene más sentido hacerlo.</p>
+            <p class="tr" lang="en">What is still to be implemented, in the order that makes the most sense.</p>
+            <p class="tr" lang="pt">O que falta implementar, na ordem que faz mais sentido.</p>
             <ol>
-                <li><b>Una página para cada objeto del universo.</b> Qué es, datos reales con sus fuentes, imágenes y dónde vive en la escala, empezando por los más conocidos. Hoy los 307 tienen lugar, tamaño, dibujo y dirección, pero no ficha propia.</li>
-                <li><b>Progreso de estudiantes.</b> La estrella de cada estudiante en la nebulosa, con sus cursos, ejercicios y logros. Antes hay que decidir dónde se guardan esos datos y qué se muestra en público, porque puede haber menores.</li>
-                <li><b>GUAT con el estilo nuevo.</b> El árbol, las fórmulas y los ejercicios dentro del universo. En la página de fórmulas, cada fórmula debe llevar a su propia explicación: hoy todas enlazan al mismo artículo.</li>
-                <li><b>Más ejercicios interactivos</b> como el de regresión lineal.</li>
-                <li><b>Más planetas en Proyectos:</b> las demás aplicaciones de ISSASODA, como ISSASTUDENT y BookCompass.</li>
-                <li><b>Tamaños con fuente y rango.</b> Pasar del orden de magnitud típico al rango real (mínimo y máximo) de cada objeto, con la referencia citada.</li>
-                <li><b>Idiomas:</b> inglés y portugués, como en las aplicaciones.</li>
-                <li><b>Accesibilidad:</b> recorrer la escala solo con teclado y con descripciones para lectores de pantalla.</li>
-                <li><b>Contacto:</b> un correo propio del dominio para dudas y sugerencias.</li>
+                <li class="tr" lang="es"><b>Una página para cada objeto del universo.</b> Qué es, datos reales con sus fuentes, imágenes y dónde vive en la escala, empezando por los más conocidos. Hoy los 307 tienen lugar, tamaño, dibujo y dirección, pero no ficha propia.</li>
+                <li class="tr" lang="en"><b>A page for each object of the universe.</b> What it is, real data with sources, images and where it lives on the scale, starting with the best known. Today all 307 have a place, a size, a drawing and an address, but no page of their own.</li>
+                <li class="tr" lang="pt"><b>Uma página para cada objeto do universo.</b> O que é, dados reais com fontes, imagens e onde vive na escala, começando pelos mais conhecidos. Hoje os 307 têm lugar, tamanho, desenho e endereço, mas não página própria.</li>
+                <li class="tr" lang="es"><b>Un catálogo de funciones en cada proyecto.</b> Solo 2 de los 11 tienen el suyo (ISSASPEAKER y MovieRecommendationApp); los demás aún no tienen estrellas.</li>
+                <li class="tr" lang="en"><b>A feature catalog in every project.</b> Only 2 of the 11 have one (ISSASPEAKER and MovieRecommendationApp); the others have no stars yet.</li>
+                <li class="tr" lang="pt"><b>Um catálogo de funções em cada projeto.</b> Só 2 dos 11 têm o seu (ISSASPEAKER e MovieRecommendationApp); os outros ainda não têm estrelas.</li>
+                <li class="tr" lang="es"><b>Progreso de estudiantes.</b> La estrella de cada estudiante en la nebulosa, con sus cursos, ejercicios y logros. Antes hay que decidir dónde se guardan esos datos y qué se muestra en público, porque puede haber menores.</li>
+                <li class="tr" lang="en"><b>Student progress.</b> Each student's star in the nebula, with their courses, exercises and achievements. First we must decide where that data lives and what is shown publicly, because there may be minors.</li>
+                <li class="tr" lang="pt"><b>Progresso dos estudantes.</b> A estrela de cada estudante na nebulosa, com seus cursos, exercícios e conquistas. Antes é preciso decidir onde ficam esses dados e o que é público, porque pode haver menores.</li>
+                <li class="tr" lang="es"><b>Datos de GitHub al día solos.</b> Hoy <code>issasoda.json</code> se regenera a mano con su script.</li>
+                <li class="tr" lang="en"><b>GitHub data updating itself.</b> Today <code>issasoda.json</code> is regenerated by hand with its script.</li>
+                <li class="tr" lang="pt"><b>Dados do GitHub atualizados sozinhos.</b> Hoje o <code>issasoda.json</code> é regenerado à mão com seu script.</li>
+                <li class="tr" lang="es"><b>GUAT con el estilo nuevo y en tres idiomas.</b> El árbol, las fórmulas y los ejercicios dentro del universo; en la página de fórmulas, cada fórmula debe llevar a su propia explicación (hoy todas enlazan al mismo artículo).</li>
+                <li class="tr" lang="en"><b>GUAT in the new style and in three languages.</b> The tree, formulas and exercises inside the universe; on the formulas page, each formula should lead to its own explanation (today they all link to the same article).</li>
+                <li class="tr" lang="pt"><b>GUAT no estilo novo e em três idiomas.</b> A árvore, as fórmulas e os exercícios dentro do universo; na página de fórmulas, cada fórmula deve levar à sua própria explicação (hoje todas apontam para o mesmo artigo).</li>
+                <li class="tr" lang="es"><b>Funciones de ISSASPEAKER en portugués.</b> Sus 782 títulos existen en español e inglés; en portugués se muestran en inglés con el aviso «em inglês».</li>
+                <li class="tr" lang="en"><b>ISSASPEAKER features in Portuguese.</b> Its 782 titles exist in Spanish and English; in Portuguese they are shown in English with the note "em inglês".</li>
+                <li class="tr" lang="pt"><b>Funções do ISSASPEAKER em português.</b> Seus 782 títulos existem em espanhol e inglês; em português aparecem em inglês com o aviso «em inglês».</li>
+                <li class="tr" lang="es"><b>Más ejercicios interactivos</b> como el de regresión lineal.</li>
+                <li class="tr" lang="en"><b>More interactive exercises</b> like the linear regression one.</li>
+                <li class="tr" lang="pt"><b>Mais exercícios interativos</b> como o de regressão linear.</li>
+                <li class="tr" lang="es"><b>Tamaños con fuente y rango.</b> Pasar del orden de magnitud típico al rango real (mínimo y máximo) de cada objeto, con la referencia citada.</li>
+                <li class="tr" lang="en"><b>Sizes with sources and ranges.</b> Move from the typical order of magnitude to each object's real range (minimum and maximum), with the reference cited.</li>
+                <li class="tr" lang="pt"><b>Tamanhos com fonte e faixa.</b> Passar da ordem de grandeza típica para a faixa real (mínimo e máximo) de cada objeto, com a referência citada.</li>
+                <li class="tr" lang="es"><b>Accesibilidad:</b> recorrer la escala solo con teclado y con descripciones para lectores de pantalla.</li>
+                <li class="tr" lang="en"><b>Accessibility:</b> travel the scale with the keyboard only and with descriptions for screen readers.</li>
+                <li class="tr" lang="pt"><b>Acessibilidade:</b> percorrer a escala só com o teclado e com descrições para leitores de tela.</li>
+                <li class="tr" lang="es"><b>Contacto:</b> un correo propio del dominio para dudas y sugerencias.</li>
+                <li class="tr" lang="en"><b>Contact:</b> an email address on the domain for questions and suggestions.</li>
+                <li class="tr" lang="pt"><b>Contato:</b> um e-mail do domínio para dúvidas e sugestões.</li>
             </ol>
         </div>
     </dialog>
 
     <dialog id="objetos" aria-labelledby="objetos-titulo">
         <header>
-            <h2 id="objetos-titulo">Objetos del universo</h2>
-            <button data-close>Cerrar</button>
+            <h2 id="objetos-titulo"><span class="tr" lang="es">Objetos del universo</span><span class="tr" lang="en">Objects of the universe</span><span class="tr" lang="pt">Objetos do universo</span></h2>
+            <button data-close><span class="tr" lang="es">Cerrar</span><span class="tr" lang="en">Close</span><span class="tr" lang="pt">Fechar</span></button>
         </header>
         <div class="body">
             <div class="summary" id="resumen"></div>
-            <p>Estado de cada objeto: todos tienen lugar en la escala, tamaño y dibujo; la ficha propia está pendiente. Toca un nombre para verlo en la escala.</p>
+            <p class="tr" lang="es">Estado de cada objeto: todos tienen lugar en la escala, tamaño y dibujo; la ficha propia está pendiente. Toca un nombre para verlo en la escala.</p>
+            <p class="tr" lang="en">State of each object: all have a place on the scale, a size and a drawing; their own page is pending. Tap a name to see it on the scale.</p>
+            <p class="tr" lang="pt">Estado de cada objeto: todos têm lugar na escala, tamanho e desenho; a página própria está pendente. Toque num nome para vê-lo na escala.</p>
             <div id="tabla"></div>
         </div>
     </dialog>
@@ -447,6 +583,8 @@
     <script>
         (async function () {
             'use strict';
+
+            const T = IssaIdioma.t;
 
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !new URLSearchParams(location.search).has('motion');
             const PANEL = '#0E131C';
@@ -487,7 +625,7 @@
                 current = next;
                 tag.innerHTML = '';
                 const name = document.createElement('b');
-                name.textContent = current.n;
+                name.textContent = T(current.n, current.en, current.pt);
                 const size = document.createElement('span');
                 size.textContent = IssaEstilo.size(current.s);
                 tag.append(name, size);
@@ -547,13 +685,25 @@
 
             // ---------- Estado de los objetos ----------
             const REALMS = [
-                [22, 28, 'Cosmos'], [19, 22, 'Galaxias'], [14.5, 19, 'Nebulosas'], [10, 14.5, 'Sistemas estelares'],
-                [7.5, 10, 'Estrellas'], [5.5, 7.5, 'Planetas'], [1, 5.5, 'Montañas y asteroides'], [-5, 1, 'Rocas y granos'],
-                [-8.5, -5, 'Microscópico'], [-11, -8.5, 'Moléculas y átomos'], [-16.5, -11, 'Núcleos'],
-                [-19, -16.5, 'Partículas'], [-33, -19, 'Lo desconocido'], [-36, -33, 'Planck']
+                [22, 28, T('Cosmos', 'Cosmos', 'Cosmos')], [19, 22, T('Galaxias', 'Galaxies', 'Galáxias')],
+                [14.5, 19, T('Nebulosas', 'Nebulae', 'Nebulosas')], [10, 14.5, T('Sistemas estelares', 'Star systems', 'Sistemas estelares')],
+                [7.5, 10, T('Estrellas', 'Stars', 'Estrelas')], [5.5, 7.5, T('Planetas', 'Planets', 'Planetas')],
+                [1, 5.5, T('Montañas y asteroides', 'Mountains and asteroids', 'Montanhas e asteroides')],
+                [-5, 1, T('Rocas y granos', 'Rocks and grains', 'Rochas e grãos')], [-8.5, -5, T('Microscópico', 'Microscopic', 'Microscópico')],
+                [-11, -8.5, T('Moléculas y átomos', 'Molecules and atoms', 'Moléculas e átomos')], [-16.5, -11, T('Núcleos', 'Nuclei', 'Núcleos')],
+                [-19, -16.5, T('Partículas', 'Particles', 'Partículas')], [-33, -19, T('Lo desconocido', 'The unknown', 'O desconhecido')],
+                [-36, -33, T('Planck', 'Planck', 'Planck')]
             ];
+            const issa = await d3.json('../universo/issasoda.json').catch(() => null);
+            if (issa) {
+                const t = issa.totales, f = t.funciones, num = IssaEstilo.number;
+                document.getElementById('issa-totales').textContent = T(
+                    `Hoy: ${t.proyectos} repositorios (${t.publicos} públicos), ${num(t.commits)} commits y ${num(f.h + f.v + f.p + f.b)} funciones en ${t.conCatalogo} catálogos: ${num(f.h)} encendidas, ${num(f.v)} en validación, ${num(f.p)} planeadas y ${num(f.b)} bloqueadas. Datos del ${issa.generado}.`,
+                    `Today: ${t.proyectos} repositories (${t.publicos} public), ${num(t.commits)} commits and ${num(f.h + f.v + f.p + f.b)} features in ${t.conCatalogo} catalogs: ${num(f.h)} lit, ${num(f.v)} being validated, ${num(f.p)} planned and ${num(f.b)} blocked. Data from ${issa.generado}.`,
+                    `Hoje: ${t.proyectos} repositórios (${t.publicos} públicos), ${num(t.commits)} commits e ${num(f.h + f.v + f.p + f.b)} funções em ${t.conCatalogo} catálogos: ${num(f.h)} acesas, ${num(f.v)} em validação, ${num(f.p)} planejadas e ${num(f.b)} bloqueadas. Dados de ${issa.generado}.`);
+            }
             const summary = d3.select('#resumen');
-            [[objects.length, 'objetos en la escala'], [objects.length, 'con tamaño y dibujo'], [0, 'con ficha propia']].forEach(([n, label]) => {
+            [[objects.length, T('objetos en la escala', 'objects on the scale', 'objetos na escala')], [objects.length, T('con tamaño y dibujo', 'with size and drawing', 'com tamanho e desenho')], [0, T('con ficha propia', 'with their own page', 'com página própria')]].forEach(([n, label]) => {
                 const box = summary.append('div');
                 box.append('b').text(n);
                 box.append('span').text(label);
@@ -564,9 +714,9 @@
                 if (!members.length) return;
                 table.append('h3').text(`${realm[2]} (${members.length})`);
                 const rows = table.append('table').selectAll('tr').data(members).join('tr');
-                rows.append('td').append('a').attr('href', o => '../universo/#' + IssaEstilo.slug(o.n)).text(o => o.n);
+                rows.append('td').append('a').attr('href', o => '../universo/#' + IssaEstilo.slug(o.n)).text(o => T(o.n, o.en, o.pt));
                 rows.append('td').text(o => IssaEstilo.size(o.s));
-                rows.append('td').text('Ficha pendiente');
+                rows.append('td').text(T('Ficha pendiente', 'Page pending', 'Página pendente'));
             });
 
             if ('serviceWorker' in navigator) {
