@@ -2,7 +2,9 @@
 <html lang="es">
 <head>
     <link rel="manifest" href="../manifiesto.json">
-    <meta name="description" content="Explore la regresión lineal de una manera interactiva y visual con nuestra herramienta en línea. Ajuste el número de puntos, vea cómo cambia la línea de mejor ajuste y comprenda las matemáticas detrás de ella.">
+    <meta name="description" content="Explore la regresión lineal de una manera interactiva y visual con nuestra herramienta en línea. Ajuste el número de puntos, vea cómo cambia la línea de mejor ajuste y comprenda las matemáticas detrás de ella."
+          data-en="Explore linear regression in an interactive, visual way: set the number of points, watch the best-fit line change and understand the math behind it."
+          data-pt="Explore a regressão linear de forma interativa e visual: ajuste o número de pontos, veja a linha de melhor ajuste mudar e entenda a matemática por trás dela.">
     <meta name="theme-color" content="#15202B">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -10,9 +12,19 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Aboreto&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap">
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
-    <title>Regresión Lineal Interactiva</title>
+    <title data-en="Interactive linear regression" data-pt="Regressão linear interativa">Regresión Lineal Interactiva</title>
+    <script src="../comun/idioma.js"></script>
+    <script>const T = IssaIdioma.t;</script>
     <link rel="canonical" href="https://issasodaweb.com/Ejercicios/RegresionLineal.html">
     <style>
+        /* Tres idiomas: solo se ve el activo (sin JavaScript, el español) */
+        html:not([data-lang]) .tr:not([lang="es"]),
+        html[data-lang="es"] .tr:not([lang="es"]),
+        html[data-lang="en"] .tr:not([lang="en"]),
+        html[data-lang="pt"] .tr:not([lang="pt"]) {
+            display: none !important;
+        }
+
         body {
             user-select: none;
             background-color: #15202B;
@@ -137,18 +149,18 @@
 <body>
     <div id="guideModal" class="modal">
         <div class="modal-content guide-content">
-            <h2>Guía Rápida</h2>
-            <p><strong>1. Control deslizante:</strong> Ajusta el número de puntos.</p>
-            <p><strong>2. Puntos:</strong> Representan el tiempo de estudio y la calificación.</p>
-            <p><strong>3. Línea de Regresión:</strong> Muestra la relación entre el estudio y la calificación.</p>
-            <p><strong>4. Ventana Emergente:</strong> Haz clic en el botón de información para más detalles.</p>
-            <p><strong>5. Copiar Texto:</strong> Solo dentro de la ventana emergente.</p>
-            <p>Haz clic en cualquier lugar para cerrar esta guía.</p>
+            <h2><span class="tr" lang="es">Guía Rápida</span><span class="tr" lang="en">Quick guide</span><span class="tr" lang="pt">Guia rápido</span></h2>
+            <p><span class="tr" lang="es"><strong>1. Control deslizante:</strong> Ajusta el número de puntos.</span><span class="tr" lang="en"><strong>1. Slider:</strong> Sets the number of points.</span><span class="tr" lang="pt"><strong>1. Controle deslizante:</strong> Ajusta o número de pontos.</span></p>
+            <p><span class="tr" lang="es"><strong>2. Puntos:</strong> Representan el tiempo de estudio y la calificación.</span><span class="tr" lang="en"><strong>2. Points:</strong> They stand for study time and grade.</span><span class="tr" lang="pt"><strong>2. Pontos:</strong> Representam o tempo de estudo e a nota.</span></p>
+            <p><span class="tr" lang="es"><strong>3. Línea de Regresión:</strong> Muestra la relación entre el estudio y la calificación.</span><span class="tr" lang="en"><strong>3. Regression line:</strong> Shows the relationship between studying and the grade.</span><span class="tr" lang="pt"><strong>3. Linha de regressão:</strong> Mostra a relação entre o estudo e a nota.</span></p>
+            <p><span class="tr" lang="es"><strong>4. Ventana Emergente:</strong> Haz clic en el botón de información para más detalles.</span><span class="tr" lang="en"><strong>4. Pop-up window:</strong> Click the information button for more details.</span><span class="tr" lang="pt"><strong>4. Janela pop-up:</strong> Clique no botão de informação para mais detalhes.</span></p>
+            <p><span class="tr" lang="es"><strong>5. Copiar Texto:</strong> Solo dentro de la ventana emergente.</span><span class="tr" lang="en"><strong>5. Copy text:</strong> Only inside the pop-up window.</span><span class="tr" lang="pt"><strong>5. Copiar texto:</strong> Só dentro da janela pop-up.</span></p>
+            <p><span class="tr" lang="es">Haz clic en cualquier lugar para cerrar esta guía.</span><span class="tr" lang="en">Click anywhere to close this guide.</span><span class="tr" lang="pt">Clique em qualquer lugar para fechar este guia.</span></p>
         </div>
     </div>
     <div id="formula"></div>
     <div id="container">
-        <h1>Regresión Lineal Interactiva</h1>
+        <h1><span class="tr" lang="es">Regresión Lineal Interactiva</span><span class="tr" lang="en">Interactive Linear Regression</span><span class="tr" lang="pt">Regressão Linear Interativa</span></h1>
         <div id="main-formula">\( y = \beta_0 + \beta_1 \cdot x + \epsilon \)</div>
         <svg id="plot"></svg>
         <div id="controls">
@@ -156,39 +168,39 @@
             <div id="infoModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h2>Regresión Lineal Simple: Explicación</h2>
-                    <p>Imaginemos que estamos tratando de entender cómo afecta el tiempo de estudio a la calificación en un examen.</p>
-                    <p><strong>Fórmula:</strong> \( y = \beta_0 + \beta_1 \cdot x + \epsilon \)</p>
-                    <p><strong>Variables:</strong></p>
+                    <h2><span class="tr" lang="es">Regresión Lineal Simple: Explicación</span><span class="tr" lang="en">Simple linear regression: explanation</span><span class="tr" lang="pt">Regressão linear simples: explicação</span></h2>
+                    <p><span class="tr" lang="es">Imaginemos que estamos tratando de entender cómo afecta el tiempo de estudio a la calificación en un examen.</span><span class="tr" lang="en">Imagine we are trying to understand how study time affects the grade on an exam.</span><span class="tr" lang="pt">Imagine que estamos tentando entender como o tempo de estudo afeta a nota numa prova.</span></p>
+                    <p><strong><span class="tr" lang="es">Fórmula:</span><span class="tr" lang="en">Formula:</span><span class="tr" lang="pt">Fórmula:</span></strong> \( y = \beta_0 + \beta_1 \cdot x + \epsilon \)</p>
+                    <p><strong><span class="tr" lang="es">Variables:</span><span class="tr" lang="en">Variables:</span><span class="tr" lang="pt">Variáveis:</span></strong></p>
                     <table>
                         <tr>
                             <td>\( y \)</td>
-                            <td>Calificación en el examen (\( y \)): Esta es la variable que queremos predecir. Se espera que sea más alta si el tiempo de estudio es mayor, pero también puede ser influenciada por otros factores como la habilidad del estudiante.</td>
+                            <td><span class="tr" lang="es">Calificación en el examen (\( y \)): Esta es la variable que queremos predecir. Se espera que sea más alta si el tiempo de estudio es mayor, pero también puede ser influenciada por otros factores como la habilidad del estudiante.</span><span class="tr" lang="en">Exam grade (\( y \)): this is the variable we want to predict. It is expected to be higher when study time is longer, but it can also be influenced by other factors such as the student's skill.</span><span class="tr" lang="pt">Nota na prova (\( y \)): é a variável que queremos prever. Espera-se que seja maior quando o tempo de estudo é maior, mas também pode ser influenciada por outros fatores, como a habilidade do estudante.</span></td>
                         </tr>
                         <tr>
                             <td>\(\beta_0\)</td>
-                            <td>Calificación base (\(\beta_0\)): Esta sería la calificación que esperaríamos si el tiempo de estudio fuera cero. Es como un punto de partida en la relación entre el estudio y la calificación.</td>
+                            <td><span class="tr" lang="es">Calificación base (\(\beta_0\)): Esta sería la calificación que esperaríamos si el tiempo de estudio fuera cero. Es como un punto de partida en la relación entre el estudio y la calificación.</span><span class="tr" lang="en">Base grade (\(\beta_0\)): the grade we would expect if study time were zero. It is like a starting point in the relationship between studying and the grade.</span><span class="tr" lang="pt">Nota base (\(\beta_0\)): a nota que esperaríamos se o tempo de estudo fosse zero. É como um ponto de partida na relação entre o estudo e a nota.</span></td>
                         </tr>
                         <tr>
                             <td>\( \beta_1 \)</td>
-                            <td>Impacto del estudio (\(\beta_1\)): Representa cuánto aumenta la calificación por cada hora adicional de estudio. Es la "pendiente" de la relación entre el estudio y la calificación.</td>
+                            <td><span class="tr" lang="es">Impacto del estudio (\(\beta_1\)): Representa cuánto aumenta la calificación por cada hora adicional de estudio. Es la "pendiente" de la relación entre el estudio y la calificación.</span><span class="tr" lang="en">Impact of studying (\(\beta_1\)): how much the grade rises for each extra hour of study. It is the "slope" of the relationship between studying and the grade.</span><span class="tr" lang="pt">Impacto do estudo (\(\beta_1\)): quanto a nota aumenta a cada hora adicional de estudo. É a "inclinação" da relação entre o estudo e a nota.</span></td>
                         </tr>
                         <tr>
                             <td>\( x \)</td>
-                            <td>Tiempo de estudio (\( x \)): Es la cantidad de tiempo dedicado al estudio. Es la variable que estamos usando para tratar de explicar las diferencias en la calificación.</td>
+                            <td><span class="tr" lang="es">Tiempo de estudio (\( x \)): Es la cantidad de tiempo dedicado al estudio. Es la variable que estamos usando para tratar de explicar las diferencias en la calificación.</span><span class="tr" lang="en">Study time (\( x \)): the amount of time spent studying. It is the variable we use to try to explain the differences in the grade.</span><span class="tr" lang="pt">Tempo de estudo (\( x \)): a quantidade de tempo dedicada ao estudo. É a variável que usamos para tentar explicar as diferenças na nota.</span></td>
                         </tr>
                         <tr>
                             <td>\( \epsilon \)</td>
-                            <td>Factores adicionales (\( \epsilon \)): Estos son otros factores que pueden afectar la calificación pero que no se incluyen en el modelo. Podría incluir cosas como la calidad del material de estudio, el estado de ánimo del estudiante el día del examen, etc. En la ecuación, esto es el "error" o la parte de la calificación que no se puede explicar solo con el tiempo de estudio.</td>
+                            <td><span class="tr" lang="es">Factores adicionales (\( \epsilon \)): Estos son otros factores que pueden afectar la calificación pero que no se incluyen en el modelo. Podría incluir cosas como la calidad del material de estudio, el estado de ánimo del estudiante el día del examen, etc. En la ecuación, esto es el "error" o la parte de la calificación que no se puede explicar solo con el tiempo de estudio.</span><span class="tr" lang="en">Additional factors (\( \epsilon \)): other factors that can affect the grade but are not included in the model, such as the quality of the study material or the student's mood on exam day. In the equation, this is the "error": the part of the grade that study time alone cannot explain.</span><span class="tr" lang="pt">Fatores adicionais (\( \epsilon \)): outros fatores que podem afetar a nota mas não estão no modelo, como a qualidade do material de estudo ou o humor do estudante no dia da prova. Na equação, é o "erro": a parte da nota que o tempo de estudo sozinho não explica.</span></td>
                         </tr>
                     </table>
 
-                    <p><strong>Interpretación de la Pendiente:</strong> <span id="slopeExplanation"></span></p>
+                    <p><strong><span class="tr" lang="es">Interpretación de la Pendiente:</span><span class="tr" lang="en">What the slope means:</span><span class="tr" lang="pt">Interpretação da inclinação:</span></strong> <span id="slopeExplanation"></span></p>
                 </div>
             </div>
-            <label for="slider">Número de puntos (m):</label>
+            <label for="slider"><span class="tr" lang="es">Número de puntos (m):</span><span class="tr" lang="en">Number of points (m):</span><span class="tr" lang="pt">Número de pontos (m):</span></label>
             <input type="range" id="slider">
-            <button id="infoButton">Más Información</button>
+            <button id="infoButton"><span class="tr" lang="es">Más Información</span><span class="tr" lang="en">More information</span><span class="tr" lang="pt">Mais informações</span></button>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.js"></script>
@@ -329,26 +341,40 @@
             // Calcular la regresión lineal
             const { intercept, slope } = linearRegression(points);
             // Actualizar el tooltip de la pendiente
-            document.getElementById("slopeTooltip").innerHTML = `Pendiente: ${slope.toFixed(2)}`;
+            document.getElementById("slopeTooltip").innerHTML = T('Pendiente: ', 'Slope: ', 'Inclinação: ') + slope.toFixed(2);
             document.getElementById("slopeTooltip").style.opacity = 1; // Asegura que el tooltip sea visible
 
             // Interpretación de la pendiente
             let slopeExplanation = "";
             if (Math.abs(slope) < 0.1) {
-                slopeExplanation = "La pendiente es tan cercana a cero que parece un estudiante el viernes por la noche: no quiere hacer nada. No hay relación entre el tiempo de estudio y la calificación en el examen.";
+                slopeExplanation = T("La pendiente es tan cercana a cero que parece un estudiante el viernes por la noche: no quiere hacer nada. No hay relación entre el tiempo de estudio y la calificación en el examen.",
+                    "The slope is so close to zero it looks like a student on a Friday night: it does not want to do anything. There is no relationship between study time and the exam grade.",
+                    "A inclinação é tão próxima de zero que parece um estudante na sexta à noite: não quer fazer nada. Não há relação entre o tempo de estudo e a nota na prova.");
             } else if (slope > 0) {
-                slopeExplanation = "La pendiente es positiva, como el ánimo de un estudiante antes del examen. A más tiempo de estudio, mejor calificación, lo cual es lo que todo profesor espera de su estudiante.";
+                slopeExplanation = T("La pendiente es positiva, como el ánimo de un estudiante antes del examen. A más tiempo de estudio, mejor calificación, lo cual es lo que todo profesor espera de su estudiante.",
+                    "The slope is positive, like a student's mood before the exam. More study time, a better grade: exactly what every teacher hopes for.",
+                    "A inclinação é positiva, como o ânimo de um estudante antes da prova. Mais tempo de estudo, nota melhor: exatamente o que todo professor espera.");
                 if (slope > 1) {
-                    slopeExplanation += " La pendiente es tan pronunciada como la curva de aprendizaje de la física cuántica. Pequeños cambios en el estudio, grandes cambios en la calificación.";
+                    slopeExplanation += T(" La pendiente es tan pronunciada como la curva de aprendizaje de la física cuántica. Pequeños cambios en el estudio, grandes cambios en la calificación.",
+                        " The slope is as steep as the learning curve of quantum physics. Small changes in studying, big changes in the grade.",
+                        " A inclinação é tão íngreme quanto a curva de aprendizagem da física quântica. Pequenas mudanças no estudo, grandes mudanças na nota.");
                 } else {
-                    slopeExplanation += " La pendiente no es muy pronunciada, como un buen profesor que enseña poco a poco. Los cambios en el estudio y la calificación son amigos, van juntos.";
+                    slopeExplanation += T(" La pendiente no es muy pronunciada, como un buen profesor que enseña poco a poco. Los cambios en el estudio y la calificación son amigos, van juntos.",
+                        " The slope is not very steep, like a good teacher who explains step by step. Studying and the grade are friends: they go together.",
+                        " A inclinação não é muito íngreme, como um bom professor que ensina aos poucos. O estudo e a nota são amigos: andam juntos.");
                 }
             } else if (slope < 0) {
-                slopeExplanation = "La pendiente es negativa, como la cara de un estudiante cuando ve la nota con frustración. Más estudio, peor calificación?. Debe ser un error en el universo!.";
+                slopeExplanation = T("La pendiente es negativa, como la cara de un estudiante cuando ve la nota con frustración. ¿Más estudio, peor calificación? ¡Debe ser un error en el universo!",
+                    "The slope is negative, like a student's face when they see a frustrating grade. More study, a worse grade? It must be a glitch in the universe!",
+                    "A inclinação é negativa, como a cara de um estudante ao ver uma nota frustrante. Mais estudo, nota pior? Deve ser um erro no universo!");
                 if (slope < -1) {
-                    slopeExplanation += " La pendiente es tan pronunciada como la caída en las calificaciones después de una fiesta de fin de semana. Pequeños cambios en el estudio, grandes cambios en la calificación.";
+                    slopeExplanation += T(" La pendiente es tan pronunciada como la caída en las calificaciones después de una fiesta de fin de semana. Pequeños cambios en el estudio, grandes cambios en la calificación.",
+                        " The slope is as steep as the drop in grades after a weekend party. Small changes in studying, big changes in the grade.",
+                        " A inclinação é tão íngreme quanto a queda nas notas depois de uma festa de fim de semana. Pequenas mudanças no estudo, grandes mudanças na nota.");
                 } else {
-                    slopeExplanation += " La pendiente no es muy pronunciada, pero sigue siendo negativa. Como esa sensación de 'Creí que lo entendía, pero luego tomé el examen'.";
+                    slopeExplanation += T(" La pendiente no es muy pronunciada, pero sigue siendo negativa. Como esa sensación de 'Creí que lo entendía, pero luego tomé el examen'.",
+                        " The slope is not very steep, but it is still negative. Like that feeling of 'I thought I understood it, and then I took the exam'.",
+                        " A inclinação não é muito íngreme, mas continua negativa. Como aquela sensação de 'Achei que tinha entendido, mas aí fiz a prova'.");
                 }
             }
 

@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <link rel="icon" type="image/x-icon" href="../favicon.ico" sizes="16x16 32x32 48x48 64x64 96x96">
     <meta charset="utf-8">
     <meta name="description" content="ISSASODA - GUAT Learning resources">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GUAT Learning Resources</title>
+    <title data-en="GUAT Learning Resources" data-pt="Recursos de aprendizagem GUAT">Recursos de aprendizaje GUAT</title>
+    <script src="../comun/idioma.js"></script>
     <link rel="canonical" href="https://issasodaweb.com/guat/">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" as="style">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.js"></script>
+    <script>const T = IssaIdioma.t;</script>
     <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
     <link rel="manifest" href="../manifiesto.json">
     <meta name="theme-color" content="#15202B">
@@ -229,9 +231,9 @@
                                 const urls = d.data.urls.split(", ");
                                 // Show additional tooltips if URLs are present
                                 if (urls.length >= 3) {
-                                    showAdditionalTooltip('tooltip-prompt', 'Prompts usados', urls[0], d.data.color, 'bottom-right', '70px');
-                                    showAdditionalTooltip('tooltip-text', 'Lectura en texto', urls[1], d.data.color, 'bottom-right', '35px'); // Ajusta este valor según el tamaño de los tooltips
-                                    showAdditionalTooltip('tooltip-podcast', 'Clase en Podcast: ', urls[2]);
+                                    showAdditionalTooltip('tooltip-prompt', T('Prompts usados', 'Prompts used', 'Prompts usados'), urls[0], d.data.color, 'bottom-right', '70px');
+                                    showAdditionalTooltip('tooltip-text', T('Lectura en texto', 'Text reading', 'Leitura em texto'), urls[1], d.data.color, 'bottom-right', '35px'); // Ajusta este valor según el tamaño de los tooltips
+                                    showAdditionalTooltip('tooltip-podcast', T('Clase en Podcast: ', 'Podcast class: ', 'Aula em podcast: '), urls[2]);
                                 }
                             }
                             // Expandir o contraer el nodo seleccionado
@@ -265,7 +267,7 @@
             tooltipFormula.style.padding = '10px';
             tooltipFormula.style.borderRadius = '8px';
             tooltipFormula.style.fontSize = '10px';
-            tooltipFormula.innerHTML = `${description}<br><span style="font-size: 9px;">Click sobre la fórmula para aprender más</span>`;
+            tooltipFormula.innerHTML = `${description}<br><span style="font-size: 9px;">${T('Clic sobre la fórmula para aprender más', 'Click the formula to learn more', 'Clique na fórmula para aprender mais')}</span>`;
 
             // Añade un listener para ocultar el tooltip cuando se haga clic en cualquier lugar
             setTimeout(() => {  // Usa setTimeout para evitar que se active inmediatamente
@@ -539,7 +541,7 @@
         }).catch(function (error) {
             console.error('Error al cargar los datos:', error);
             document.getElementById('chart-container').innerHTML =
-                '<p style="color:red;padding:20px;">Error al cargar los datos. Recarga la página.</p>';
+                '<p style="color:red;padding:20px;">' + T('Error al cargar los datos. Recarga la página.', 'The data could not be loaded. Reload the page.', 'Erro ao carregar os dados. Recarregue a página.') + '</p>';
         });
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('../ServiceWorker.js').then(() => {

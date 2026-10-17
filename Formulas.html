@@ -11,6 +11,14 @@
         });
     </script>
     <style>
+        /* Tres idiomas: solo se ve el activo (sin JavaScript, el español) */
+        html:not([data-lang]) .tr:not([lang="es"]),
+        html[data-lang="es"] .tr:not([lang="es"]),
+        html[data-lang="en"] .tr:not([lang="en"]),
+        html[data-lang="pt"] .tr:not([lang="pt"]) {
+            display: none !important;
+        }
+
         body {
             font-family: 'Comfortaa', cursive;
             margin: 20px;
@@ -91,13 +99,14 @@
             margin: 10px 0; /* Espacio arriba y abajo del párrafo */
         }
     </style>
-    <title>Fórmulas</title>
+    <title data-en="Formulas" data-pt="Fórmulas">Fórmulas</title>
+    <script src="comun/idioma.js"></script>
     <link rel="canonical" href="https://issasodaweb.com/Formulas.html">
 </head>
 <body>
-    <h1>FÓRMULAS RELACIONADAS CON LAS CLASES</h1>
+    <h1><span class="tr" lang="es">FÓRMULAS RELACIONADAS CON LAS CLASES</span><span class="tr" lang="en">FORMULAS FROM THE CLASSES</span><span class="tr" lang="pt">FÓRMULAS RELACIONADAS ÀS AULAS</span></h1>
     <p class="instruction">
-        Cada fórmula presentada en esta página debería estar vinculada a una aplicación creada por el estudiante. Al hacer clic en la fórmula, se abrirá una increíble aplicación que demuestra su aplicación práctica. Explora y disfruta del ingenio y la creatividad detrás de cada fórmula.
+        <span class="tr" lang="es">Cada fórmula presentada en esta página debería estar vinculada a una aplicación creada por el estudiante. Al hacer clic en la fórmula, se abrirá una increíble aplicación que demuestra su aplicación práctica. Explora y disfruta del ingenio y la creatividad detrás de cada fórmula.</span><span class="tr" lang="en">Each formula on this page should be linked to an app made by a student. Clicking a formula will open an app that shows how it is used in practice. Explore and enjoy the ingenuity and creativity behind each formula. The formulas are in Spanish.</span><span class="tr" lang="pt">Cada fórmula desta página deveria estar ligada a um app criado por um estudante. Ao clicar numa fórmula, abre-se um app que mostra seu uso prático. Explore e aproveite a engenhosidade e a criatividade por trás de cada fórmula. As fórmulas estão em espanhol.</span>
     </p>
     <div id="formulas-container"></div>
     <script>

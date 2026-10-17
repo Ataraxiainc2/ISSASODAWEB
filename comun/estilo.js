@@ -1,4 +1,4 @@
-// Estilo compartido de las páginas de ISSASODA: tipografías de Google Fonts al azar en cada visita y colores
+// Estilo compartido de las páginas de ISSASODA (cargar después de comun/idioma.js): tipografías de Google Fonts al azar en cada visita y colores
 // legibles (contraste 7:1 sobre el panel), como en el About de las apps. Necesita d3.
 (function (global) {
     'use strict';
@@ -72,8 +72,12 @@
         return d3.range(n).map(i => readableColor(hue + i * GOLDEN_ANGLE, panel));
     }
 
-    // Tamaños legibles en español: años luz, UA, km, m… hasta attómetros y potencias de diez
-    const locale = d3.formatLocale({ decimal: ',', thousands: '\u00a0', grouping: [3], currency: ['', ''] });
+    // Tamaños legibles en el idioma activo (comun/idioma.js): años luz, UA, km, m… hasta attómetros
+    const lang = (global.IssaIdioma && global.IssaIdioma.lang) || 'es';
+    const tr = (es, en, pt) => lang === 'en' ? en : lang === 'pt' ? pt : es;
+    const locale = d3.formatLocale(lang === 'en'
+        ? { decimal: '.', thousands: ',', grouping: [3], currency: ['$', ''] }
+        : { decimal: ',', thousands: lang === 'pt' ? '.' : '\u00a0', grouping: [3], currency: ['', ''] });
     const fmt = v => v >= 100 ? locale.format(',.0f')(v) : locale.format('.2~r')(v);
     const SUP = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
 
@@ -85,22 +89,26 @@
         const m = Math.pow(10, log10meters), LY = 9.4607e15, AU = 1.496e11;
         if (m >= 0.1 * LY) {
             const ly = m / LY;
-            if (ly >= 1e9) return fmt(ly / 1e9) + ' mil millones de años luz';
-            if (ly >= 1e6) return fmt(ly / 1e6) + ' millones de años luz';
-            if (ly >= 1e3) return fmt(ly / 1e3) + ' mil años luz';
-            return fmt(ly) + ' años luz';
+            if (ly >= 1e9) return fmt(ly / 1e9) + tr(' mil millones de años luz', ' billion light-years', ' bilhões de anos-luz');
+            if (ly >= 1e6) return fmt(ly / 1e6) + tr(' millones de años luz', ' million light-years', ' milhões de anos-luz');
+            if (ly >= 1e3) return fmt(ly / 1e3) + tr(' mil años luz', ' thousand light-years', ' mil anos-luz');
+            return fmt(ly) + tr(' años luz', ' light-years', ' anos-luz');
         }
-        if (m >= 0.1 * AU) return fmt(m / AU) + ' UA (distancia Tierra–Sol)';
+        if (m >= 0.1 * AU) return fmt(m / AU) + tr(' UA (distancia Tierra–Sol)', ' AU (Earth–Sun distance)', ' UA (distância Terra–Sol)');
         if (m >= 1e3) return fmt(m / 1e3) + ' km';
         if (m >= 1) return fmt(m) + ' m';
         if (m >= 1e-2) return fmt(m * 100) + ' cm';
         if (m >= 1e-3) return fmt(m * 1e3) + ' mm';
-        if (m >= 1e-6) return fmt(m * 1e6) + ' µm (micras)';
-        if (m >= 1e-9) return fmt(m * 1e9) + ' nm (nanómetros)';
-        if (m >= 1e-12) return fmt(m * 1e12) + ' pm (picómetros)';
-        if (m >= 1e-15) return fmt(m * 1e15) + ' fm (femtómetros)';
-        if (m >= 1e-18) return fmt(m * 1e18) + ' am (attómetros)';
+        if (m >= 1e-6) return fmt(m * 1e6) + tr(' µm (micras)', ' µm (microns)', ' µm (mícrons)');
+        if (m >= 1e-9) return fmt(m * 1e9) + tr(' nm (nanómetros)', ' nm (nanometers)', ' nm (nanômetros)');
+        if (m >= 1e-12) return fmt(m * 1e12) + tr(' pm (picómetros)', ' pm (picometers)', ' pm (picômetros)');
+        if (m >= 1e-15) return fmt(m * 1e15) + tr(' fm (femtómetros)', ' fm (femtometers)', ' fm (femtômetros)');
+        if (m >= 1e-18) return fmt(m * 1e18) + tr(' am (attómetros)', ' am (attometers)', ' am (attômetros)');
         return '≈ ' + power(Math.round(log10meters)) + ' m';
+    }
+
+    function number(v) {
+        return locale.format(',')(v);
     }
 
     function scientific(log10meters) {
@@ -115,6 +123,6 @@
 
     global.IssaEstilo = {
         fonts: fonts, stack: stack, contrast: contrast, readableColor: readableColor, palette: palette,
-        size: size, scientific: scientific, power: power, slug: slug
+        size: size, scientific: scientific, power: power, slug: slug, number: number
     };
 })(window);
