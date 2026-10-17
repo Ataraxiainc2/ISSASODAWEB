@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <script src="comun/estilo.js"></script>
     <script>document.documentElement.classList.add('js');</script>
     <style>
         :root {
@@ -321,6 +322,8 @@
             <li><a href="#guat">GUAT</a></li>
             <li><a href="#progreso">Progreso</a></li>
             <li><a href="#proyectos">Proyectos</a></li>
+            <li><a href="#escala">Escala</a></li>
+            <li><a href="acerca/">Acerca de</a></li>
         </ul>
     </nav>
 
@@ -330,7 +333,7 @@
     <main>
         <!--
             Cada sección es un astro del universo:
-            data-kind = sol | galaxia | nebulosa | planeta, data-x / data-y = posición,
+            data-kind = sol | galaxia | nebulosa | planeta | portal, data-x / data-y = posición,
             data-size = ancho del encuadre al visitarla, data-hit = radio para hacer clic
         -->
         <section class="panel" id="inicio" data-label="ISSASODA" data-kind="sol" data-x="0" data-y="0" data-size="430" data-hit="180" data-color="#FFC857">
@@ -373,6 +376,17 @@
                 <a href="https://emugamind.issasodaweb.com" target="_blank" rel="noopener">EmuGaMind</a>
             </div>
         </section>
+
+        <section class="panel" id="escala" data-label="Escala" data-kind="portal" data-x="-850" data-y="-480" data-size="340" data-hit="150" data-color="#7FD1FF">
+            <p class="eyebrow">De lo más grande a lo más pequeño</p>
+            <h2>Escala del universo</h2>
+            <p>Un agujero hacia todas las escalas: 307 objetos del universo, desde el universo observable (10²⁷ m) hasta la longitud de Planck (10⁻³⁵ m), cada uno a su tamaño real.</p>
+            <p class="hint">Cada objeto tendrá su propia página. Por ahora todos tienen su lugar, su tamaño, su dibujo y su dirección.</p>
+            <div class="actions">
+                <a class="primary" href="universo/" data-dive>Entrar en la escala</a>
+                <a href="universo/#lista" data-dive>Ver los 307 objetos</a>
+            </div>
+        </section>
     </main>
 
     <p class="corner font-credit" id="font-credit"></p>
@@ -387,33 +401,12 @@
             // Sin animación si el sistema pide reducir el movimiento (?motion en la URL la fuerza, para probar)
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !params.has('motion');
 
-            // ---------- Tipografías de Google Fonts, distintas en cada visita ----------
-            const DISPLAY_FONTS = [
-                'Orbitron', 'Audiowide', 'Monoton', 'Bungee', 'Righteous', 'Syncopate',
-                'Michroma', 'Rubik Mono One', 'Unica One', 'Megrim', 'Zen Dots', 'Turret Road', 'Chakra Petch',
-                'Silkscreen', 'Press Start 2P', 'Bebas Neue', 'Abril Fatface', 'Playfair Display', 'Lobster',
-                'Pacifico', 'Cinzel', 'Poiret One', 'Russo One', 'Black Ops One', 'Nova Square', 'Quantico',
-                'Gruppo', 'Julius Sans One', 'Wallpoet', 'Krona One', 'Tilt Warp', 'Rubik Glitch', 'Fugaz One',
-                'Bungee Shade', 'Dela Gothic One', 'Shrikhand', 'Tourney', 'Big Shoulders Display'
-            ];
-            const TEXT_FONTS = [
-                'Space Grotesk', 'Outfit', 'Manrope', 'Sora', 'Lexend', 'DM Sans', 'Nunito', 'Work Sans',
-                'IBM Plex Sans', 'Atkinson Hyperlegible', 'Exo 2', 'Jost', 'Urbanist', 'Red Hat Display',
-                'Figtree', 'Comfortaa', 'Quicksand', 'Kanit'
-            ];
-            const stack = family => `'${family}', 'Arial', sans-serif`;
+            // ---------- Tipografías de Google Fonts, distintas en cada visita (comun/estilo.js) ----------
+            const stack = IssaEstilo.stack;
             const sectionEls = Array.from(document.querySelectorAll('.panel'));
-            const displayFonts = d3.shuffle(DISPLAY_FONTS.slice()).slice(0, sectionEls.length + 1);
-            const textFont = TEXT_FONTS[Math.floor(Math.random() * TEXT_FONTS.length)];
-            // Una hoja por familia: así la caché del Service Worker guarda cada fuente una sola vez
-            displayFonts.map(f => f.replace(/ /g, '+'))
-                .concat(textFont.replace(/ /g, '+') + ':wght@400;700')
-                .forEach(family => {
-                    const link = document.createElement('link');
-                    link.rel = 'stylesheet';
-                    link.href = 'https://fonts.googleapis.com/css2?family=' + family + '&display=swap';
-                    document.head.appendChild(link);
-                });
+            const look = IssaEstilo.fonts(sectionEls.length + 1);
+            const displayFonts = look.display;
+            const textFont = look.text;
             document.documentElement.style.setProperty('--font-brand', stack(displayFonts[0]));
             document.documentElement.style.setProperty('--font-text', stack(textFont));
 
@@ -939,6 +932,61 @@
                 }
             }
 
+            // Portal a la escala del universo: un agujero negro con su disco y su anillo de luz
+            function drawPortal() {
+                const s = byKind.get('portal');
+                const k = transform.k;
+                const [sx, sy] = toScreen(s);
+                if (offscreen(sx, sy, 160 * k)) return;
+                const R = 26 * k;
+                const disk = (from, to, alpha) => {
+                    ctx.save();
+                    ctx.translate(sx, sy);
+                    ctx.rotate(-0.18);
+                    ctx.scale(1, 0.28);
+                    const g = ctx.createRadialGradient(0, 0, R * 1.4, 0, 0, R * 4.6);
+                    g.addColorStop(0, `rgba(235, 248, 255, ${alpha})`);
+                    g.addColorStop(0.35, `rgba(127, 209, 255, ${alpha * 0.8})`);
+                    g.addColorStop(1, 'rgba(150, 110, 255, 0)');
+                    ctx.fillStyle = g;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, R * 4.6, from, to);
+                    ctx.arc(0, 0, R * 1.4, to, from, true);
+                    ctx.fill();
+                    // Punto brillante que gira con el disco
+                    const a = reduceMotion ? 0.6 : time * 0.8;
+                    if (Math.sin(a) * (to > Math.PI ? -1 : 1) > 0) {
+                        const glow = ctx.createRadialGradient(Math.cos(a) * R * 2.4, Math.sin(a) * R * 2.4, 0, Math.cos(a) * R * 2.4, Math.sin(a) * R * 2.4, R * 1.2);
+                        glow.addColorStop(0, `rgba(255, 255, 255, ${alpha * 0.8})`);
+                        glow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                        ctx.fillStyle = glow;
+                        ctx.fillRect(-R * 5, -R * 5, R * 10, R * 10);
+                    }
+                    ctx.restore();
+                };
+                ctx.globalCompositeOperation = 'lighter';
+                disk(Math.PI, TAU, 0.9);
+                // Luz del disco curvada por encima de la sombra
+                ctx.strokeStyle = 'rgba(190, 230, 255, 0.55)';
+                ctx.lineWidth = Math.max(1, R * 0.35);
+                ctx.beginPath();
+                ctx.ellipse(sx, sy - R * 0.15, R * 1.55, R * 1.25, -0.18, Math.PI * 1.05, Math.PI * 1.95);
+                ctx.stroke();
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.fillStyle = '#000000';
+                ctx.beginPath();
+                ctx.arc(sx, sy, R, 0, TAU);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(220, 245, 255, 0.9)';
+                ctx.lineWidth = Math.max(1, R * 0.06);
+                ctx.beginPath();
+                ctx.arc(sx, sy, R * 1.1, 0, TAU);
+                ctx.stroke();
+                ctx.globalCompositeOperation = 'lighter';
+                disk(0, Math.PI, 0.95);
+                ctx.globalCompositeOperation = 'source-over';
+            }
+
             function drawLabels() {
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
@@ -1009,6 +1057,7 @@
                 ctx.globalCompositeOperation = 'source-over';
                 drawSun();
                 drawPlanet();
+                drawPortal();
                 drawLabels();
                 drawComets(dt);
             }
