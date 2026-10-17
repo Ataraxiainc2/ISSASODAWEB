@@ -561,8 +561,9 @@
                     panel.appendChild(el('p', 'hint', T('Aún sin catálogo de funciones: sus estrellas aparecerán cuando lo tenga.', 'No feature catalog yet: its stars will appear once it has one.', 'Ainda sem catálogo de funções: suas estrelas aparecerão quando tiver um.')));
                 }
                 const actions = el('div', 'actions');
-                if (p.id === 'guat') actions.appendChild(link('#guat', T('Ver la galaxia GUAT', 'See the GUAT galaxy', 'Ver a galáxia GUAT'), true));
-                if (p.sitio && p.id !== 'guat') actions.appendChild(link(p.sitio, T('Sitio web', 'Website', 'Site'), true, true));
+                // ISSASODAWEB es esta misma web: en vez de su sitio, lleva a GUAT, que vive dentro de ella
+                if (p.id === 'issasodaweb') actions.appendChild(link('#guat', T('Ver la galaxia GUAT', 'See the GUAT galaxy', 'Ver a galáxia GUAT'), true));
+                if (p.sitio && p.id !== 'issasodaweb') actions.appendChild(link(p.sitio, T('Sitio web', 'Website', 'Site'), true, true));
                 if (p.repo) actions.appendChild(link(p.repo, 'GitHub', false, true));
                 actions.appendChild(link('#proyectos', T('Volver al cúmulo', 'Back to the cluster', 'Voltar ao aglomerado')));
                 panel.appendChild(actions);

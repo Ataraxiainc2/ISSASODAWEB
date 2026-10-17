@@ -24,12 +24,12 @@ CUENTA = 'Ataraxiainc2'
 # Descripciones en los tres idiomas de la web (español de Latinoamérica, inglés de EE. UU., portugués de Brasil)
 PROYECTOS = [
     {
-        'repo': 'GUAT', 'nombre': 'GUAT', 'tipo': 'web', 'color': '#A99BFF',
-        'sitio': 'https://issasodaweb.com/guat/', 'carpeta': None,
+        'repo': 'ISSASODAWEB', 'nombre': 'ISSASODAWEB', 'tipo': 'web', 'color': '#A99BFF',
+        'sitio': 'https://issasodaweb.com', 'carpeta': None,
         'desc': {
-            'es': 'Proyecto universitario GUAT: árbol de estudiantes, cursos y clases con lecturas, podcasts y fórmulas. Es también el código de esta web.',
-            'en': 'GUAT university project: a tree of students, courses and classes with readings, podcasts and formulas. It is also the code of this website.',
-            'pt': 'Projeto universitário GUAT: árvore de estudantes, cursos e aulas com leituras, podcasts e fórmulas. É também o código deste site.',
+            'es': 'Esta web: el universo de ISSASODA en issasodaweb.com, con el cúmulo de proyectos, la escala del universo y el proyecto universitario GUAT como subpágina.',
+            'en': "This website: ISSASODA's universe at issasodaweb.com, with the project cluster, the scale of the universe and the GUAT university project as a sub-page.",
+            'pt': 'Este site: o universo da ISSASODA em issasodaweb.com, com o aglomerado de projetos, a escala do universo e o projeto universitário GUAT como subpágina.',
         },
     },
     {
