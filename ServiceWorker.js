@@ -1,6 +1,6 @@
 // Cambiar la versión cada vez que cambie la lista de recursos: al activarse,
 // el Service Worker borra las cachés de versiones anteriores
-const CACHE_NAME = 'issasoda-v4';
+const CACHE_NAME = 'issasoda-v5';
 
 // Páginas y datos del sitio (rutas relativas a este archivo)
 const SITE_FILES = [
@@ -22,7 +22,7 @@ const SITE_FILES = [
 const CDN_FILES = [
   'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js',
   'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js',
   'https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap',
   'https://fonts.googleapis.com/css2?family=Aboreto&display=swap',
   'https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap'

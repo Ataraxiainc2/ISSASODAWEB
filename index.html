@@ -4,21 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ISSASODA</title>
-    <meta name="description" content="ISSASODA: educación para personas de todas las edades. Cursos, ejercicios interactivos y el avance de cada estudiante.">
+    <meta name="description" content="ISSASODA: educación para personas de todas las edades. Un universo de cursos, ejercicios interactivos y el avance de cada estudiante.">
     <link rel="canonical" href="https://issasodaweb.com/">
     <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64 96x96">
     <link rel="manifest" href="manifiesto.json">
-    <meta name="theme-color" content="#15202B">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <meta name="theme-color" content="#0D0F14">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
     <script>document.documentElement.classList.add('js');</script>
     <style>
         :root {
-            --bg: #15202B;
-            --panel: rgba(21, 32, 43, 0.82);
-            --text: #E7ECEF;
-            --muted: #9AA7B2;
-            --accent: #1DA1F2;
+            --space: #0D0F14;
+            --panel: rgba(13, 15, 20, 0.74);
+            --text: #E9ECF1;
+            --muted: #9AA3B2;
+            --accent: #FFC857;
+            --font-brand: 'Arial', sans-serif;
+            --font-text: 'Arial', sans-serif;
+            --font-title: 'Arial', sans-serif;
         }
 
         * {
@@ -27,19 +31,15 @@
 
         html, body {
             margin: 0;
-            background-color: var(--bg);
             color: var(--text);
-            font-family: 'Arial', sans-serif;
+            font-family: var(--font-text);
+            background: radial-gradient(ellipse at 50% 40%, #1C2029 0%, #0D0F14 55%, #050608 100%) fixed;
+            background-color: var(--space);
         }
 
         html.js, html.js body {
             height: 100%;
             overflow: hidden;
-        }
-
-        h1, h2, .brand, .site-nav a {
-            font-family: 'Rubik Mono One', 'Arial', sans-serif;
-            font-weight: normal;
         }
 
         a {
@@ -55,21 +55,22 @@
             z-index: 10;
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 28px;
             padding: 14px 24px;
-            background: linear-gradient(to bottom, rgba(21, 32, 43, 0.95), rgba(21, 32, 43, 0));
+            background: linear-gradient(to bottom, rgba(5, 6, 8, 0.9), rgba(5, 6, 8, 0));
         }
 
         .brand {
+            font-family: var(--font-brand);
+            font-size: 20px;
             color: var(--text);
             text-decoration: none;
-            font-size: 16px;
             white-space: nowrap;
         }
 
         .site-nav ul {
             display: flex;
-            gap: 18px;
+            gap: 20px;
             margin: 0;
             padding: 0;
             list-style: none;
@@ -80,7 +81,9 @@
         .site-nav ul a {
             display: block;
             padding: 4px 0;
-            font-size: 11px;
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
             color: var(--muted);
             text-decoration: none;
             white-space: nowrap;
@@ -98,34 +101,45 @@
             }
 
         /* Universo */
-        #world {
+        #universe {
             display: none;
         }
 
-        html.js #world {
+        html.js #universe {
             display: block;
             position: fixed;
             inset: 0;
             width: 100%;
             height: 100%;
+            cursor: grab;
+            touch-action: none;
         }
 
-        #world .anchor {
-            cursor: pointer;
+            html.js #universe:active {
+                cursor: grabbing;
+            }
+
+        .star-tip {
+            position: fixed;
+            z-index: 20;
+            max-width: 260px;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 10px;
+            background: rgba(13, 15, 20, 0.9);
+            font-size: 13px;
+            line-height: 1.4;
+            pointer-events: none;
         }
 
-            #world .anchor text {
-                font-family: 'Rubik Mono One', 'Arial', sans-serif;
-                font-size: 13px;
-                paint-order: stroke;
-                stroke: var(--bg);
-                stroke-width: 4px;
-                stroke-linejoin: round;
+            .star-tip small {
+                display: block;
+                color: var(--muted);
             }
 
         /* Secciones: sin JavaScript se leen una debajo de otra */
         main {
-            padding: 72px 16px 32px;
+            padding: 80px 16px 32px;
         }
 
         .panel {
@@ -145,18 +159,19 @@
             z-index: 5;
             top: 50%;
             left: max(24px, 6vw);
-            width: min(460px, 40vw);
-            max-height: calc(100vh - 140px);
+            width: min(470px, 40vw);
+            max-height: calc(100vh - 150px);
             overflow-y: auto;
             margin: 0;
             background: var(--panel);
-            border-radius: 14px;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            border-radius: 16px;
+            box-shadow: 0 0 60px -20px var(--accent);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(calc(-50% + 12px));
-            transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+            transform: translateY(calc(-50% + 14px));
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
         }
 
             html.js .panel.active {
@@ -166,23 +181,28 @@
             }
 
         .eyebrow {
-            margin: 0 0 6px;
+            margin: 0 0 8px;
             font-size: 12px;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
             color: var(--accent);
         }
 
+        .panel h1,
+        .panel h2 {
+            margin: 0 0 16px;
+            font-family: var(--font-title);
+            font-weight: normal;
+            line-height: 1.15;
+            color: var(--text);
+        }
+
         .panel h1 {
-            margin: 0 0 14px;
-            font-size: clamp(30px, 4vw, 44px);
-            line-height: 1.1;
+            font-size: clamp(32px, 4.4vw, 52px);
         }
 
         .panel h2 {
-            margin: 0 0 14px;
-            font-size: clamp(22px, 3vw, 30px);
-            line-height: 1.2;
+            font-size: clamp(26px, 3.4vw, 40px);
         }
 
         .panel p {
@@ -216,22 +236,33 @@
                 .actions a:focus-visible,
                 .actions a.primary {
                     background-color: var(--accent);
-                    color: var(--bg);
+                    color: var(--space);
                 }
 
-        .keys-hint {
+        .corner {
             display: none;
         }
 
-        html.js .keys-hint {
+        html.js .corner {
             display: block;
             position: fixed;
-            right: 24px;
-            bottom: 18px;
             z-index: 5;
+            bottom: 16px;
             margin: 0;
             font-size: 12px;
             color: var(--muted);
+            pointer-events: none;
+        }
+
+        .explore-hint {
+            right: 24px;
+            text-align: right;
+        }
+
+        .font-credit {
+            left: 24px;
+            max-width: 45vw;
+            opacity: 0.7;
         }
 
         kbd {
@@ -241,7 +272,7 @@
             font-family: inherit;
         }
 
-        /* Teléfonos: el punto arriba, la sección abajo */
+        /* Teléfonos: el astro arriba, la sección abajo */
         @media (max-width: 799px) {
             .site-nav {
                 flex-direction: column;
@@ -252,6 +283,7 @@
 
                 .site-nav ul {
                     max-width: 100%;
+                    gap: 16px;
                 }
 
             html.js .panel {
@@ -262,14 +294,14 @@
                 width: auto;
                 max-height: 56vh;
                 padding: 20px;
-                transform: translateY(12px);
+                transform: translateY(14px);
             }
 
                 html.js .panel.active {
                     transform: none;
                 }
 
-            html.js .keys-hint {
+            html.js .corner {
                 display: none;
             }
         }
@@ -292,25 +324,31 @@
         </ul>
     </nav>
 
-    <svg id="world" aria-hidden="true"></svg>
+    <canvas id="universe" aria-hidden="true"></canvas>
+    <div id="star-tip" class="star-tip" role="tooltip" hidden></div>
 
     <main>
-        <!-- Cada sección es un punto del mapa: data-x / data-y son sus coordenadas, data-color su color -->
-        <section class="panel" id="inicio" data-label="Inicio" data-x="0" data-y="0" data-color="#1DA1F2">
+        <!--
+            Cada sección es un astro del universo:
+            data-kind = sol | galaxia | nebulosa | planeta, data-x / data-y = posición,
+            data-size = ancho del encuadre al visitarla, data-hit = radio para hacer clic
+        -->
+        <section class="panel" id="inicio" data-label="ISSASODA" data-kind="sol" data-x="0" data-y="0" data-size="430" data-hit="180" data-color="#FFC857">
             <p class="eyebrow">Educación para todas las edades</p>
             <h1>ISSASODA</h1>
             <p>Aprender no tiene edad. ISSASODA reúne cursos, ejercicios interactivos y recursos para estudiantes de cualquier etapa, y pronto mostrará el avance de cada uno.</p>
-            <p class="hint">Cada punto de este mapa es un paso de aprendizaje. Elige un destino.</p>
+            <p class="hint">Este universo es el mapa de ISSASODA: arrástralo para explorarlo, acércate con la rueda o elige un destino.</p>
             <div class="actions">
-                <a class="primary" href="#guat">Explorar GUAT</a>
+                <a class="primary" href="#guat">Viajar a GUAT</a>
                 <a href="#progreso">Progreso de estudiantes</a>
             </div>
         </section>
 
-        <section class="panel" id="guat" data-label="GUAT" data-x="420" data-y="-240" data-color="#FFD166">
+        <section class="panel" id="guat" data-label="GUAT" data-kind="galaxia" data-x="950" data-y="-520" data-size="470" data-hit="200" data-color="#A99BFF">
             <p class="eyebrow">Proyecto universitario</p>
             <h2>GUAT</h2>
-            <p>GUAT University: un árbol interactivo con los estudiantes, sus cursos y sus clases, con lecturas, podcasts y las fórmulas de cada tema.</p>
+            <p>GUAT University: un árbol con los estudiantes, sus cursos y sus clases, con lecturas, podcasts y las fórmulas de cada tema.</p>
+            <p class="hint">Esta galaxia está hecha con esos datos: cada brazo es un estudiante y cada estrella un tema o una fórmula, con el color de su calificación. Pasa el cursor sobre una estrella.</p>
             <div class="actions">
                 <a class="primary" href="guat/" data-dive>Abrir el árbol GUAT</a>
                 <a href="Formulas.html" data-dive>Fórmulas</a>
@@ -318,161 +356,745 @@
             </div>
         </section>
 
-        <section class="panel" id="progreso" data-label="Progreso" data-x="-380" data-y="260" data-color="#06D6A0">
+        <section class="panel" id="progreso" data-label="Progreso" data-kind="nebulosa" data-x="-900" data-y="560" data-size="440" data-hit="180" data-color="#3EE6B0">
             <p class="eyebrow">Próximamente</p>
             <h2>Progreso de estudiantes</h2>
-            <p>Aquí cada estudiante tendrá su propio punto en el mapa: los cursos que toma, los ejercicios que resuelve y lo que ha logrado, para ver su avance de un vistazo.</p>
+            <p>Esta nebulosa es una guardería de estrellas: aquí nacerá la estrella de cada estudiante y crecerá con los cursos que tome, los ejercicios que resuelva y lo que logre.</p>
             <div class="actions">
                 <a href="#inicio">Volver al inicio</a>
             </div>
         </section>
 
-        <section class="panel" id="proyectos" data-label="Proyectos" data-x="360" data-y="330" data-color="#EF476F">
+        <section class="panel" id="proyectos" data-label="Proyectos" data-kind="planeta" data-x="820" data-y="700" data-size="320" data-hit="130" data-color="#FF6B9A">
             <p class="eyebrow">Apps de ISSASODA</p>
             <h2>Proyectos</h2>
-            <p>Aplicaciones y herramientas creadas por ISSASODA.</p>
+            <p>Cada planeta de este sistema es una aplicación creada por ISSASODA.</p>
             <div class="actions">
                 <a href="https://emugamind.issasodaweb.com" target="_blank" rel="noopener">EmuGaMind</a>
             </div>
         </section>
     </main>
 
-    <p class="keys-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> para moverte entre secciones</p>
+    <p class="corner font-credit" id="font-credit"></p>
+    <p class="corner explore-hint">Arrastra para explorar · rueda para acercar · <kbd>&larr;</kbd> <kbd>&rarr;</kbd> secciones</p>
 
     <script>
         (function () {
-            const svg = d3.select('#world');
-            const root = svg.append('g');
+            'use strict';
+
+            const TAU = Math.PI * 2;
+            const params = new URLSearchParams(location.search);
             // Sin animación si el sistema pide reducir el movimiento (?motion en la URL la fuerza, para probar)
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-                && !new URLSearchParams(location.search).has('motion');
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !params.has('motion');
 
-            // Ancho (en unidades del mapa) que se ve al estar en una sección: crece con la pantalla
-            // para que los puntos no se vean enormes en monitores grandes ni diminutos en teléfonos
-            function sectionSize() {
-                return Math.max(150, Math.min(300, Math.min(width, height) / 3.5));
-            }
+            // ---------- Tipografías de Google Fonts, distintas en cada visita ----------
+            const DISPLAY_FONTS = [
+                'Orbitron', 'Audiowide', 'Monoton', 'Bungee', 'Righteous', 'Syncopate',
+                'Michroma', 'Rubik Mono One', 'Unica One', 'Megrim', 'Zen Dots', 'Turret Road', 'Chakra Petch',
+                'Silkscreen', 'Press Start 2P', 'Bebas Neue', 'Abril Fatface', 'Playfair Display', 'Lobster',
+                'Pacifico', 'Cinzel', 'Poiret One', 'Russo One', 'Black Ops One', 'Nova Square', 'Quantico',
+                'Gruppo', 'Julius Sans One', 'Wallpoet', 'Krona One', 'Tilt Warp', 'Rubik Glitch', 'Fugaz One',
+                'Bungee Shade', 'Dela Gothic One', 'Shrikhand', 'Tourney', 'Big Shoulders Display'
+            ];
+            const TEXT_FONTS = [
+                'Space Grotesk', 'Outfit', 'Manrope', 'Sora', 'Lexend', 'DM Sans', 'Nunito', 'Work Sans',
+                'IBM Plex Sans', 'Atkinson Hyperlegible', 'Exo 2', 'Jost', 'Urbanist', 'Red Hat Display',
+                'Figtree', 'Comfortaa', 'Quicksand', 'Kanit'
+            ];
+            const stack = family => `'${family}', 'Arial', sans-serif`;
+            const sectionEls = Array.from(document.querySelectorAll('.panel'));
+            const displayFonts = d3.shuffle(DISPLAY_FONTS.slice()).slice(0, sectionEls.length + 1);
+            const textFont = TEXT_FONTS[Math.floor(Math.random() * TEXT_FONTS.length)];
+            // Una hoja por familia: así la caché del Service Worker guarda cada fuente una sola vez
+            displayFonts.map(f => f.replace(/ /g, '+'))
+                .concat(textFont.replace(/ /g, '+') + ':wght@400;700')
+                .forEach(family => {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'https://fonts.googleapis.com/css2?family=' + family + '&display=swap';
+                    document.head.appendChild(link);
+                });
+            document.documentElement.style.setProperty('--font-brand', stack(displayFonts[0]));
+            document.documentElement.style.setProperty('--font-text', stack(textFont));
 
-            const sections = Array.from(document.querySelectorAll('.panel')).map(el => ({
+            // ---------- Secciones (astros) ----------
+            const sections = sectionEls.map((el, i) => ({
                 id: el.id,
                 el: el,
                 label: el.dataset.label,
+                kind: el.dataset.kind,
                 color: el.dataset.color,
                 x: +el.dataset.x,
-                y: +el.dataset.y
+                y: +el.dataset.y,
+                size: +el.dataset.size,
+                hit: +el.dataset.hit,
+                font: displayFonts[i + 1]
             }));
             const byId = new Map(sections.map(s => [s.id, s]));
+            const byKind = new Map(sections.map(s => [s.kind, s]));
             const home = sections[0];
-            sections.forEach(s => s.el.style.setProperty('--accent', s.color));
+            sections.forEach(s => {
+                s.el.style.setProperty('--accent', s.color);
+                s.el.style.setProperty('--font-title', stack(s.font));
+            });
+            document.getElementById('font-credit').textContent =
+                'Tipografías de esta visita: ' + displayFonts.concat(textFont).join(' · ');
 
-            // Universo de puntos con semilla fija: es el mismo en cada visita
-            const random = d3.randomLcg(42);
-            const dustX = d3.randomUniform.source(random)(-850, 850);
-            const dustY = d3.randomUniform.source(random)(-650, 700);
-            const dust = d3.range(1600).map(() => [dustX(), dustY(), 0.12 + random() * 0.38]);
-            const clusters = sections.flatMap(s => {
-                const nx = d3.randomNormal.source(random)(s.x, 34);
-                const ny = d3.randomNormal.source(random)(s.y, 34);
-                return d3.range(320).map(() => [nx(), ny(), s.color]);
+            function withAlpha(color, alpha) {
+                const c = d3.color(color);
+                c.opacity = alpha;
+                return c.formatRgb();
+            }
+
+            // ---------- Universo con semilla fija: el mismo en cada visita ----------
+            const rng = d3.randomLcg(20261016);
+            const gauss = d3.randomNormal.source(rng)(0, 1);
+
+            // Estrellas de fondo: profundidad para el paralaje, color según su temperatura
+            const starColor = d3.scaleLinear()
+                .domain([0, 0.55, 1])
+                .range(['#9DB4FF', '#FFF6EA', '#FFB46B'])
+                .interpolate(d3.interpolateRgb);
+            const stars = d3.range(6500).map(() => {
+                const depth = 0.12 + 0.88 * rng() ** 2;
+                return {
+                    x: (rng() * 2 - 1) * 3300,
+                    y: (rng() * 2 - 1) * 2500,
+                    depth: depth,
+                    r: 0.35 + 1.5 * rng() ** 4 + 0.45 * depth,
+                    color: starColor(rng()),
+                    alpha: 0.3 + 0.7 * rng(),
+                    phase: rng() * TAU,
+                    speed: 0.5 + rng() * 2.4
+                };
             });
 
-            root.append('g')
-                .selectAll('line')
-                .data(sections.slice(1))
-                .join('line')
-                .attr('x1', home.x)
-                .attr('y1', home.y)
-                .attr('x2', s => s.x)
-                .attr('y2', s => s.y)
-                .attr('stroke', s => s.color)
-                .attr('stroke-opacity', 0.3)
-                .attr('stroke-dasharray', '2 6')
-                .attr('vector-effect', 'non-scaling-stroke');
+            // Galaxias lejanas: espirales de partículas
+            const galaxies = [];
+            while (galaxies.length < 10) {
+                const x = (rng() * 2 - 1) * 2700;
+                const y = (rng() * 2 - 1) * 2000;
+                if (sections.some(s => Math.hypot(s.x - x, s.y - y) < 450)) continue;
+                const arms = 2 + Math.floor(rng() * 3);
+                const radius = 50 + rng() * 110;
+                const armColor = d3.interpolateSinebow(rng());
+                const pts = d3.range(520).map(() => {
+                    const core = rng() < 0.25;
+                    let px, py;
+                    if (core) {
+                        px = gauss() * radius * 0.12;
+                        py = gauss() * radius * 0.12;
+                    } else {
+                        const t = rng() ** 0.7;
+                        const a = Math.floor(rng() * arms) * TAU / arms + t * 4 + gauss() * 0.22;
+                        px = radius * t * Math.cos(a);
+                        py = radius * t * Math.sin(a);
+                    }
+                    const color = core ? '#FFE9C2' : d3.interpolateRgb('#FFFFFF', armColor)(0.3 + rng() * 0.7);
+                    return [px, py, withAlpha(color, 0.2 + rng() * 0.55), 0.6 + rng() * 1.1];
+                });
+                galaxies.push({
+                    x: x, y: y, radius: radius, pts: pts,
+                    depth: 0.45 + rng() * 0.5,
+                    tilt: rng() * Math.PI,
+                    squash: 0.35 + rng() * 0.6,
+                    spin: (rng() < 0.5 ? -1 : 1) * (0.01 + rng() * 0.03)
+                });
+            }
 
-            root.append('g')
-                .selectAll('circle')
-                .data(dust)
-                .join('circle')
-                .attr('cx', d => d[0])
-                .attr('cy', d => d[1])
-                .attr('r', 0.9)
-                .attr('fill', '#FFFFFF')
-                .attr('fill-opacity', d => d[2]);
+            // Sistema solar de ISSASODA (inicio)
+            const ORBIT_TILT = 0.42;
+            const sunPlanets = [
+                { r: 80, size: 5, color: '#7FDBFF', speed: 0.45, phase: 0.5 },
+                { r: 120, size: 8, color: '#FF8FA3', speed: 0.3, phase: 2.4 },
+                { r: 178, size: 6.5, color: '#B9A2FF', speed: 0.19, phase: 4.1 }
+            ].map(p => Object.assign(p, {
+                light: d3.color(p.color).brighter(1.2).formatRgb(),
+                dark: d3.color(p.color).darker(1.6).formatRgb()
+            }));
+            const belt = d3.range(420).map(() => ({ r: 140 + rng() * 16, a: rng() * TAU, size: 0.5 + rng() * 1 }));
 
-            root.append('g')
-                .attr('fill-opacity', 0.65)
-                .selectAll('circle')
-                .data(clusters)
-                .join('circle')
-                .attr('cx', d => d[0])
-                .attr('cy', d => d[1])
-                .attr('r', 1.2)
-                .attr('fill', d => d[2]);
+            // Nebulosa de progreso: densidad de puntos convertida en contornos (d3.contourDensity)
+            const nebula = (function (s) {
+                const pts = [];
+                d3.range(6).forEach(() => {
+                    const bx = s.x + (rng() * 2 - 1) * 130;
+                    const by = s.y + (rng() * 2 - 1) * 90;
+                    const sd = 25 + rng() * 55;
+                    for (let i = 0; i < 450; i++) pts.push([bx + gauss() * sd, by + gauss() * sd * 0.8]);
+                });
+                const ox = s.x - 300;
+                const oy = s.y - 260;
+                const contours = d3.contourDensity()
+                    .x(d => d[0] - ox)
+                    .y(d => d[1] - oy)
+                    .size([600, 520])
+                    .cellSize(4)
+                    .bandwidth(16)
+                    .thresholds(16)(pts)
+                    .filter(c => c.coordinates.length);
+                const color = d3.scaleSequential(d3.interpolateCool).domain([0, contours.length - 1]);
+                const path = d3.geoPath();
+                return {
+                    ox: ox,
+                    oy: oy,
+                    layers: contours.map((c, i) => ({ path: new Path2D(path(c)), color: color(i) })),
+                    young: d3.range(70).map(() => {
+                        const p = pts[Math.floor(rng() * pts.length)];
+                        return { x: p[0], y: p[1], r: 0.8 + rng() * 1.6, phase: rng() * TAU };
+                    })
+                };
+            })(byKind.get('nebulosa'));
 
-            // Marcadores de cada sección, dibujados en píxeles (se contraescalan con el zoom)
-            const anchors = root.append('g')
-                .selectAll('g')
-                .data(sections)
-                .join('g')
-                .attr('class', 'anchor')
-                .on('click', (event, s) => { location.hash = s.id; });
-            anchors.append('circle').attr('r', 22).attr('fill', s => s.color).attr('fill-opacity', 0.18);
-            anchors.append('circle').attr('r', 7).attr('stroke', '#15202B').attr('stroke-width', 2).attr('fill', s => s.color);
-            anchors.append('text').attr('x', 16).attr('y', 5).attr('fill', s => s.color).text(s => s.label);
+            // Planeta de proyectos (d3-geo, proyección ortográfica que gira)
+            const planetProjection = d3.geoOrthographic().clipAngle(90).precision(0.6);
+            const planetPath = d3.geoPath(planetProjection);
+            const graticule = d3.geoGraticule10();
+            const continents = {
+                type: 'GeometryCollection',
+                geometries: d3.range(10).map(() => d3.geoCircle()
+                    .center([rng() * 360 - 180, rng() * 120 - 60])
+                    .radius(6 + rng() * 20)())
+            };
+            const moons = [
+                { r: 82, size: 5, speed: 0.6, phase: 1 },
+                { r: 114, size: 3.5, speed: 0.38, phase: 3.3 }
+            ];
 
+            // Galaxia GUAT: se construye con guat/index.json (d3.hierarchy + d3.cluster en espiral)
+            const GUAT_RADIUS = 190;
+            const GUAT_TWIST = 2.2;
+            const GUAT_SQUASH = 0.62;
+            const GUAT_TILT = -0.5;
+            let guat = null;
+
+            function buildGuat(data) {
+                const top = (data.children || []).find(c => c.name === 'GUAT') || data;
+                const root = d3.hierarchy(top);
+                d3.cluster().size([TAU, 1])(root);
+                const height = Math.max(root.height, 3);
+                (root.children || []).forEach(student => {
+                    // Las fórmulas de cada estudiante se alejan del centro a lo largo de su brazo
+                    const leaves = student.leaves();
+                    const a0 = d3.min(leaves, l => l.x);
+                    const span = Math.max(d3.max(leaves, l => l.x) - a0, 1e-6);
+                    student.eachAfter(n => {
+                        if (!n.children) {
+                            n.rr = 0.42 + 0.58 * (n.x - a0) / span;
+                            n.ang = n.x;
+                        } else if (n.children.every(c => !c.children)) {
+                            n.rr = d3.min(n.children, c => c.rr) - 0.04;
+                            n.ang = d3.mean(n.children, c => c.ang) - 0.03;
+                        } else {
+                            n.rr = 0.06 + 0.32 * n.depth / (height - 1);
+                            n.ang = a0;
+                        }
+                    });
+                });
+                root.rr = 0;
+                root.ang = 0;
+                const nodes = root.descendants().map(n => ({
+                    src: n,
+                    rr: n.rr,
+                    ang: n.ang,
+                    depth: n.depth,
+                    name: n.data.name,
+                    grade: n.data.grade,
+                    url: n.data.url,
+                    color: (n.data.color && d3.color(n.data.color)) ? d3.color(n.data.color).formatHex() : '#FFFFFF',
+                    size: n.depth === 1 ? 3.4 : n.children ? 2.3 : 1.5,
+                    sx: 0,
+                    sy: 0
+                }));
+                const byNode = new Map(nodes.map(d => [d.src, d]));
+                nodes.forEach(d => { d.parent = d.src.parent ? byNode.get(d.src.parent) : null; });
+                const filler = [];
+                nodes.forEach(d => {
+                    if (!d.depth) return;
+                    for (let i = 0; i < 9; i++) {
+                        filler.push({ rr: Math.max(0.03, d.rr + gauss() * 0.05), ang: d.ang + gauss() * 0.1, color: d.color, alpha: 0.12 + rng() * 0.35 });
+                    }
+                });
+                d3.range(320).forEach(() => {
+                    filler.push({ rr: Math.abs(gauss() * 0.1), ang: rng() * TAU, color: '#FFE7B8', alpha: 0.2 + rng() * 0.5 });
+                });
+                // El nombre de cada estudiante va a mitad de su brazo, no en el núcleo
+                const students = nodes.filter(d => d.depth === 1).map(d => {
+                    const leaves = d.src.leaves();
+                    return { name: d.name, at: byNode.get(leaves[Math.floor(leaves.length / 2)]) };
+                });
+                return { nodes: nodes, filler: filler, students: students, visible: false, spin: 0 };
+            }
+
+            // ---------- Lienzo, zoom y estado ----------
+            const canvas = document.getElementById('universe');
+            const ctx = canvas.getContext('2d');
+            const canvasSel = d3.select(canvas);
+            const tip = document.getElementById('star-tip');
             const navLinks = Array.from(document.querySelectorAll('.site-nav ul a'));
 
             let width = 0;
             let height = 0;
-            let view = null;   // vista actual [x, y, tamaño], como en d3.interpolateZoom
+            let dpr = 1;
+            let starCount = 0;
+            let galaxyCount = 0;
+            let transform = d3.zoomIdentity;
+            let time = 0;
             let active = null;
+            let hovered = null;
+            let hoveredStar = null;
+            let pointer = null;
+            let drawPending = false;
+            const comets = [];
+            let nextComet = 3;
 
-            function scale(v) {
-                return Math.min(width, height) / v[2];
+            const zoom = d3.zoom()
+                .scaleExtent([0.15, 60])
+                .on('zoom', zoomed);
+
+            function toScreen(p) {
+                return [transform.x + transform.k * p.x, transform.y + transform.k * p.y];
             }
 
-            function apply(v) {
-                view = v;
-                const k = scale(v);
-                root.attr('transform', `translate(${width / 2},${height / 2}) scale(${k}) translate(${-v[0]},${-v[1]})`);
-                anchors.attr('transform', s => `translate(${s.x},${s.y}) scale(${1 / k})`);
+            function offscreen(x, y, r) {
+                return x + r < 0 || x - r > width || y + r < 0 || y - r > height;
             }
 
-            // Vista de una sección: el punto queda a la derecha (o arriba en teléfonos) y la sección a su lado
-            function sectionView(s) {
-                const size = sectionSize();
-                const k = Math.min(width, height) / size;
-                if (width >= 800) return [s.x - (width * 0.2) / k, s.y, size];
-                return [s.x, s.y + (height * 0.27) / k, size];
+            function viewOf(t) {
+                return [(width / 2 - t.x) / t.k, (height / 2 - t.y) / t.k, Math.min(width, height) / t.k];
             }
 
-            // Vista general con todas las secciones
-            function overview() {
-                const xs = d3.extent(sections, s => s.x);
-                const ys = d3.extent(sections, s => s.y);
-                const min = Math.min(width, height);
-                const size = Math.max((xs[1] - xs[0]) * 1.5 * min / width, (ys[1] - ys[0]) * 1.5 * min / height);
-                return [(xs[0] + xs[1]) / 2, (ys[0] + ys[1]) / 2, size];
+            // Encuadre de una sección: el astro a la derecha (o arriba en teléfonos), la sección a su lado
+            function sectionTransform(s) {
+                const desktop = width >= 800;
+                const k = (desktop ? Math.min(width * 0.55, height * 0.9) : Math.min(width, height * 0.42)) / s.size;
+                const px = desktop ? width * 0.7 : width / 2;
+                const py = desktop ? height * 0.52 : height * 0.25;
+                return d3.zoomIdentity.translate(px - k * s.x, py - k * s.y).scale(k);
+            }
+
+            function overviewTransform() {
+                const x0 = d3.min(sections, s => s.x - s.hit);
+                const x1 = d3.max(sections, s => s.x + s.hit);
+                const y0 = d3.min(sections, s => s.y - s.hit);
+                const y1 = d3.max(sections, s => s.y + s.hit);
+                const k = Math.max(0.15, Math.min(width / ((x1 - x0) * 1.15), height / ((y1 - y0) * 1.25)));
+                return d3.zoomIdentity.translate(width / 2 - k * (x0 + x1) / 2, height / 2 - k * (y0 + y1) / 2).scale(k);
             }
 
             function resize() {
                 width = window.innerWidth;
                 height = window.innerHeight;
-                svg.attr('viewBox', [0, 0, width, height]);
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = Math.round(width * dpr);
+                canvas.height = Math.round(height * dpr);
+                starCount = Math.round(Math.max(1500, Math.min(stars.length, width * height / 230)));
+                galaxyCount = width < 800 ? 6 : galaxies.length;
+            }
+
+            // ---------- Dibujo ----------
+            function drawStars() {
+                const k = transform.k;
+                const cx = (width / 2 - transform.x) / k;
+                const cy = (height / 2 - transform.y) / k;
+                for (let i = 0; i < starCount; i++) {
+                    const s = stars[i];
+                    // Paralaje: las estrellas lejanas se mueven y crecen menos con el zoom
+                    const kf = Math.pow(k, s.depth);
+                    const x = width / 2 + (s.x - cx * s.depth) * kf;
+                    if (x < -3 || x > width + 3) continue;
+                    const y = height / 2 + (s.y - cy * s.depth) * kf;
+                    if (y < -3 || y > height + 3) continue;
+                    ctx.globalAlpha = s.alpha * (reduceMotion ? 1 : 0.72 + 0.28 * Math.sin(time * s.speed + s.phase));
+                    ctx.fillStyle = s.color;
+                    if (s.r < 0.9) {
+                        ctx.fillRect(x - s.r, y - s.r, s.r * 2, s.r * 2);
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(x, y, s.r, 0, TAU);
+                        ctx.fill();
+                    }
+                }
+                ctx.globalAlpha = 1;
+            }
+
+            function drawGalaxies() {
+                const k = transform.k;
+                const cx = (width / 2 - transform.x) / k;
+                const cy = (height / 2 - transform.y) / k;
+                for (let i = 0; i < galaxyCount; i++) {
+                    const g = galaxies[i];
+                    const kf = Math.pow(k, g.depth);
+                    const gx = width / 2 + (g.x - cx * g.depth) * kf;
+                    const gy = height / 2 + (g.y - cy * g.depth) * kf;
+                    if (offscreen(gx, gy, g.radius * kf * 1.2)) continue;
+                    const rot = g.spin * time;
+                    const cr = Math.cos(rot), sr = Math.sin(rot), ct = Math.cos(g.tilt), st = Math.sin(g.tilt);
+                    for (const p of g.pts) {
+                        const x1 = p[0] * cr - p[1] * sr;
+                        const y1 = (p[0] * sr + p[1] * cr) * g.squash;
+                        ctx.fillStyle = p[2];
+                        ctx.fillRect(gx + (x1 * ct - y1 * st) * kf - p[3] / 2, gy + (x1 * st + y1 * ct) * kf - p[3] / 2, p[3], p[3]);
+                    }
+                }
+            }
+
+            function drawNebula() {
+                const s = byKind.get('nebulosa');
+                const k = transform.k;
+                const [sx, sy] = toScreen(s);
+                if (offscreen(sx, sy, 320 * k)) return;
+                ctx.save();
+                ctx.setTransform(dpr * k, 0, 0, dpr * k, dpr * (transform.x + k * nebula.ox), dpr * (transform.y + k * nebula.oy));
+                nebula.layers.forEach((layer, i) => {
+                    ctx.globalAlpha = 0.075 * (reduceMotion ? 1 : 0.85 + 0.15 * Math.sin(time * 0.6 + i));
+                    ctx.fillStyle = layer.color;
+                    ctx.fill(layer.path);
+                });
+                ctx.restore();
+                // Estrellas recién nacidas, con destello en cruz
+                nebula.young.forEach(p => {
+                    const x = transform.x + k * p.x;
+                    const y = transform.y + k * p.y;
+                    const glow = reduceMotion ? 1 : 0.6 + 0.4 * Math.sin(time * 1.7 + p.phase);
+                    const r = p.r * Math.max(0.8, Math.min(2, Math.sqrt(k)));
+                    ctx.globalAlpha = glow;
+                    ctx.fillStyle = '#EFFFF8';
+                    ctx.beginPath();
+                    ctx.arc(x, y, r, 0, TAU);
+                    ctx.fill();
+                    ctx.globalAlpha = glow * 0.5;
+                    ctx.fillRect(x - r * 4, y - 0.5, r * 8, 1);
+                    ctx.fillRect(x - 0.5, y - r * 4, 1, r * 8);
+                });
+                ctx.globalAlpha = 1;
+            }
+
+            function drawGuat() {
+                const s = byKind.get('galaxia');
+                const k = transform.k;
+                const [sx, sy] = toScreen(s);
+                if (guat) guat.visible = false;
+                if (offscreen(sx, sy, GUAT_RADIUS * k * 1.2)) return;
+                const core = ctx.createRadialGradient(sx, sy, 0, sx, sy, GUAT_RADIUS * k * 0.45);
+                core.addColorStop(0, 'rgba(255, 231, 184, 0.55)');
+                core.addColorStop(1, 'rgba(255, 231, 184, 0)');
+                ctx.fillStyle = core;
+                ctx.beginPath();
+                ctx.arc(sx, sy, GUAT_RADIUS * k * 0.45, 0, TAU);
+                ctx.fill();
+                if (!guat) return;
+                guat.visible = true;
+                const rot = guat.spin;
+                const ct = Math.cos(GUAT_TILT), st = Math.sin(GUAT_TILT);
+                const place = (rr, ang, out) => {
+                    const th = ang + GUAT_TWIST * rr + rot;
+                    const r = GUAT_RADIUS * rr;
+                    const lx = r * Math.cos(th);
+                    const ly = r * Math.sin(th) * GUAT_SQUASH;
+                    out.sx = sx + (lx * ct - ly * st) * k;
+                    out.sy = sy + (lx * st + ly * ct) * k;
+                    return out;
+                };
+                const tmp = {};
+                for (const p of guat.filler) {
+                    place(p.rr, p.ang, tmp);
+                    ctx.globalAlpha = p.alpha;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(tmp.sx - 0.6, tmp.sy - 0.6, 1.2, 1.2);
+                }
+                guat.nodes.forEach(d => place(d.rr, d.ang, d));
+                ctx.globalAlpha = 0.08;
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 0.6;
+                ctx.beginPath();
+                guat.nodes.forEach(d => {
+                    if (!d.parent) return;
+                    ctx.moveTo(d.parent.sx, d.parent.sy);
+                    ctx.lineTo(d.sx, d.sy);
+                });
+                ctx.stroke();
+                const grow = Math.max(0.7, Math.min(2.2, Math.pow(k, 0.35)));
+                guat.nodes.forEach(d => {
+                    const r = d.size * grow * (d === hoveredStar ? 1.8 : 1);
+                    ctx.fillStyle = d.color;
+                    ctx.globalAlpha = 0.22;
+                    ctx.beginPath();
+                    ctx.arc(d.sx, d.sy, r * 3, 0, TAU);
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                    ctx.beginPath();
+                    ctx.arc(d.sx, d.sy, r, 0, TAU);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+            }
+
+            function drawOrb(x, y, r, light, dark, sunX, sunY) {
+                const d = Math.hypot(sunX - x, sunY - y) || 1;
+                const g = ctx.createRadialGradient(x + (sunX - x) / d * r * 0.5, y + (sunY - y) / d * r * 0.5, r * 0.1, x, y, r * 1.1);
+                g.addColorStop(0, light);
+                g.addColorStop(1, dark);
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, TAU);
+                ctx.fill();
+            }
+
+            function drawSun() {
+                const s = byKind.get('sol');
+                const k = transform.k;
+                const [sx, sy] = toScreen(s);
+                if (offscreen(sx, sy, 200 * k)) return;
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+                ctx.lineWidth = 1;
+                sunPlanets.forEach(p => {
+                    ctx.beginPath();
+                    ctx.ellipse(sx, sy, p.r * k, p.r * k * ORBIT_TILT, 0, 0, TAU);
+                    ctx.stroke();
+                });
+                ctx.fillStyle = 'rgba(225, 214, 192, 0.55)';
+                belt.forEach(b => {
+                    const a = b.a + (reduceMotion ? 0 : time * 0.05 * Math.pow(150 / b.r, 1.5));
+                    ctx.fillRect(sx + Math.cos(a) * b.r * k - b.size / 2, sy + Math.sin(a) * b.r * k * ORBIT_TILT - b.size / 2, b.size, b.size);
+                });
+                const orbs = sunPlanets.map(p => {
+                    const a = p.phase + (reduceMotion ? 0 : time * p.speed);
+                    return { p: p, x: sx + Math.cos(a) * p.r * k, y: sy + Math.sin(a) * p.r * k * ORBIT_TILT, behind: Math.sin(a) < 0 };
+                });
+                const orb = o => drawOrb(o.x, o.y, Math.max(1.5, o.p.size * k), o.p.light, o.p.dark, sx, sy);
+                orbs.filter(o => o.behind).forEach(orb);
+                const R = 30 * k;
+                let g = ctx.createRadialGradient(sx, sy, R * 0.5, sx, sy, R * 5);
+                g.addColorStop(0, 'rgba(255, 200, 87, 0.45)');
+                g.addColorStop(0.4, 'rgba(255, 140, 66, 0.12)');
+                g.addColorStop(1, 'rgba(255, 140, 66, 0)');
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(sx, sy, R * 5, 0, TAU);
+                ctx.fill();
+                g = ctx.createRadialGradient(sx - R * 0.3, sy - R * 0.3, R * 0.1, sx, sy, R);
+                g.addColorStop(0, '#FFFFFF');
+                g.addColorStop(0.45, '#FFE29A');
+                g.addColorStop(1, '#FF9F43');
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(sx, sy, R, 0, TAU);
+                ctx.fill();
+                orbs.filter(o => !o.behind).forEach(orb);
+            }
+
+            function drawPlanet() {
+                const s = byKind.get('planeta');
+                const k = transform.k;
+                const [sx, sy] = toScreen(s);
+                if (offscreen(sx, sy, 140 * k)) return;
+                const R = 44 * k;
+                const moonPos = moons.map(m => {
+                    const a = m.phase + (reduceMotion ? 0 : time * m.speed);
+                    return { m: m, x: sx + Math.cos(a) * m.r * k, y: sy + Math.sin(a) * m.r * k * 0.35, behind: Math.sin(a) < 0 };
+                });
+                const moon = o => drawOrb(o.x, o.y, Math.max(1.2, o.m.size * k), '#FFFFFF', '#3A3550', sx - R * 3, sy - R * 3);
+                moonPos.filter(o => o.behind).forEach(moon);
+                let g = ctx.createRadialGradient(sx, sy, R * 0.95, sx, sy, R * 1.5);
+                g.addColorStop(0, withAlpha(s.color, 0.45));
+                g.addColorStop(1, withAlpha(s.color, 0));
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(sx, sy, R * 1.5, 0, TAU);
+                ctx.fill();
+                planetProjection.scale(R).translate([sx, sy]).rotate([reduceMotion ? 20 : time * 9, -18]);
+                planetPath.context(ctx);
+                g = ctx.createRadialGradient(sx - R * 0.4, sy - R * 0.4, R * 0.1, sx, sy, R);
+                g.addColorStop(0, '#5B4BA8');
+                g.addColorStop(1, '#1A1240');
+                ctx.beginPath();
+                planetPath({ type: 'Sphere' });
+                ctx.fillStyle = g;
+                ctx.fill();
+                ctx.beginPath();
+                planetPath(continents);
+                ctx.fillStyle = withAlpha(s.color, 0.85);
+                ctx.fill();
+                if (R > 25) {
+                    ctx.beginPath();
+                    planetPath(graticule);
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+                    ctx.lineWidth = 0.6;
+                    ctx.stroke();
+                }
+                g = ctx.createLinearGradient(sx - R, sy - R, sx + R, sy + R);
+                g.addColorStop(0.45, 'rgba(0, 0, 0, 0)');
+                g.addColorStop(1, 'rgba(0, 0, 0, 0.6)');
+                ctx.beginPath();
+                ctx.arc(sx, sy, R, 0, TAU);
+                ctx.fillStyle = g;
+                ctx.fill();
+                moonPos.filter(o => !o.behind).forEach(moon);
+                if (R > 18) {
+                    ctx.font = `13px ${stack(textFont)}`;
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.fillText('EmuGaMind', sx, sy - R * 1.6);
+                }
+            }
+
+            function drawLabels() {
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+                ctx.shadowBlur = 8;
+                sections.forEach(s => {
+                    const [sx, sy] = toScreen(s);
+                    const y = sy + Math.min(s.hit * transform.k, height * 0.3) + 26;
+                    if (offscreen(sx, y, 120)) return;
+                    ctx.font = `${s === hovered ? 21 : 18}px ${stack(s.font)}`;
+                    ctx.globalAlpha = s === active ? 0.5 : 1;
+                    ctx.fillStyle = s.color;
+                    ctx.fillText(s.label, sx, y);
+                });
+                // Nombres de los estudiantes al acercarse a la galaxia GUAT
+                if (guat && guat.visible && GUAT_RADIUS * transform.k > 250) {
+                    ctx.font = `bold 13px ${stack(textFont)}`;
+                    ctx.globalAlpha = 0.9;
+                    ctx.fillStyle = '#FFFFFF';
+                    guat.students.forEach(d => ctx.fillText(d.name, d.at.sx, d.at.sy - 16));
+                }
+                ctx.globalAlpha = 1;
+                ctx.shadowBlur = 0;
+                ctx.textBaseline = 'alphabetic';
+            }
+
+            function drawComets(dt) {
+                if (reduceMotion) return;
+                nextComet -= dt;
+                if (nextComet <= 0) {
+                    nextComet = 4 + Math.random() * 8;
+                    const a = Math.PI * (0.15 + Math.random() * 0.7);
+                    const speed = 700 + Math.random() * 500;
+                    comets.push({ x: Math.random() * width, y: -20, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, speed: speed, age: 0, life: 1.2 + Math.random() * 0.6, len: 100 + Math.random() * 80 });
+                }
+                for (let i = comets.length - 1; i >= 0; i--) {
+                    const c = comets[i];
+                    c.age += dt;
+                    if (c.age > c.life) {
+                        comets.splice(i, 1);
+                        continue;
+                    }
+                    const hx = c.x + c.vx * c.age;
+                    const hy = c.y + c.vy * c.age;
+                    const tx = hx - c.vx / c.speed * c.len;
+                    const ty = hy - c.vy / c.speed * c.len;
+                    const fade = 1 - c.age / c.life;
+                    const g = ctx.createLinearGradient(hx, hy, tx, ty);
+                    g.addColorStop(0, `rgba(255, 255, 255, ${0.9 * fade})`);
+                    g.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                    ctx.strokeStyle = g;
+                    ctx.lineWidth = 1.6;
+                    ctx.beginPath();
+                    ctx.moveTo(hx, hy);
+                    ctx.lineTo(tx, ty);
+                    ctx.stroke();
+                }
+            }
+
+            function draw(dt) {
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.clearRect(0, 0, width, height);
+                drawStars();
+                ctx.globalCompositeOperation = 'lighter';
+                drawGalaxies();
+                drawNebula();
+                drawGuat();
+                ctx.globalCompositeOperation = 'source-over';
+                drawSun();
+                drawPlanet();
+                drawLabels();
+                drawComets(dt);
+            }
+
+            function requestDraw() {
+                if (!reduceMotion || drawPending) return;
+                drawPending = true;
+                requestAnimationFrame(() => {
+                    drawPending = false;
+                    draw(0);
+                });
+            }
+
+            // ---------- Interacción ----------
+            function updateHover() {
+                hovered = null;
+                hoveredStar = null;
+                if (pointer) {
+                    // d3.Delaunay encuentra el astro más cercano al puntero
+                    const pts = sections.map(toScreen);
+                    const i = d3.Delaunay.from(pts).find(pointer[0], pointer[1]);
+                    if (Math.hypot(pts[i][0] - pointer[0], pts[i][1] - pointer[1]) < Math.max(sections[i].hit * transform.k, 30)) {
+                        hovered = sections[i];
+                    }
+                    if (guat && guat.visible && active && active.kind === 'galaxia' && GUAT_RADIUS * transform.k > 250) {
+                        const j = d3.Delaunay.from(guat.nodes, d => d.sx, d => d.sy).find(pointer[0], pointer[1]);
+                        const d = guat.nodes[j];
+                        if (Math.hypot(d.sx - pointer[0], d.sy - pointer[1]) < 12) hoveredStar = d;
+                    }
+                }
+                if (hoveredStar) {
+                    tip.textContent = hoveredStar.name;
+                    const extra = [hoveredStar.grade ? 'Calificación ' + hoveredStar.grade : '', hoveredStar.url ? 'Clic para abrir' : ''].filter(Boolean).join(' · ');
+                    if (extra) {
+                        const small = document.createElement('small');
+                        small.textContent = extra;
+                        tip.appendChild(small);
+                    }
+                    tip.style.left = Math.min(pointer[0] + 14, width - 270) + 'px';
+                    tip.style.top = (pointer[1] + 14) + 'px';
+                    tip.hidden = false;
+                } else {
+                    tip.hidden = true;
+                }
+                canvas.style.cursor = (hoveredStar && hoveredStar.url) || (hovered && hovered !== active) ? 'pointer' : '';
+                requestDraw();
             }
 
             function setPanel(s) {
                 sections.forEach(x => x.el.classList.toggle('active', x === s));
             }
 
-            // Acercarse y alejarse de un punto a otro (van Wijk y Nuij, igual que d3 smooth zooming)
+            function updateNav(s) {
+                navLinks.forEach(a => {
+                    if (s && a.getAttribute('href') === '#' + s.id) a.setAttribute('aria-current', 'page');
+                    else a.removeAttribute('aria-current');
+                    if (s) a.style.setProperty('--link-color', s.color);
+                });
+                document.title = !s || s === home ? 'ISSASODA' : `${s.label} · ISSASODA`;
+            }
+
+            // Al explorar libremente lejos de la sección, se cierra su panel
+            function leaveSection() {
+                active = null;
+                setPanel(null);
+                updateNav(null);
+                history.replaceState(null, '', location.pathname + location.search);
+            }
+
+            function zoomed(event) {
+                transform = event.transform;
+                if (event.sourceEvent && active) {
+                    const t = sectionTransform(active);
+                    if (Math.abs(Math.log(transform.k / t.k)) > 0.2 || Math.hypot(transform.x - t.x, transform.y - t.y) > 60) leaveSection();
+                }
+                if (event.sourceEvent) tip.hidden = true;
+                requestDraw();
+            }
+
+            // Alejarse y acercarse a un astro (van Wijk y Nuij, como d3 smooth zooming)
             function fly(target, minDuration, maxDuration) {
-                const i = d3.interpolateZoom(view, target);
-                const duration = reduceMotion ? 0 : Math.max(minDuration, Math.min(maxDuration, i.duration));
-                return root.interrupt()
+                const duration = reduceMotion ? 0 : Math.max(minDuration, Math.min(maxDuration, d3.interpolateZoom(viewOf(transform), viewOf(target)).duration));
+                return canvasSel.interrupt()
                     .transition()
                     .duration(duration)
-                    .tween('view', () => t => apply(i(t)));
+                    .call(zoom.transform, target);
             }
 
             function goTo(id) {
@@ -480,26 +1102,42 @@
                 if (s === active) return;
                 active = s;
                 setPanel(null);
-                navLinks.forEach(a => {
-                    const current = a.getAttribute('href') === '#' + s.id;
-                    if (current) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
-                    a.style.setProperty('--link-color', s.color);
+                updateNav(s);
+                fly(sectionTransform(s), 1000, 3600).on('end', () => {
+                    if (active === s) setPanel(s);
                 });
-                document.title = s === home ? 'ISSASODA' : `${s.label} · ISSASODA`;
-                fly(sectionView(s), 900, 3200).on('end', () => setPanel(s));
             }
 
             function currentId() {
                 return decodeURIComponent(location.hash.slice(1)) || home.id;
             }
 
-            // Al salir hacia otra página, zambullirse en el punto antes de navegar
+            canvas.addEventListener('pointermove', event => {
+                pointer = [event.clientX, event.clientY];
+                updateHover();
+            });
+            canvas.addEventListener('pointerleave', () => {
+                pointer = null;
+                updateHover();
+            });
+            canvasSel.on('click.select', event => {
+                pointer = d3.pointer(event);
+                updateHover();
+                if (hoveredStar && hoveredStar.url) {
+                    window.open(hoveredStar.url, '_blank', 'noopener');
+                } else if (hovered) {
+                    location.hash = hovered.id;
+                }
+            });
+
+            // Al salir hacia otra página, zambullirse en el astro antes de navegar
             document.querySelectorAll('a[data-dive]').forEach(a => {
                 a.addEventListener('click', event => {
-                    if (reduceMotion || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    if (reduceMotion || !active || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
                     event.preventDefault();
                     setPanel(null);
-                    fly([active.x, active.y, sectionSize() / 40], 700, 900)
+                    const k = transform.k * 18;
+                    fly(d3.zoomIdentity.translate(width / 2 - k * active.x, height / 2 - k * active.y).scale(k), 700, 1000)
                         .on('end', () => { location.href = a.href; });
                 });
             });
@@ -511,29 +1149,49 @@
                 if (event.target.closest && event.target.closest('input, textarea, select')) return;
                 const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
                 if (!step) return;
-                const index = sections.indexOf(active);
+                const index = active ? sections.indexOf(active) : (step > 0 ? -1 : 0);
                 location.hash = sections[(index + step + sections.length) % sections.length].id;
             });
 
             window.addEventListener('resize', () => {
                 resize();
-                root.interrupt();
-                apply(sectionView(active));
-                setPanel(active);
+                if (active) {
+                    canvasSel.interrupt().call(zoom.transform, sectionTransform(active));
+                    setPanel(active);
+                }
+                requestDraw();
             });
 
             // Al volver con el botón Atrás desde otra página, restaurar la sección sin animación
             window.addEventListener('pageshow', event => {
                 if (event.persisted && active) {
-                    root.interrupt();
-                    apply(sectionView(active));
+                    canvasSel.interrupt().call(zoom.transform, sectionTransform(active));
                     setPanel(active);
                 }
             });
 
+            // ---------- Arranque ----------
             resize();
-            apply(overview());
-            setTimeout(() => goTo(currentId()), reduceMotion ? 0 : 400);
+            canvasSel.call(zoom).on('dblclick.zoom', null).call(zoom.transform, overviewTransform());
+            if (reduceMotion) {
+                draw(0);
+            } else {
+                let last = 0;
+                d3.timer(elapsed => {
+                    const dt = Math.min(0.05, (elapsed - last) / 1000);
+                    last = elapsed;
+                    time += dt;
+                    // La galaxia GUAT se detiene mientras el cursor está sobre una de sus estrellas
+                    if (guat && !hoveredStar) guat.spin += dt * 0.025;
+                    draw(dt);
+                });
+            }
+            document.fonts.ready.then(requestDraw);
+            d3.json('guat/index.json').then(data => {
+                guat = buildGuat(data);
+                requestDraw();
+            }).catch(error => console.error('No se pudo cargar la galaxia GUAT:', error));
+            setTimeout(() => goTo(currentId()), reduceMotion ? 0 : 700);
 
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('ServiceWorker.js').catch(error => {
