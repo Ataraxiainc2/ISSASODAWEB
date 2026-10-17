@@ -1,12 +1,14 @@
 // Cambiar la versión cada vez que cambie la lista de recursos: al activarse,
 // el Service Worker borra las cachés de versiones anteriores
-const CACHE_NAME = 'guat-v2';
+const CACHE_NAME = 'issasoda-v4';
 
 // Páginas y datos del sitio (rutas relativas a este archivo)
 const SITE_FILES = [
   './',
   'index.html',
-  'index.json',
+  'guat/',
+  'guat/index.html',
+  'guat/index.json',
   'Formulas.html',
   'formulas.json',
   'Ejercicios/RegresionLineal.html',
@@ -20,6 +22,7 @@ const SITE_FILES = [
 const CDN_FILES = [
   'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js',
   'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js',
   'https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap',
   'https://fonts.googleapis.com/css2?family=Aboreto&display=swap',
   'https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap'
@@ -53,10 +56,10 @@ self.addEventListener('activate', event => {
   );
 });
 
-function saveCopy(request, response) {
+function saveCopy(key, response) {
   if (response.ok || response.type === 'opaque') {
     const copy = response.clone();
-    caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+    caches.open(CACHE_NAME).then(cache => cache.put(key, copy));
   }
   return response;
 }
@@ -68,11 +71,13 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
 
   if (url.origin === self.location.origin) {
-    // Sitio: primero la red (contenido siempre actualizado), la caché si no hay conexión
+    // Sitio: primero la red (contenido siempre actualizado), la caché si no hay conexión.
+    // Se guarda por ruta, sin ?consulta ni #ancla, para no duplicar la misma página
+    const key = url.origin + url.pathname;
     event.respondWith(
       fetch(request)
-        .then(response => saveCopy(request, response))
-        .catch(() => caches.match(request))
+        .then(response => saveCopy(key, response))
+        .catch(() => caches.match(key))
     );
   } else if (CDN_HOSTS.includes(url.hostname)) {
     // Librerías y fuentes: primero la caché, la red solo la primera vez

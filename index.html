@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ISSASODA</title>
+    <meta name="description" content="ISSASODA: educación para personas de todas las edades. Cursos, ejercicios interactivos y el avance de cada estudiante.">
+    <link rel="canonical" href="https://issasodaweb.com/">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64 96x96">
+    <link rel="manifest" href="manifiesto.json">
+    <meta name="theme-color" content="#15202B">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script>document.documentElement.classList.add('js');</script>
+    <style>
+        :root {
+            --bg: #15202B;
+            --panel: rgba(21, 32, 43, 0.82);
+            --text: #E7ECEF;
+            --muted: #9AA7B2;
+            --accent: #1DA1F2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Arial', sans-serif;
+        }
+
+        html.js, html.js body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        h1, h2, .brand, .site-nav a {
+            font-family: 'Rubik Mono One', 'Arial', sans-serif;
+            font-weight: normal;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        /* Barra de navegación */
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 14px 24px;
+            background: linear-gradient(to bottom, rgba(21, 32, 43, 0.95), rgba(21, 32, 43, 0));
+        }
+
+        .brand {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+
+        .site-nav ul {
+            display: flex;
+            gap: 18px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .site-nav ul a {
+            display: block;
+            padding: 4px 0;
+            font-size: 11px;
+            color: var(--muted);
+            text-decoration: none;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+        }
+
+            .site-nav ul a:hover,
+            .site-nav ul a:focus-visible {
+                color: var(--text);
+            }
+
+            .site-nav ul a[aria-current="page"] {
+                color: var(--text);
+                border-bottom-color: var(--link-color, var(--accent));
+            }
+
+        /* Universo */
+        #world {
+            display: none;
+        }
+
+        html.js #world {
+            display: block;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #world .anchor {
+            cursor: pointer;
+        }
+
+            #world .anchor text {
+                font-family: 'Rubik Mono One', 'Arial', sans-serif;
+                font-size: 13px;
+                paint-order: stroke;
+                stroke: var(--bg);
+                stroke-width: 4px;
+                stroke-linejoin: round;
+            }
+
+        /* Secciones: sin JavaScript se leen una debajo de otra */
+        main {
+            padding: 72px 16px 32px;
+        }
+
+        .panel {
+            max-width: 640px;
+            margin: 0 auto 48px;
+            border-left: 3px solid var(--accent);
+            padding: 24px 28px;
+            line-height: 1.6;
+        }
+
+        html.js main {
+            padding: 0;
+        }
+
+        html.js .panel {
+            position: fixed;
+            z-index: 5;
+            top: 50%;
+            left: max(24px, 6vw);
+            width: min(460px, 40vw);
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+            margin: 0;
+            background: var(--panel);
+            border-radius: 14px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(calc(-50% + 12px));
+            transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+        }
+
+            html.js .panel.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(-50%);
+            }
+
+        .eyebrow {
+            margin: 0 0 6px;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .panel h1 {
+            margin: 0 0 14px;
+            font-size: clamp(30px, 4vw, 44px);
+            line-height: 1.1;
+        }
+
+        .panel h2 {
+            margin: 0 0 14px;
+            font-size: clamp(22px, 3vw, 30px);
+            line-height: 1.2;
+        }
+
+        .panel p {
+            margin: 0 0 14px;
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+            .actions a {
+                display: inline-block;
+                padding: 9px 16px;
+                border: 1px solid var(--accent);
+                border-radius: 999px;
+                color: var(--accent);
+                font-size: 14px;
+                text-decoration: none;
+                transition: background-color 0.2s, color 0.2s;
+            }
+
+                .actions a:hover,
+                .actions a:focus-visible,
+                .actions a.primary {
+                    background-color: var(--accent);
+                    color: var(--bg);
+                }
+
+        .keys-hint {
+            display: none;
+        }
+
+        html.js .keys-hint {
+            display: block;
+            position: fixed;
+            right: 24px;
+            bottom: 18px;
+            z-index: 5;
+            margin: 0;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        kbd {
+            padding: 1px 6px;
+            border: 1px solid var(--muted);
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        /* Teléfonos: el punto arriba, la sección abajo */
+        @media (max-width: 799px) {
+            .site-nav {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+                padding: 12px 16px;
+            }
+
+                .site-nav ul {
+                    max-width: 100%;
+                }
+
+            html.js .panel {
+                top: auto;
+                bottom: 16px;
+                left: 16px;
+                right: 16px;
+                width: auto;
+                max-height: 56vh;
+                padding: 20px;
+                transform: translateY(12px);
+            }
+
+                html.js .panel.active {
+                    transform: none;
+                }
+
+            html.js .keys-hint {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html.js .panel {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav" aria-label="Secciones">
+        <a class="brand" href="#inicio">ISSASODA</a>
+        <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#guat">GUAT</a></li>
+            <li><a href="#progreso">Progreso</a></li>
+            <li><a href="#proyectos">Proyectos</a></li>
+        </ul>
+    </nav>
+
+    <svg id="world" aria-hidden="true"></svg>
+
+    <main>
+        <!-- Cada sección es un punto del mapa: data-x / data-y son sus coordenadas, data-color su color -->
+        <section class="panel" id="inicio" data-label="Inicio" data-x="0" data-y="0" data-color="#1DA1F2">
+            <p class="eyebrow">Educación para todas las edades</p>
+            <h1>ISSASODA</h1>
+            <p>Aprender no tiene edad. ISSASODA reúne cursos, ejercicios interactivos y recursos para estudiantes de cualquier etapa, y pronto mostrará el avance de cada uno.</p>
+            <p class="hint">Cada punto de este mapa es un paso de aprendizaje. Elige un destino.</p>
+            <div class="actions">
+                <a class="primary" href="#guat">Explorar GUAT</a>
+                <a href="#progreso">Progreso de estudiantes</a>
+            </div>
+        </section>
+
+        <section class="panel" id="guat" data-label="GUAT" data-x="420" data-y="-240" data-color="#FFD166">
+            <p class="eyebrow">Proyecto universitario</p>
+            <h2>GUAT</h2>
+            <p>GUAT University: un árbol interactivo con los estudiantes, sus cursos y sus clases, con lecturas, podcasts y las fórmulas de cada tema.</p>
+            <div class="actions">
+                <a class="primary" href="guat/" data-dive>Abrir el árbol GUAT</a>
+                <a href="Formulas.html" data-dive>Fórmulas</a>
+                <a href="Ejercicios/RegresionLineal.html" data-dive>Ejercicio: regresión lineal</a>
+            </div>
+        </section>
+
+        <section class="panel" id="progreso" data-label="Progreso" data-x="-380" data-y="260" data-color="#06D6A0">
+            <p class="eyebrow">Próximamente</p>
+            <h2>Progreso de estudiantes</h2>
+            <p>Aquí cada estudiante tendrá su propio punto en el mapa: los cursos que toma, los ejercicios que resuelve y lo que ha logrado, para ver su avance de un vistazo.</p>
+            <div class="actions">
+                <a href="#inicio">Volver al inicio</a>
+            </div>
+        </section>
+
+        <section class="panel" id="proyectos" data-label="Proyectos" data-x="360" data-y="330" data-color="#EF476F">
+            <p class="eyebrow">Apps de ISSASODA</p>
+            <h2>Proyectos</h2>
+            <p>Aplicaciones y herramientas creadas por ISSASODA.</p>
+            <div class="actions">
+                <a href="https://emugamind.issasodaweb.com" target="_blank" rel="noopener">EmuGaMind</a>
+            </div>
+        </section>
+    </main>
+
+    <p class="keys-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> para moverte entre secciones</p>
+
+    <script>
+        (function () {
+            const svg = d3.select('#world');
+            const root = svg.append('g');
+            // Sin animación si el sistema pide reducir el movimiento (?motion en la URL la fuerza, para probar)
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                && !new URLSearchParams(location.search).has('motion');
+
+            // Ancho (en unidades del mapa) que se ve al estar en una sección: crece con la pantalla
+            // para que los puntos no se vean enormes en monitores grandes ni diminutos en teléfonos
+            function sectionSize() {
+                return Math.max(150, Math.min(300, Math.min(width, height) / 3.5));
+            }
+
+            const sections = Array.from(document.querySelectorAll('.panel')).map(el => ({
+                id: el.id,
+                el: el,
+                label: el.dataset.label,
+                color: el.dataset.color,
+                x: +el.dataset.x,
+                y: +el.dataset.y
+            }));
+            const byId = new Map(sections.map(s => [s.id, s]));
+            const home = sections[0];
+            sections.forEach(s => s.el.style.setProperty('--accent', s.color));
+
+            // Universo de puntos con semilla fija: es el mismo en cada visita
+            const random = d3.randomLcg(42);
+            const dustX = d3.randomUniform.source(random)(-850, 850);
+            const dustY = d3.randomUniform.source(random)(-650, 700);
+            const dust = d3.range(1600).map(() => [dustX(), dustY(), 0.12 + random() * 0.38]);
+            const clusters = sections.flatMap(s => {
+                const nx = d3.randomNormal.source(random)(s.x, 34);
+                const ny = d3.randomNormal.source(random)(s.y, 34);
+                return d3.range(320).map(() => [nx(), ny(), s.color]);
+            });
+
+            root.append('g')
+                .selectAll('line')
+                .data(sections.slice(1))
+                .join('line')
+                .attr('x1', home.x)
+                .attr('y1', home.y)
+                .attr('x2', s => s.x)
+                .attr('y2', s => s.y)
+                .attr('stroke', s => s.color)
+                .attr('stroke-opacity', 0.3)
+                .attr('stroke-dasharray', '2 6')
+                .attr('vector-effect', 'non-scaling-stroke');
+
+            root.append('g')
+                .selectAll('circle')
+                .data(dust)
+                .join('circle')
+                .attr('cx', d => d[0])
+                .attr('cy', d => d[1])
+                .attr('r', 0.9)
+                .attr('fill', '#FFFFFF')
+                .attr('fill-opacity', d => d[2]);
+
+            root.append('g')
+                .attr('fill-opacity', 0.65)
+                .selectAll('circle')
+                .data(clusters)
+                .join('circle')
+                .attr('cx', d => d[0])
+                .attr('cy', d => d[1])
+                .attr('r', 1.2)
+                .attr('fill', d => d[2]);
+
+            // Marcadores de cada sección, dibujados en píxeles (se contraescalan con el zoom)
+            const anchors = root.append('g')
+                .selectAll('g')
+                .data(sections)
+                .join('g')
+                .attr('class', 'anchor')
+                .on('click', (event, s) => { location.hash = s.id; });
+            anchors.append('circle').attr('r', 22).attr('fill', s => s.color).attr('fill-opacity', 0.18);
+            anchors.append('circle').attr('r', 7).attr('stroke', '#15202B').attr('stroke-width', 2).attr('fill', s => s.color);
+            anchors.append('text').attr('x', 16).attr('y', 5).attr('fill', s => s.color).text(s => s.label);
+
+            const navLinks = Array.from(document.querySelectorAll('.site-nav ul a'));
+
+            let width = 0;
+            let height = 0;
+            let view = null;   // vista actual [x, y, tamaño], como en d3.interpolateZoom
+            let active = null;
+
+            function scale(v) {
+                return Math.min(width, height) / v[2];
+            }
+
+            function apply(v) {
+                view = v;
+                const k = scale(v);
+                root.attr('transform', `translate(${width / 2},${height / 2}) scale(${k}) translate(${-v[0]},${-v[1]})`);
+                anchors.attr('transform', s => `translate(${s.x},${s.y}) scale(${1 / k})`);
+            }
+
+            // Vista de una sección: el punto queda a la derecha (o arriba en teléfonos) y la sección a su lado
+            function sectionView(s) {
+                const size = sectionSize();
+                const k = Math.min(width, height) / size;
+                if (width >= 800) return [s.x - (width * 0.2) / k, s.y, size];
+                return [s.x, s.y + (height * 0.27) / k, size];
+            }
+
+            // Vista general con todas las secciones
+            function overview() {
+                const xs = d3.extent(sections, s => s.x);
+                const ys = d3.extent(sections, s => s.y);
+                const min = Math.min(width, height);
+                const size = Math.max((xs[1] - xs[0]) * 1.5 * min / width, (ys[1] - ys[0]) * 1.5 * min / height);
+                return [(xs[0] + xs[1]) / 2, (ys[0] + ys[1]) / 2, size];
+            }
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                svg.attr('viewBox', [0, 0, width, height]);
+            }
+
+            function setPanel(s) {
+                sections.forEach(x => x.el.classList.toggle('active', x === s));
+            }
+
+            // Acercarse y alejarse de un punto a otro (van Wijk y Nuij, igual que d3 smooth zooming)
+            function fly(target, minDuration, maxDuration) {
+                const i = d3.interpolateZoom(view, target);
+                const duration = reduceMotion ? 0 : Math.max(minDuration, Math.min(maxDuration, i.duration));
+                return root.interrupt()
+                    .transition()
+                    .duration(duration)
+                    .tween('view', () => t => apply(i(t)));
+            }
+
+            function goTo(id) {
+                const s = byId.get(id) || home;
+                if (s === active) return;
+                active = s;
+                setPanel(null);
+                navLinks.forEach(a => {
+                    const current = a.getAttribute('href') === '#' + s.id;
+                    if (current) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+                    a.style.setProperty('--link-color', s.color);
+                });
+                document.title = s === home ? 'ISSASODA' : `${s.label} · ISSASODA`;
+                fly(sectionView(s), 900, 3200).on('end', () => setPanel(s));
+            }
+
+            function currentId() {
+                return decodeURIComponent(location.hash.slice(1)) || home.id;
+            }
+
+            // Al salir hacia otra página, zambullirse en el punto antes de navegar
+            document.querySelectorAll('a[data-dive]').forEach(a => {
+                a.addEventListener('click', event => {
+                    if (reduceMotion || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
+                    setPanel(null);
+                    fly([active.x, active.y, sectionSize() / 40], 700, 900)
+                        .on('end', () => { location.href = a.href; });
+                });
+            });
+
+            window.addEventListener('hashchange', () => goTo(currentId()));
+
+            document.addEventListener('keydown', event => {
+                if (event.metaKey || event.ctrlKey || event.altKey) return;
+                if (event.target.closest && event.target.closest('input, textarea, select')) return;
+                const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+                if (!step) return;
+                const index = sections.indexOf(active);
+                location.hash = sections[(index + step + sections.length) % sections.length].id;
+            });
+
+            window.addEventListener('resize', () => {
+                resize();
+                root.interrupt();
+                apply(sectionView(active));
+                setPanel(active);
+            });
+
+            // Al volver con el botón Atrás desde otra página, restaurar la sección sin animación
+            window.addEventListener('pageshow', event => {
+                if (event.persisted && active) {
+                    root.interrupt();
+                    apply(sectionView(active));
+                    setPanel(active);
+                }
+            });
+
+            resize();
+            apply(overview());
+            setTimeout(() => goTo(currentId()), reduceMotion ? 0 : 400);
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('ServiceWorker.js').catch(error => {
+                    console.error('Fallo al registrar el Service Worker:', error);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
