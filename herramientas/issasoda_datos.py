@@ -33,6 +33,15 @@ PROYECTOS = [
         },
     },
     {
+        'repo': 'ISSAAS', 'nombre': 'ISSAAS', 'tipo': 'agente', 'color': '#4C8DFF',
+        'sitio': 'https://issasodaweb.com/issaas/', 'carpeta': None,
+        'desc': {
+            'es': 'Agente para el Meta Global AI Developer Hackathon 2026: busca fallas de seguridad reales en código abierto, las corrige con los modelos Muse de Meta y demuestra cada corrección con una prueba que falla antes y pasa después.',
+            'en': "Agent for the Meta Global AI Developer Hackathon 2026: it finds real security bugs in open source, fixes them with Meta's Muse models and proves each fix with a test that fails before and passes after.",
+            'pt': 'Agente para o Meta Global AI Developer Hackathon 2026: encontra falhas de segurança reais em código aberto, corrige com os modelos Muse da Meta e prova cada correção com um teste que falha antes e passa depois.',
+        },
+    },
+    {
         'repo': 'EmuGaMind', 'nombre': 'EmuGaMind', 'tipo': 'app', 'color': '#FF6B9A',
         'sitio': 'https://emugamind.issasodaweb.com', 'carpeta': 'EmuGaMind',
         'desc': {

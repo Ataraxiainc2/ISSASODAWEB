@@ -563,7 +563,10 @@
                 const actions = el('div', 'actions');
                 // ISSASODAWEB es esta misma web: en vez de su sitio, lleva a GUAT, que vive dentro de ella
                 if (p.id === 'issasodaweb') actions.appendChild(link('#guat', T('Ver la galaxia GUAT', 'See the GUAT galaxy', 'Ver a galáxia GUAT'), true));
-                if (p.sitio && p.id !== 'issasodaweb') actions.appendChild(link(p.sitio, T('Sitio web', 'Website', 'Site'), true, true));
+                // Las páginas propias del dominio se abren aquí mismo y en el idioma activo; las demás, en otra pestaña
+                const own = p.sitio && p.sitio.startsWith('https://issasodaweb.com/');
+                if (own && p.id !== 'issasodaweb') actions.appendChild(link(new URL(p.sitio).pathname.slice(1) + '?lang=' + IssaIdioma.lang, T('Ver el proyecto', 'See the project', 'Ver o projeto'), true));
+                else if (p.sitio && p.id !== 'issasodaweb') actions.appendChild(link(p.sitio, T('Sitio web', 'Website', 'Site'), true, true));
                 if (p.repo) actions.appendChild(link(p.repo, 'GitHub', false, true));
                 actions.appendChild(link('#proyectos', T('Volver al cúmulo', 'Back to the cluster', 'Voltar ao aglomerado')));
                 panel.appendChild(actions);

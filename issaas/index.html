@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-en="ISSA AS · ISSASODA" data-pt="ISSA AS · ISSASODA">ISSA AS · ISSASODA</title>
+    <meta name="description" content="ISSA AS: un agente que encuentra fallas de seguridad reales en código abierto, las corrige con los modelos Muse de Meta y demuestra la corrección, o dice con honestidad que no pudo."
+          data-en="ISSA AS: an agent that finds real security bugs in open source, fixes them with Meta's Muse models and proves the fix, or honestly says it could not."
+          data-pt="ISSA AS: um agente que encontra falhas de segurança reais em código aberto, corrige com os modelos Muse da Meta e prova a correção, ou diz com honestidade que não conseguiu.">
+    <link rel="canonical" href="https://issasodaweb.com/issaas/">
+    <link rel="alternate" hreflang="es-419" href="https://issasodaweb.com/issaas/?lang=es">
+    <link rel="alternate" hreflang="en-US" href="https://issasodaweb.com/issaas/?lang=en">
+    <link rel="alternate" hreflang="pt-BR" href="https://issasodaweb.com/issaas/?lang=pt">
+    <link rel="alternate" hreflang="x-default" href="https://issasodaweb.com/issaas/">
+    <script src="../comun/idioma.js"></script>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" sizes="16x16 32x32 48x48 64x64 96x96">
+    <link rel="manifest" href="../manifiesto.json">
+    <meta name="theme-color" content="#080B10">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <script src="../comun/estilo.js"></script>
+    <script src="../comun/astros.js"></script>
+    <style>
+        :root {
+            --panel: rgba(10, 14, 22, 0.86);
+            --border: rgba(255, 255, 255, 0.12);
+            --text: #E9ECF1;
+            --muted: #9AA3B2;
+            --accent: #7FB2FF;
+            --ok: #3EE6B0;
+            --wip: #7FD1FF;
+            --err: #FF9A5C;
+            --font-title: 'Arial', sans-serif;
+            --font-text: 'Arial', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Tres idiomas: solo se ve el activo (sin JavaScript, el español) */
+        html:not([data-lang]) .tr:not([lang="es"]),
+        html[data-lang="es"] .tr:not([lang="es"]),
+        html[data-lang="en"] .tr:not([lang="en"]),
+        html[data-lang="pt"] .tr:not([lang="pt"]) {
+            display: none !important;
+        }
+
+        html {
+            background: #080B10;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            font-family: var(--font-text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        /* La galaxia del proyecto, detrás de todo */
+        #fondo {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .top {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(8, 11, 16, 0.78);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+        }
+
+            .top a.back {
+                padding: 4px 10px;
+                border: 1px solid var(--border);
+                border-radius: 999px;
+                color: var(--text);
+                font-size: 13px;
+                text-decoration: none;
+                white-space: nowrap;
+            }
+
+            .top b {
+                font-family: var(--font-title);
+                font-weight: normal;
+                color: var(--accent);
+            }
+
+        .idiomas {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+        }
+
+            .idiomas a {
+                color: var(--muted);
+                text-decoration: none;
+            }
+
+                .idiomas a[aria-current="true"],
+                .idiomas a:hover {
+                    color: var(--text);
+                }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 16px 48px;
+        }
+
+        .hero {
+            min-height: 78vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 48px 0 24px;
+            max-width: 640px;
+        }
+
+            .hero .eyebrow {
+                margin: 0 0 8px;
+                font-size: 12px;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--muted);
+            }
+
+            .hero h1 {
+                margin: 0;
+                font-family: var(--font-title);
+                font-weight: normal;
+                font-size: clamp(44px, 9vw, 84px);
+                line-height: 1.05;
+                color: var(--accent);
+            }
+
+            .hero .expand {
+                margin: 6px 0 18px;
+                font-size: clamp(15px, 2.2vw, 19px);
+                color: var(--text);
+            }
+
+            .hero .lead {
+                margin: 0 0 22px;
+                font-size: clamp(17px, 2.4vw, 21px);
+                text-shadow: 0 1px 12px #080B10;
+            }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .actions a {
+                padding: 8px 16px;
+                border: 1px solid var(--c, var(--accent));
+                border-radius: 999px;
+                background: rgba(8, 11, 16, 0.6);
+                color: var(--c, var(--accent));
+                text-decoration: none;
+            }
+
+                .actions a.primary,
+                .actions a:hover,
+                .actions a:focus-visible {
+                    background: var(--c, var(--accent));
+                    color: #080B10;
+                }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin: 0 0 18px;
+        }
+
+            .stats div {
+                padding: 14px 16px;
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                background: var(--panel);
+            }
+
+            .stats b {
+                display: block;
+                font-family: var(--font-title);
+                font-weight: normal;
+                font-size: 30px;
+                line-height: 1.2;
+                color: var(--accent);
+            }
+
+            .stats span {
+                font-size: 14px;
+                color: var(--muted);
+            }
+
+        .block {
+            margin: 18px 0;
+            padding: 20px 22px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--panel);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+            .block h2 {
+                margin: 0 0 10px;
+                font-family: var(--f, var(--font-title));
+                font-weight: normal;
+                font-size: 24px;
+                color: var(--c, var(--accent));
+            }
+
+            .block p {
+                margin: 0 0 10px;
+            }
+
+            .block code {
+                font-size: 0.92em;
+                color: var(--c, var(--accent));
+            }
+
+        .bullets {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+            .bullets li {
+                position: relative;
+                margin: 0 0 8px;
+                padding-left: 18px;
+            }
+
+                .bullets li::before {
+                    content: '';
+                    position: absolute;
+                    left: 2px;
+                    top: 0.62em;
+                    width: 7px;
+                    height: 7px;
+                    border-radius: 50%;
+                    background: var(--c, var(--accent));
+                }
+
+        /* El recorrido del agente, paso a paso */
+        .steps {
+            counter-reset: step;
+            margin: 6px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+            .steps li {
+                position: relative;
+                margin: 0;
+                padding: 0 0 16px 46px;
+            }
+
+                .steps li::before {
+                    counter-increment: step;
+                    content: counter(step);
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 30px;
+                    height: 30px;
+                    border: 1px solid var(--c, var(--accent));
+                    border-radius: 50%;
+                    color: var(--c, var(--accent));
+                    font-size: 14px;
+                    line-height: 28px;
+                    text-align: center;
+                }
+
+                .steps li::after {
+                    content: '';
+                    position: absolute;
+                    left: 15px;
+                    top: 32px;
+                    bottom: 2px;
+                    width: 1px;
+                    background: var(--border);
+                }
+
+                .steps li:last-child::after {
+                    display: none;
+                }
+
+            .steps b {
+                display: block;
+            }
+
+        .who {
+            display: inline-block;
+            margin-top: 2px;
+            padding: 1px 9px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+            .who.meta {
+                border-color: var(--c, var(--accent));
+                color: var(--c, var(--accent));
+            }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+            .cards > div {
+                padding: 14px 16px;
+                border: 1px solid var(--border);
+                border-radius: 14px;
+            }
+
+            .cards h3 {
+                margin: 0 0 6px;
+                font-size: 16px;
+            }
+
+            .cards p {
+                margin: 0 0 6px;
+                font-size: 15px;
+            }
+
+        .badge {
+            display: inline-block;
+            margin-bottom: 6px;
+            padding: 1px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            color: #080B10;
+        }
+
+            .badge.ok {
+                background: var(--ok);
+            }
+
+            .badge.wip {
+                background: var(--wip);
+            }
+
+            .badge.err {
+                background: var(--err);
+            }
+
+        pre {
+            overflow-x: auto;
+            margin: 8px 0 0;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #05070A;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .facts {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 16px 32px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fondo" aria-hidden="true"></canvas>
+
+    <nav class="top">
+        <a class="back" href="../#p-issaas">&larr; <span class="tr" lang="es">Universo</span><span class="tr" lang="en">Universe</span><span class="tr" lang="pt">Universo</span></a>
+        <b>ISSA AS</b>
+        <span class="idiomas" data-idiomas></span>
+    </nav>
+
+    <main>
+        <header class="hero">
+            <p class="eyebrow">Meta Global AI Developer Hackathon 2026 · <span class="tr" lang="es">Desarrollador independiente</span><span class="tr" lang="en">Indie developer</span><span class="tr" lang="pt">Desenvolvedor independente</span></p>
+            <h1>ISSA AS</h1>
+            <p class="expand">Issue Scouting, Solving &amp; Attestation · Agentic Solver</p>
+            <p class="lead tr" lang="es">Un agente que busca por su cuenta fallas de seguridad reales en proyectos de código abierto, las corrige con los modelos Muse de Meta y demuestra la corrección con una prueba que falla antes y pasa después. Si no puede demostrarla, lo dice.</p>
+            <p class="lead tr" lang="en">An agent that finds real security bugs in open-source projects on its own, fixes them with Meta's Muse models and proves each fix with a test that fails before and passes after. When it cannot prove a fix, it says so.</p>
+            <p class="lead tr" lang="pt">Um agente que procura sozinho falhas de segurança reais em projetos de código aberto, corrige com os modelos Muse da Meta e prova cada correção com um teste que falha antes e passa depois. Quando não consegue provar, ele diz.</p>
+            <div class="actions">
+                <a class="primary" href="https://github.com/Ataraxiainc2/ISSAAS" target="_blank" rel="noopener">GitHub</a>
+                <a href="#prueba"><span class="tr" lang="es">Ver la prueba</span><span class="tr" lang="en">See the proof</span><span class="tr" lang="pt">Ver a prova</span></a>
+                <a href="#como"><span class="tr" lang="es">Cómo funciona</span><span class="tr" lang="en">How it works</span><span class="tr" lang="pt">Como funciona</span></a>
+            </div>
+        </header>
+
+        <div class="stats">
+            <div><b>$0.013</b><span class="tr" lang="es">costó la primera corrección de seguridad verificada</span><span class="tr" lang="en">was the cost of the first verified security fix</span><span class="tr" lang="pt">foi o custo da primeira correção de segurança verificada</span></div>
+            <div><b>30</b><span class="tr" lang="es">issues de seguridad evaluados por Muse Spark Open en una sola llamada</span><span class="tr" lang="en">security issues triaged by Muse Spark Open in a single call</span><span class="tr" lang="pt">issues de segurança triadas pelo Muse Spark Open em uma única chamada</span></div>
+            <div><b>0</b><span class="tr" lang="es">regresiones en la corrección verificada, comprobadas con Python determinista y no con un modelo</span><span class="tr" lang="en">regressions in the verified fix, checked by deterministic Python, not by a model</span><span class="tr" lang="pt">regressões na correção verificada, conferidas por Python determinístico e não por um modelo</span></div>
+            <div><b>100%</b><span class="tr" lang="es">del código del producto escrito por Meta Muse Code</span><span class="tr" lang="en">of the product code written by Meta Muse Code</span><span class="tr" lang="pt">do código do produto escrito pelo Meta Muse Code</span></div>
+        </div>
+
+        <section class="block">
+            <h2><span class="tr" lang="es">El problema</span><span class="tr" lang="en">The problem</span><span class="tr" lang="pt">O problema</span></h2>
+            <p class="tr" lang="es">Quienes mantienen proyectos de código abierto reciben más reportes de fallas de los que pueden revisar, y muchos son fallas de seguridad publicadas a la vista de todos. Las herramientas de IA para programar necesitan que una persona elija el problema y entregan parches que nadie demostró: a veces arreglan algo, a veces rompen otra cosa.</p>
+            <p class="tr" lang="en">Open-source maintainers get more bug reports than they can review, and many are security flaws disclosed in plain sight. AI coding tools need a person to pick the problem and hand back patches nobody has proven: sometimes they fix something, sometimes they break something else.</p>
+            <p class="tr" lang="pt">Quem mantém projetos de código aberto recebe mais relatos de falhas do que consegue revisar, e muitos são falhas de segurança publicadas à vista de todos. As ferramentas de IA para programar precisam que uma pessoa escolha o problema e entregam patches que ninguém provou: às vezes corrigem algo, às vezes quebram outra coisa.</p>
+            <p class="tr" lang="es">ISSA AS cierra el ciclo completo sin que nadie elija por él, y con una regla: una corrección solo cuenta si se puede demostrar.</p>
+            <p class="tr" lang="en">ISSA AS closes the whole loop without anyone choosing for it, with one rule: a fix only counts if it can be proven.</p>
+            <p class="tr" lang="pt">O ISSA AS fecha o ciclo inteiro sem que ninguém escolha por ele, com uma regra: uma correção só conta se puder ser provada.</p>
+        </section>
+
+        <section class="block" id="como">
+            <h2><span class="tr" lang="es">Cómo funciona</span><span class="tr" lang="en">How it works</span><span class="tr" lang="pt">Como funciona</span></h2>
+            <ol class="steps">
+                <li>
+                    <b><span class="tr" lang="es">Explorar</span><span class="tr" lang="en">Scout</span><span class="tr" lang="pt">Explorar</span></b>
+                    <span class="tr" lang="es">Busca en GitHub issues de seguridad primero (path traversal, inyección, SSRF, ReDoS, deserialización insegura…) en repositorios con reputación, pruebas que se pueden correr y sin reglas contra contribuciones de IA.</span>
+                    <span class="tr" lang="en">Searches GitHub for security issues first (path traversal, injection, SSRF, ReDoS, unsafe deserialization…) in reputable repositories with runnable tests and no rules against AI contributions.</span>
+                    <span class="tr" lang="pt">Procura no GitHub issues de segurança primeiro (path traversal, injeção, SSRF, ReDoS, desserialização insegura…) em repositórios com reputação, testes executáveis e sem regras contra contribuições de IA.</span>
+                    <br><span class="who">Python</span>
+                </li>
+                <li>
+                    <b><span class="tr" lang="es">Evaluar</span><span class="tr" lang="en">Triage</span><span class="tr" lang="pt">Triar</span></b>
+                    <span class="tr" lang="es">Un modelo abierto de Meta lee los 20 a 30 candidatos en una sola llamada y estima si cada uno es una falla real y si se puede resolver. Esa estimación se combina con nueve señales deterministas del repositorio.</span>
+                    <span class="tr" lang="en">A Meta open-weight model reads the 20 to 30 candidates in a single call and estimates whether each is a real bug and whether it can be solved. That estimate is combined with nine deterministic repository signals.</span>
+                    <span class="tr" lang="pt">Um modelo aberto da Meta lê os 20 a 30 candidatos em uma única chamada e estima se cada um é uma falha real e se pode ser resolvido. Essa estimativa é combinada com nove sinais determinísticos do repositório.</span>
+                    <br><span class="who meta">Muse Spark Open</span>
+                </li>
+                <li>
+                    <b><span class="tr" lang="es">Criticar</span><span class="tr" lang="en">Critique</span><span class="tr" lang="pt">Criticar</span></b>
+                    <span class="tr" lang="es">Una segunda pasada independiente revisa los cinco mejores y baja los puntajes demasiado optimistas.</span>
+                    <span class="tr" lang="en">An independent second pass reviews the top five and lowers overconfident scores.</span>
+                    <span class="tr" lang="pt">Uma segunda passada independente revisa os cinco melhores e reduz as notas otimistas demais.</span>
+                    <br><span class="who meta">Muse Spark Open</span>
+                </li>
+                <li>
+                    <b><span class="tr" lang="es">Decidir</span><span class="tr" lang="en">Decide</span><span class="tr" lang="pt">Decidir</span></b>
+                    <span class="tr" lang="es">Elige un issue y el modelo que lo resolverá: el más económico por defecto, y Muse Spark 1.3 con más razonamiento para fallas difíciles o de clases graves. Cada elección queda explicada.</span>
+                    <span class="tr" lang="en">Picks one issue and the model that will solve it: the cheapest by default, and Muse Spark 1.3 with more reasoning for hard bugs or severe classes. Every choice is explained.</span>
+                    <span class="tr" lang="pt">Escolhe uma issue e o modelo que vai resolvê-la: o mais econômico por padrão, e o Muse Spark 1.3 com mais raciocínio para falhas difíceis ou de classes graves. Cada escolha fica explicada.</span>
+                    <br><span class="who">Python</span>
+                </li>
+                <li>
+                    <b><span class="tr" lang="es">Reproducir y corregir</span><span class="tr" lang="en">Reproduce and fix</span><span class="tr" lang="pt">Reproduzir e corrigir</span></b>
+                    <span class="tr" lang="es">En un espacio aislado, Muse Code escribe primero una prueba que demuestra la falla y la guarda; solo después escribe la corrección mínima.</span>
+                    <span class="tr" lang="en">In an isolated workspace, Muse Code first writes and commits a test that shows the bug; only then does it write the minimal fix.</span>
+                    <span class="tr" lang="pt">Em um espaço isolado, o Muse Code primeiro escreve e salva um teste que mostra a falha; só depois escreve a correção mínima.</span>
+                    <br><span class="who meta">Muse Code · Muse Spark 1.3</span>
+                </li>
+                <li>
+                    <b><span class="tr" lang="es">Verificar</span><span class="tr" lang="en">Verify</span><span class="tr" lang="pt">Verificar</span></b>
+                    <span class="tr" lang="es">Python determinista comprueba que la prueba falla en el código original y pasa con la corrección, y que ninguna prueba que pasaba antes falla ahora. Ningún modelo opina aquí.</span>
+                    <span class="tr" lang="en">Deterministic Python checks that the test fails on the original code and passes with the fix, and that no test that passed before fails now. No model has a say here.</span>
+                    <span class="tr" lang="pt">Python determinístico confere que o teste falha no código original e passa com a correção, e que nenhum teste que passava antes falha agora. Nenhum modelo opina aqui.</span>
+                    <br><span class="who">Python</span>
+                </li>
+                <li>
+                    <b><span class="tr" lang="es">Demostrar o abstenerse</span><span class="tr" lang="en">Prove or abstain</span><span class="tr" lang="pt">Provar ou se abster</span></b>
+                    <span class="tr" lang="es">Si todo se cumple, deja un paquete de prueba: la prueba, el parche, la causa, el registro y el costo. Si no, se abstiene y explica por qué. Nada sale hacia el proyecto original sin una persona que lo apruebe.</span>
+                    <span class="tr" lang="en">If everything holds, it leaves a proof bundle: the test, the patch, the root cause, the log and the cost. If not, it abstains and explains why. Nothing goes to the original project without a person approving it.</span>
+                    <span class="tr" lang="pt">Se tudo se confirma, deixa um pacote de prova: o teste, o patch, a causa, o registro e o custo. Se não, ele se abstém e explica por quê. Nada vai para o projeto original sem uma pessoa aprovar.</span>
+                    <br><span class="who">Python</span>
+                </li>
+            </ol>
+        </section>
+
+        <section class="block">
+            <h2><span class="tr" lang="es">Los modelos de Meta, cada uno en su lugar</span><span class="tr" lang="en">Meta's models, each in its place</span><span class="tr" lang="pt">Os modelos da Meta, cada um no seu lugar</span></h2>
+            <div class="cards">
+                <div>
+                    <h3>Muse Spark Open</h3>
+                    <p class="tr" lang="es">Modelo de pesos abiertos. Evalúa y critica a los candidatos, y su razonamiento queda registrado para revisarlo.</p>
+                    <p class="tr" lang="en">Open-weight model. It triages and critiques the candidates, and its reasoning is recorded for review.</p>
+                    <p class="tr" lang="pt">Modelo de pesos abertos. Faz a triagem e a crítica dos candidatos, e o seu raciocínio fica registrado para revisão.</p>
+                </div>
+                <div>
+                    <h3>Muse Spark 1.3</h3>
+                    <p class="tr" lang="es">A través de Muse Code, reproduce la falla y la corrige. El modelo y el nivel de razonamiento se eligen según cada issue.</p>
+                    <p class="tr" lang="en">Through Muse Code, it reproduces the bug and fixes it. The model and reasoning level are chosen per issue.</p>
+                    <p class="tr" lang="pt">Por meio do Muse Code, reproduz a falha e a corrige. O modelo e o nível de raciocínio são escolhidos para cada issue.</p>
+                </div>
+                <div>
+                    <h3>Meta Muse Code</h3>
+                    <p class="tr" lang="es">También construyó ISSA AS: escribió todo el código del producto y sus pruebas a partir de instrucciones que se publican tal cual.</p>
+                    <p class="tr" lang="en">It also built ISSA AS: it wrote all of the product code and its tests from instructions that are published verbatim.</p>
+                    <p class="tr" lang="pt">Também construiu o ISSA AS: escreveu todo o código do produto e os seus testes a partir de instruções publicadas na íntegra.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="block" id="prueba">
+            <h2><span class="tr" lang="es">Resultados reales</span><span class="tr" lang="en">Real results</span><span class="tr" lang="pt">Resultados reais</span></h2>
+            <div class="cards">
+                <div>
+                    <span class="badge ok">VERIFIED</span>
+                    <h3>psobot/keynote-parser #91</h3>
+                    <p class="tr" lang="es">Zip slip (CWE-22): un archivo comprimido malicioso podía escribir fuera de su carpeta. La prueba falla antes y pasa después, sin regresiones. Costo: $0.013.</p>
+                    <p class="tr" lang="en">Zip slip (CWE-22): a malicious archive could write outside its folder. The test fails before and passes after, with no regressions. Cost: $0.013.</p>
+                    <p class="tr" lang="pt">Zip slip (CWE-22): um arquivo compactado malicioso podia escrever fora da sua pasta. O teste falha antes e passa depois, sem regressões. Custo: US$ 0,013.</p>
+                    <p><a href="https://github.com/Ataraxiainc2/ISSAAS/tree/main/proof/20261102-201027-psobot-keynote-parser-91" target="_blank" rel="noopener"><span class="tr" lang="es">Paquete de prueba</span><span class="tr" lang="en">Proof bundle</span><span class="tr" lang="pt">Pacote de prova</span></a></p>
+                </div>
+                <div>
+                    <span class="badge wip"><span class="tr" lang="es">EN VERIFICACIÓN</span><span class="tr" lang="en">BEING VERIFIED</span><span class="tr" lang="pt">EM VERIFICAÇÃO</span></span>
+                    <h3>ansible/ansible-runner #1548</h3>
+                    <p class="tr" lang="es">Path traversal y escape por enlaces simbólicos (CWE-22 / CWE-59). Muse Spark Open lo eligió entre 30 candidatos y Muse Spark 1.3 escribió la prueba y la corrección. Solo contará cuando pase la verificación.</p>
+                    <p class="tr" lang="en">Path traversal and symlink escape (CWE-22 / CWE-59). Muse Spark Open picked it out of 30 candidates and Muse Spark 1.3 wrote the test and the fix. It only counts once it passes verification.</p>
+                    <p class="tr" lang="pt">Path traversal e fuga por links simbólicos (CWE-22 / CWE-59). O Muse Spark Open escolheu esta issue entre 30 candidatas e o Muse Spark 1.3 escreveu o teste e a correção. Só conta quando passar na verificação.</p>
+                </div>
+                <div>
+                    <span class="badge err">ERROR · ABSTAIN</span>
+                    <h3><span class="tr" lang="es">Los intentos fallidos también</span><span class="tr" lang="en">Failed attempts too</span><span class="tr" lang="pt">As tentativas que falharam também</span></h3>
+                    <p class="tr" lang="es">Los intentos que fallaron se conservan sin editar, cada uno con su causa. Un error de infraestructura nunca se presenta como una abstención, y una abstención nunca se presenta como un éxito.</p>
+                    <p class="tr" lang="en">Failed attempts are kept unedited, each with its cause. An infrastructure error is never shown as an abstention, and an abstention is never shown as a success.</p>
+                    <p class="tr" lang="pt">As tentativas que falharam ficam guardadas sem edição, cada uma com sua causa. Um erro de infraestrutura nunca aparece como abstenção, e uma abstenção nunca aparece como sucesso.</p>
+                </div>
+            </div>
+            <p class="tr" lang="es">En su primera evaluación real, Muse Spark Open marcó 20 de 30 candidatos como no fallas reales (resúmenes de noticias, reportes duplicados, ideas), y la crítica bajó los puntajes demasiado seguros antes de decidir.</p>
+            <p class="tr" lang="en">In its first live triage, Muse Spark Open marked 20 of 30 candidates as not real bugs (news digests, duplicate reports, ideas), and the critic lowered overconfident scores before the decision.</p>
+            <p class="tr" lang="pt">Na sua primeira triagem real, o Muse Spark Open marcou 20 de 30 candidatos como falhas não reais (resumos de notícias, relatos duplicados, ideias), e a crítica reduziu as notas confiantes demais antes da decisão.</p>
+        </section>
+
+        <section class="block">
+            <h2><span class="tr" lang="es">Honesto y seguro por diseño</span><span class="tr" lang="en">Honest and safe by design</span><span class="tr" lang="pt">Honesto e seguro por design</span></h2>
+            <ul class="bullets">
+                <li class="tr" lang="es"><b>Nada sale sin una persona.</b> ISSA AS no abre pull requests, issues ni comentarios por su cuenta: una persona revisa y decide.</li>
+                <li class="tr" lang="en"><b>Nothing leaves without a person.</b> ISSA AS does not open pull requests, issues or comments on its own: a person reviews and decides.</li>
+                <li class="tr" lang="pt"><b>Nada sai sem uma pessoa.</b> O ISSA AS não abre pull requests, issues nem comentários por conta própria: uma pessoa revisa e decide.</li>
+                <li class="tr" lang="es"><b>Respeta a quienes mantienen los proyectos.</b> Si un proyecto pide reportar la seguridad en privado o no acepta contribuciones de IA, lo deja.</li>
+                <li class="tr" lang="en"><b>It respects maintainers.</b> If a project asks for private security reports or does not accept AI contributions, it leaves it alone.</li>
+                <li class="tr" lang="pt"><b>Respeita quem mantém os projetos.</b> Se um projeto pede relatos de segurança em particular ou não aceita contribuições de IA, ele o deixa de lado.</li>
+                <li class="tr" lang="es"><b>Aislado.</b> El código de terceros corre en un espacio aislado, sin herramientas web, y el texto de los issues se trata como datos, nunca como instrucciones.</li>
+                <li class="tr" lang="en"><b>Isolated.</b> Third-party code runs in an isolated workspace with no web tools, and issue text is treated as data, never as instructions.</li>
+                <li class="tr" lang="pt"><b>Isolado.</b> O código de terceiros roda em um espaço isolado, sem ferramentas web, e o texto das issues é tratado como dados, nunca como instruções.</li>
+                <li class="tr" lang="es"><b>Rastro a prueba de cambios.</b> Cada paso queda en un registro encadenado con SHA-256: si alguien lo altera, la verificación lo detecta. Se comprueba sin claves.</li>
+                <li class="tr" lang="en"><b>Tamper-evident trail.</b> Every step goes into a SHA-256 hash-chained log: if anyone alters it, verification catches it. Anyone can check it without keys.</li>
+                <li class="tr" lang="pt"><b>Rastro à prova de alterações.</b> Cada passo fica em um registro encadeado com SHA-256: se alguém o alterar, a verificação detecta. Qualquer pessoa confere sem chaves.</li>
+                <li class="tr" lang="es"><b>Cada centavo contado.</b> Cada llamada a un modelo registra sus tokens y su costo, con límites por issue y por ejecución.</li>
+                <li class="tr" lang="en"><b>Every cent counted.</b> Every model call logs its tokens and cost, with caps per issue and per run.</li>
+                <li class="tr" lang="pt"><b>Cada centavo contado.</b> Cada chamada a um modelo registra seus tokens e seu custo, com limites por issue e por execução.</li>
+            </ul>
+        </section>
+
+        <section class="block">
+            <h2><span class="tr" lang="es">Cómo se construyó</span><span class="tr" lang="en">How it was built</span><span class="tr" lang="pt">Como foi construído</span></h2>
+            <p class="tr" lang="es">Desde una carpeta vacía durante el hackatón. Meta Muse Code escribió todo el código del producto y sus pruebas. Un agente administrador, Claude Code, escribió las instrucciones, auditó cada resultado, volvió a correr las pruebas y anotó cada corrección con su costo. Las instrucciones se publican tal cual y la bitácora de auditoría cuenta todo, incluidos los errores.</p>
+            <p class="tr" lang="en">From an empty folder during the hackathon. Meta Muse Code wrote all of the product code and its tests. An administrator agent, Claude Code, wrote the instructions, audited every result, re-ran the tests and logged every correction with its cost. The instructions are published verbatim, and the audit log tells everything, mistakes included.</p>
+            <p class="tr" lang="pt">A partir de uma pasta vazia durante o hackathon. O Meta Muse Code escreveu todo o código do produto e os seus testes. Um agente administrador, o Claude Code, escreveu as instruções, auditou cada resultado, rodou os testes de novo e registrou cada correção com o seu custo. As instruções são publicadas na íntegra e o registro de auditoria conta tudo, inclusive os erros.</p>
+            <div class="actions">
+                <a href="https://github.com/Ataraxiainc2/ISSAAS/blob/main/docs/AUDIT_LOG.md" target="_blank" rel="noopener"><span class="tr" lang="es">Bitácora de auditoría</span><span class="tr" lang="en">Audit log</span><span class="tr" lang="pt">Registro de auditoria</span></a>
+                <a href="https://github.com/Ataraxiainc2/ISSAAS/tree/main/prompts" target="_blank" rel="noopener"><span class="tr" lang="es">Instrucciones a Muse Code</span><span class="tr" lang="en">Prompts to Muse Code</span><span class="tr" lang="pt">Instruções ao Muse Code</span></a>
+                <a href="https://github.com/Ataraxiainc2/ISSAAS/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noopener"><span class="tr" lang="es">Arquitectura</span><span class="tr" lang="en">Architecture</span><span class="tr" lang="pt">Arquitetura</span></a>
+            </div>
+        </section>
+
+        <section class="block">
+            <h2><span class="tr" lang="es">Compruébalo tú, sin claves</span><span class="tr" lang="en">Check it yourself, no keys</span><span class="tr" lang="pt">Confira você mesmo, sem chaves</span></h2>
+            <p class="tr" lang="es">Con Python 3.13 y uv, clona el repositorio y verifica los registros reales y la evaluación de Muse Spark Open:</p>
+            <p class="tr" lang="en">With Python 3.13 and uv, clone the repository and verify the real logs and the Muse Spark Open triage:</p>
+            <p class="tr" lang="pt">Com Python 3.13 e uv, clone o repositório e verifique os registros reais e a triagem do Muse Spark Open:</p>
+            <pre><code>git clone https://github.com/Ataraxiainc2/ISSAAS
+cd ISSAAS
+uv sync
+uv run issa verify 20261102-201027-psobot-keynote-parser-91
+uv run issa replay triage-scout-20261102-222258</code></pre>
+        </section>
+    </main>
+
+    <footer>
+        <p><span class="tr" lang="es">ISSA AS es un proyecto de ISSASODA, con licencia MIT.</span><span class="tr" lang="en">ISSA AS is an ISSASODA project, MIT licensed.</span><span class="tr" lang="pt">O ISSA AS é um projeto da ISSASODA, com licença MIT.</span>
+            <a href="../#p-issaas"><span class="tr" lang="es">Volver al universo</span><span class="tr" lang="en">Back to the universe</span><span class="tr" lang="pt">Voltar ao universo</span></a></p>
+    </footer>
+
+    <script>
+        (async function () {
+            'use strict';
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !new URLSearchParams(location.search).has('motion');
+            const PANEL = '#0E131C';
+
+            // ---------- Estilo de la visita: una tipografía y un color por bloque ----------
+            const blocks = Array.from(document.querySelectorAll('.block'));
+            const look = IssaEstilo.fonts(1 + blocks.length);
+            const colors = IssaEstilo.palette(1 + blocks.length, PANEL);
+            const stack = IssaEstilo.stack;
+            document.documentElement.style.setProperty('--font-text', stack(look.text));
+            document.documentElement.style.setProperty('--font-title', stack(look.display[0]));
+            document.documentElement.style.setProperty('--accent', colors[0]);
+            blocks.forEach((el, i) => {
+                el.style.setProperty('--f', stack(look.display[1 + i]));
+                el.style.setProperty('--c', colors[1 + i]);
+            });
+
+            // ---------- La galaxia del proyecto, girando despacio ----------
+            const objects = await d3.json('../universo/objetos.json').catch(() => []);
+            const galaxy = objects.find(o => o.t === 'galaxia');
+            const canvas = document.getElementById('fondo');
+            const ctx = canvas.getContext('2d');
+            let width = 0, height = 0, dpr = 1, time = 0;
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = Math.round(width * dpr);
+                canvas.height = Math.round(height * dpr);
+            }
+
+            function draw() {
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const bg = ctx.createRadialGradient(width * 0.7, height * 0.35, 0, width * 0.7, height * 0.35, Math.max(width, height));
+                bg.addColorStop(0, '#151A24');
+                bg.addColorStop(1, '#05070A');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, width, height);
+                if (!galaxy) return;
+                const narrow = width < 800;
+                const r = narrow ? Math.min(width, height) * 0.42 : Math.min(width * 0.36, height * 0.46);
+                IssaAstros.draw(ctx, galaxy, narrow ? width * 0.62 : width * 0.74, narrow ? height * 0.3 : height * 0.42, r, time);
+            }
+
+            window.addEventListener('resize', () => {
+                resize();
+                draw();
+            });
+            resize();
+            if (reduceMotion) {
+                draw();
+            } else {
+                let last = 0;
+                d3.timer(elapsed => {
+                    time += Math.min(0.05, (elapsed - last) / 1000);
+                    last = elapsed;
+                    draw();
+                });
+            }
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('../ServiceWorker.js').catch(error => {
+                    console.error('Fallo al registrar el Service Worker:', error);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
