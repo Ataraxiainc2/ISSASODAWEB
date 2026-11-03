@@ -215,6 +215,23 @@
                 color: var(--muted);
             }
 
+        .video {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            margin: 14px 0;
+        }
+
+            .video iframe {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+
         .block {
             margin: 18px 0;
             padding: 20px 22px;
@@ -508,6 +525,15 @@
             <div><b>100%</b><span class="tr" lang="es">del código del producto escrito por Meta Muse Code</span><span class="tr" lang="en">of the product code written by Meta Muse Code</span><span class="tr" lang="pt">do código do produto escrito pelo Meta Muse Code</span></div>
         </div>
 
+        <!-- Demo video: fill data-yt-es/en/pt with the YouTube video ids (11 characters) after upload; hidden until then. -->
+        <section class="block" id="video" hidden data-yt-es="" data-yt-en="" data-yt-pt="">
+            <h2><span class="tr" lang="es">El video</span><span class="tr" lang="en">The video</span><span class="tr" lang="pt">O vídeo</span></h2>
+            <div class="video"></div>
+            <p class="tr" lang="es">Muse Spark 1.3 tradujo el guion y Muse Wonder escuchó cada clip para comprobar que dice lo que dice el guion. La voz es de Google Gemini porque la API de Meta todavía no tiene un modelo de voz; nos gustaría usar uno de Meta en cuanto exista.</p>
+            <p class="tr" lang="en">Muse Spark 1.3 translated the script, and Muse Wonder listened to every clip to check that it says what the script says. The voice is Google Gemini because the Meta API has no speech model yet; we would like to use a Meta voice as soon as one exists.</p>
+            <p class="tr" lang="pt">O Muse Spark 1.3 traduziu o roteiro e o Muse Wonder ouviu cada clipe para conferir que ele diz o que o roteiro diz. A voz é do Google Gemini porque a API da Meta ainda não tem um modelo de voz; gostaríamos de usar uma voz da Meta assim que existir.</p>
+        </section>
+
         <section class="block">
             <h2><span class="tr" lang="es">El problema</span><span class="tr" lang="en">The problem</span><span class="tr" lang="pt">O problema</span></h2>
             <p class="tr" lang="es">Quienes mantienen proyectos de código abierto reciben más reportes de fallas de los que pueden revisar, y muchos son fallas de seguridad publicadas a la vista de todos. Las herramientas de IA para programar necesitan que una persona elija el problema y entregan parches que nadie demostró: a veces arreglan algo, a veces rompen otra cosa.</p>
@@ -712,6 +738,23 @@ uv run issa verify-bundle 20261102-201027-psobot-keynote-parser-91</code></pre>
             <a href="../#p-issaas"><span class="tr" lang="es">Volver al universo</span><span class="tr" lang="en">Back to the universe</span><span class="tr" lang="pt">Voltar ao universo</span></a></p>
     </footer>
 
+    <script>
+        // Demo video in the page language (falls back to English); no request to YouTube until ids are set.
+        (function () {
+            const box = document.getElementById('video');
+            const pick = (l) => box.dataset['yt' + l.charAt(0).toUpperCase() + l.slice(1)] || '';
+            const id = pick(IssaIdioma.lang) || pick('en');
+            if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+            const frame = document.createElement('iframe');
+            frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&hl=' + IssaIdioma.lang + '&cc_lang_pref=' + IssaIdioma.lang;
+            frame.title = 'ISSA AS';
+            frame.loading = 'lazy';
+            frame.allow = 'encrypted-media; picture-in-picture; fullscreen';
+            frame.referrerPolicy = 'strict-origin-when-cross-origin';
+            box.querySelector('.video').appendChild(frame);
+            box.hidden = false;
+        })();
+    </script>
     <script>
         (async function () {
             'use strict';
