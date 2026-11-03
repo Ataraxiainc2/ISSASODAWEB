@@ -21,6 +21,15 @@ def leer(ruta):
         return f.read()
 
 
+def linux(carpeta):
+    """Veredicto de la reconstrucción en Linux (GitHub Actions), si existe."""
+    ruta = os.path.join(carpeta, 'linux-verify.json')
+    if not os.path.exists(ruta):
+        return None
+    d = json.loads(leer(ruta))
+    return {k: d.get(k) for k in ('verdict', 'suite_scope', 'ci_run', 'platform')}
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--issaas', default=os.environ.get('ISSAAS_REPO', 'D:/SC/ISSAAS'))
@@ -50,6 +59,7 @@ def main():
             'modelo': veredicto.get('model'), 'esfuerzo': veredicto.get('effort'),
             'costo': veredicto.get('cost_usd'), 'causa': veredicto.get('root_cause'),
             'parche': leer(os.path.join(carpeta, 'fix.patch')),
+            'linux': linux(carpeta),
         })
 
     datos = {
