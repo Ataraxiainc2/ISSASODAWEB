@@ -1,6 +1,6 @@
 // Cambiar la versión cada vez que cambie la lista de recursos: al activarse,
 // el Service Worker borra las cachés de versiones anteriores
-const CACHE_NAME = 'issasoda-v14';
+const CACHE_NAME = 'issasoda-v15';
 
 // Páginas y datos del sitio (rutas relativas a este archivo)
 const SITE_FILES = [
