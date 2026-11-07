@@ -1,10 +1,10 @@
 {
  "project": "ISSANEX0",
- "generated": "2026-11-07T17:46:16Z",
- "commit": "e0f7b42",
+ "generated": "2026-11-07T18:46:15Z",
+ "commit": "2363056",
  "tool": "tools/status.py",
  "summary": {
-  "PASS": 11,
+  "PASS": 15,
   "FAIL": 0,
   "PENDING": 7
  },
@@ -14,9 +14,9 @@
    "id": "repo.files",
    "title": "Required documents present",
    "result": "PASS",
-   "detail": "13 files present",
+   "detail": "14 files present",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:09Z"
   },
   {
    "group": "repository",
@@ -25,16 +25,16 @@
    "result": "PASS",
    "detail": "MIT License text",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:09Z"
   },
   {
    "group": "repository",
    "id": "repo.links",
    "title": "Documentation links resolve",
    "result": "PASS",
-   "detail": "23 relative links resolve",
+   "detail": "30 relative links resolve",
    "ms": 2,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:09Z"
   },
   {
    "group": "repository",
@@ -43,7 +43,7 @@
    "result": "PASS",
    "detail": "valid JSON, draft 2020-12, 8 required fields all defined",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:09Z"
   },
   {
    "group": "repository",
@@ -52,7 +52,7 @@
    "result": "PASS",
    "detail": "valid JSON, draft 2020-12, 8 required fields all defined",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:09Z"
   },
   {
    "group": "repository",
@@ -61,16 +61,52 @@
    "result": "PASS",
    "detail": "7 verdicts identical in RULES.md and run-result schema",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:09Z"
   },
   {
    "group": "repository",
    "id": "repo.secrets",
    "title": "No API keys or private keys committed",
    "result": "PASS",
-   "detail": "17 tracked files scanned, no key patterns",
-   "ms": 2,
-   "at": "2026-11-07T17:46:16Z"
+   "detail": "34 tracked files scanned, no key patterns",
+   "ms": 28,
+   "at": "2026-11-07T18:46:09Z"
+  },
+  {
+   "group": "models",
+   "id": "models.registry",
+   "title": "Provider and model registry (bundled snapshot)",
+   "result": "PASS",
+   "detail": "210 providers, 6271 text models, recorded 2026-11-07",
+   "ms": 24,
+   "at": "2026-11-07T18:46:10Z"
+  },
+  {
+   "group": "models",
+   "id": "models.pinned",
+   "title": "Major providers on pinned HTTPS addresses",
+   "result": "PASS",
+   "detail": "12 major providers on pinned HTTPS addresses",
+   "ms": 19,
+   "at": "2026-11-07T18:46:10Z"
+  },
+  {
+   "group": "models",
+   "id": "models.keys",
+   "title": "API keys stored outside the repository",
+   "result": "PASS",
+   "detail": "key file lives in the user profile, outside the repository",
+   "ms": 0,
+   "at": "2026-11-07T18:46:10Z"
+  },
+  {
+   "group": "models",
+   "id": "models.tests",
+   "title": "Model layer and console tests pass",
+   "result": "PASS",
+   "detail": "24 tests passed (offline, fake providers on 127.0.0.1)",
+   "ms": 4962,
+   "at": "2026-11-07T18:46:14Z"
   },
   {
    "group": "environment",
@@ -79,7 +115,7 @@
    "result": "PASS",
    "detail": "Debian GNU/Linux 13 (trixie)",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "environment",
@@ -88,7 +124,7 @@
    "result": "PASS",
    "detail": "7.3.3-issanex0-wsl2",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "environment",
@@ -97,7 +133,7 @@
    "result": "PASS",
    "detail": "/dev/kvm present, kvm_intel loaded",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "environment",
@@ -106,7 +142,7 @@
    "result": "PASS",
    "detail": "the Linux user is in group kvm",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "environment",
@@ -115,7 +151,7 @@
    "result": "PENDING",
    "detail": "not installed yet (First Light step 3)",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "engine",
@@ -124,7 +160,7 @@
    "result": "PENDING",
    "detail": "not built yet",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "engine",
@@ -133,7 +169,7 @@
    "result": "PENDING",
    "detail": "not built yet",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "engine",
@@ -142,16 +178,16 @@
    "result": "PENDING",
    "detail": "not built yet",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "engine",
    "id": "engine.proxy",
-   "title": "API proxy holding provider keys",
+   "title": "API proxy in front of the sandbox (keys never inside the microVM)",
    "result": "PENDING",
    "detail": "not built yet",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "engine",
@@ -160,7 +196,7 @@
    "result": "PENDING",
    "detail": "not built yet",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   },
   {
    "group": "engine",
@@ -169,28 +205,32 @@
    "result": "PENDING",
    "detail": "not built yet",
    "ms": 0,
-   "at": "2026-11-07T17:46:16Z"
+   "at": "2026-11-07T18:46:15Z"
   }
  ],
  "log": [
-  "[2026-11-07T17:46:16Z] PASS    repo.files         13 files present",
-  "[2026-11-07T17:46:16Z] PASS    repo.license       MIT License text",
-  "[2026-11-07T17:46:16Z] PASS    repo.links         23 relative links resolve",
-  "[2026-11-07T17:46:16Z] PASS    spec.case          valid JSON, draft 2020-12, 8 required fields all defined",
-  "[2026-11-07T17:46:16Z] PASS    spec.result        valid JSON, draft 2020-12, 8 required fields all defined",
-  "[2026-11-07T17:46:16Z] PASS    spec.verdicts      7 verdicts identical in RULES.md and run-result schema",
-  "[2026-11-07T17:46:16Z] PASS    repo.secrets       17 tracked files scanned, no key patterns",
-  "[2026-11-07T17:46:16Z] PASS    env.os             Debian GNU/Linux 13 (trixie)",
-  "[2026-11-07T17:46:16Z] PASS    env.kernel         7.3.3-issanex0-wsl2",
-  "[2026-11-07T17:46:16Z] PASS    env.kvm            /dev/kvm present, kvm_intel loaded",
-  "[2026-11-07T17:46:16Z] PASS    env.kvm_group      the Linux user is in group kvm",
-  "[2026-11-07T17:46:16Z] PENDING env.firecracker    not installed yet (First Light step 3)",
-  "[2026-11-07T17:46:16Z] PENDING engine.case_builder not built yet",
-  "[2026-11-07T17:46:16Z] PENDING engine.verifier    not built yet",
-  "[2026-11-07T17:46:16Z] PENDING engine.sandbox     not built yet",
-  "[2026-11-07T17:46:16Z] PENDING engine.proxy       not built yet",
-  "[2026-11-07T17:46:16Z] PENDING engine.agent_loop  not built yet",
-  "[2026-11-07T17:46:16Z] PENDING engine.first_light not built yet"
+  "[2026-11-07T18:46:09Z] PASS    repo.files         14 files present",
+  "[2026-11-07T18:46:09Z] PASS    repo.license       MIT License text",
+  "[2026-11-07T18:46:09Z] PASS    repo.links         30 relative links resolve",
+  "[2026-11-07T18:46:09Z] PASS    spec.case          valid JSON, draft 2020-12, 8 required fields all defined",
+  "[2026-11-07T18:46:09Z] PASS    spec.result        valid JSON, draft 2020-12, 8 required fields all defined",
+  "[2026-11-07T18:46:09Z] PASS    spec.verdicts      7 verdicts identical in RULES.md and run-result schema",
+  "[2026-11-07T18:46:09Z] PASS    repo.secrets       34 tracked files scanned, no key patterns",
+  "[2026-11-07T18:46:10Z] PASS    models.registry    210 providers, 6271 text models, recorded 2026-11-07",
+  "[2026-11-07T18:46:10Z] PASS    models.pinned      12 major providers on pinned HTTPS addresses",
+  "[2026-11-07T18:46:10Z] PASS    models.keys        key file lives in the user profile, outside the repository",
+  "[2026-11-07T18:46:14Z] PASS    models.tests       24 tests passed (offline, fake providers on 127.0.0.1)",
+  "[2026-11-07T18:46:15Z] PASS    env.os             Debian GNU/Linux 13 (trixie)",
+  "[2026-11-07T18:46:15Z] PASS    env.kernel         7.3.3-issanex0-wsl2",
+  "[2026-11-07T18:46:15Z] PASS    env.kvm            /dev/kvm present, kvm_intel loaded",
+  "[2026-11-07T18:46:15Z] PASS    env.kvm_group      the Linux user is in group kvm",
+  "[2026-11-07T18:46:15Z] PENDING env.firecracker    not installed yet (First Light step 3)",
+  "[2026-11-07T18:46:15Z] PENDING engine.case_builder not built yet",
+  "[2026-11-07T18:46:15Z] PENDING engine.verifier    not built yet",
+  "[2026-11-07T18:46:15Z] PENDING engine.sandbox     not built yet",
+  "[2026-11-07T18:46:15Z] PENDING engine.proxy       not built yet",
+  "[2026-11-07T18:46:15Z] PENDING engine.agent_loop  not built yet",
+  "[2026-11-07T18:46:15Z] PENDING engine.first_light not built yet"
  ],
  "history": [
   {
@@ -219,6 +259,24 @@
    "PENDING": 7,
    "prev_hash": "a1ca8dccaf4323389d5fda73910699d27a1e839932cfe76b8502f593296ed422",
    "hash": "afa37f450bc937d250389360071cb285c797b7ba3fe057a3be0a07d27db7931b"
+  },
+  {
+   "at": "2026-11-07T18:45:59Z",
+   "commit": "2363056",
+   "PASS": 14,
+   "FAIL": 1,
+   "PENDING": 7,
+   "prev_hash": "afa37f450bc937d250389360071cb285c797b7ba3fe057a3be0a07d27db7931b",
+   "hash": "432dd18f9bd183edeb86ccbe691a2df850066198994d7aea0b001d512173f6ec"
+  },
+  {
+   "at": "2026-11-07T18:46:15Z",
+   "commit": "2363056",
+   "PASS": 15,
+   "FAIL": 0,
+   "PENDING": 7,
+   "prev_hash": "432dd18f9bd183edeb86ccbe691a2df850066198994d7aea0b001d512173f6ec",
+   "hash": "1bdb2317b47a68324485b816d0c7a628cb019b01e3d8316d3a340cb4ba84bd0f"
   }
  ]
 }
