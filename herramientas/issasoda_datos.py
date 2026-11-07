@@ -42,6 +42,15 @@ PROYECTOS = [
         },
     },
     {
+        'repo': 'issanex0', 'nombre': 'ISSANEX0', 'tipo': 'investigacion', 'color': '#FF6E40',
+        'sitio': 'https://issasodaweb.com/issanex0/', 'carpeta': None,
+        'desc': {
+            'es': 'Liga científica donde modelos de IA de frontera reparan vulnerabilidades reales ya divulgadas, en copias aisladas, y solo cuenta la corrección que una prueba independiente y con presupuesto respalda. Estado en vivo con comprobaciones reales.',
+            'en': 'A scientific league where frontier AI models repair real, already-disclosed vulnerabilities on isolated copies, and only a fix backed by an independent, budget-bounded test counts. Live status from real checks.',
+            'pt': 'Liga científica onde modelos de IA de fronteira corrigem vulnerabilidades reais já divulgadas, em cópias isoladas, e só conta a correção respaldada por um teste independente e com orçamento. Status ao vivo com verificações reais.',
+        },
+    },
+    {
         'repo': 'EmuGaMind', 'nombre': 'EmuGaMind', 'tipo': 'app', 'color': '#FF6B9A',
         'sitio': 'https://emugamind.issasodaweb.com', 'carpeta': 'EmuGaMind',
         'desc': {

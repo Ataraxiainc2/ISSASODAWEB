@@ -1,0 +1,224 @@
+{
+ "project": "ISSANEX0",
+ "generated": "2026-11-07T17:46:16Z",
+ "commit": "e0f7b42",
+ "tool": "tools/status.py",
+ "summary": {
+  "PASS": 11,
+  "FAIL": 0,
+  "PENDING": 7
+ },
+ "checks": [
+  {
+   "group": "repository",
+   "id": "repo.files",
+   "title": "Required documents present",
+   "result": "PASS",
+   "detail": "13 files present",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "repository",
+   "id": "repo.license",
+   "title": "License is MIT",
+   "result": "PASS",
+   "detail": "MIT License text",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "repository",
+   "id": "repo.links",
+   "title": "Documentation links resolve",
+   "result": "PASS",
+   "detail": "23 relative links resolve",
+   "ms": 2,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "repository",
+   "id": "spec.case",
+   "title": "Case manifest schema is well-formed",
+   "result": "PASS",
+   "detail": "valid JSON, draft 2020-12, 8 required fields all defined",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "repository",
+   "id": "spec.result",
+   "title": "Run result schema is well-formed",
+   "result": "PASS",
+   "detail": "valid JSON, draft 2020-12, 8 required fields all defined",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "repository",
+   "id": "spec.verdicts",
+   "title": "Verdicts match between rules and schema",
+   "result": "PASS",
+   "detail": "7 verdicts identical in RULES.md and run-result schema",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "repository",
+   "id": "repo.secrets",
+   "title": "No API keys or private keys committed",
+   "result": "PASS",
+   "detail": "17 tracked files scanned, no key patterns",
+   "ms": 2,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "environment",
+   "id": "env.os",
+   "title": "Linux distribution",
+   "result": "PASS",
+   "detail": "Debian GNU/Linux 13 (trixie)",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "environment",
+   "id": "env.kernel",
+   "title": "Custom ISSANEX0 kernel running",
+   "result": "PASS",
+   "detail": "7.3.3-issanex0-wsl2",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "environment",
+   "id": "env.kvm",
+   "title": "KVM device available (/dev/kvm)",
+   "result": "PASS",
+   "detail": "/dev/kvm present, kvm_intel loaded",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "environment",
+   "id": "env.kvm_group",
+   "title": "User may use KVM (kvm group)",
+   "result": "PASS",
+   "detail": "the Linux user is in group kvm",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "environment",
+   "id": "env.firecracker",
+   "title": "Firecracker installed",
+   "result": "PENDING",
+   "detail": "not installed yet (First Light step 3)",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "engine",
+   "id": "engine.case_builder",
+   "title": "Case Builder: advisory to frozen snapshot",
+   "result": "PENDING",
+   "detail": "not built yet",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "engine",
+   "id": "engine.verifier",
+   "title": "Deterministic verifier (reusing ISSAAS verifier.py)",
+   "result": "PENDING",
+   "detail": "not built yet",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "engine",
+   "id": "engine.sandbox",
+   "title": "Firecracker microVM sandbox, no network",
+   "result": "PENDING",
+   "detail": "not built yet",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "engine",
+   "id": "engine.proxy",
+   "title": "API proxy holding provider keys",
+   "result": "PENDING",
+   "detail": "not built yet",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "engine",
+   "id": "engine.agent_loop",
+   "title": "Single-agent model loop with budgets",
+   "result": "PENDING",
+   "detail": "not built yet",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  },
+  {
+   "group": "engine",
+   "id": "engine.first_light",
+   "title": "First Light: 3 models x 10 cases, published",
+   "result": "PENDING",
+   "detail": "not built yet",
+   "ms": 0,
+   "at": "2026-11-07T17:46:16Z"
+  }
+ ],
+ "log": [
+  "[2026-11-07T17:46:16Z] PASS    repo.files         13 files present",
+  "[2026-11-07T17:46:16Z] PASS    repo.license       MIT License text",
+  "[2026-11-07T17:46:16Z] PASS    repo.links         23 relative links resolve",
+  "[2026-11-07T17:46:16Z] PASS    spec.case          valid JSON, draft 2020-12, 8 required fields all defined",
+  "[2026-11-07T17:46:16Z] PASS    spec.result        valid JSON, draft 2020-12, 8 required fields all defined",
+  "[2026-11-07T17:46:16Z] PASS    spec.verdicts      7 verdicts identical in RULES.md and run-result schema",
+  "[2026-11-07T17:46:16Z] PASS    repo.secrets       17 tracked files scanned, no key patterns",
+  "[2026-11-07T17:46:16Z] PASS    env.os             Debian GNU/Linux 13 (trixie)",
+  "[2026-11-07T17:46:16Z] PASS    env.kernel         7.3.3-issanex0-wsl2",
+  "[2026-11-07T17:46:16Z] PASS    env.kvm            /dev/kvm present, kvm_intel loaded",
+  "[2026-11-07T17:46:16Z] PASS    env.kvm_group      the Linux user is in group kvm",
+  "[2026-11-07T17:46:16Z] PENDING env.firecracker    not installed yet (First Light step 3)",
+  "[2026-11-07T17:46:16Z] PENDING engine.case_builder not built yet",
+  "[2026-11-07T17:46:16Z] PENDING engine.verifier    not built yet",
+  "[2026-11-07T17:46:16Z] PENDING engine.sandbox     not built yet",
+  "[2026-11-07T17:46:16Z] PENDING engine.proxy       not built yet",
+  "[2026-11-07T17:46:16Z] PENDING engine.agent_loop  not built yet",
+  "[2026-11-07T17:46:16Z] PENDING engine.first_light not built yet"
+ ],
+ "history": [
+  {
+   "at": "2026-11-07T17:40:58Z",
+   "commit": "f015731",
+   "PASS": 10,
+   "FAIL": 1,
+   "PENDING": 7,
+   "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+   "hash": "a3210346cce7e3c1c09680fc661e24c9332e111d8e5166a62c9e245ef198dd73"
+  },
+  {
+   "at": "2026-11-07T17:41:08Z",
+   "commit": "ac00f7b",
+   "PASS": 11,
+   "FAIL": 0,
+   "PENDING": 7,
+   "prev_hash": "a3210346cce7e3c1c09680fc661e24c9332e111d8e5166a62c9e245ef198dd73",
+   "hash": "a1ca8dccaf4323389d5fda73910699d27a1e839932cfe76b8502f593296ed422"
+  },
+  {
+   "at": "2026-11-07T17:46:16Z",
+   "commit": "e0f7b42",
+   "PASS": 11,
+   "FAIL": 0,
+   "PENDING": 7,
+   "prev_hash": "a1ca8dccaf4323389d5fda73910699d27a1e839932cfe76b8502f593296ed422",
+   "hash": "afa37f450bc937d250389360071cb285c797b7ba3fe057a3be0a07d27db7931b"
+  }
+ ]
+}

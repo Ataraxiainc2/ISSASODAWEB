@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-en="ISSANEX0 · ISSASODA" data-pt="ISSANEX0 · ISSASODA">ISSANEX0 · ISSASODA</title>
+    <meta name="description" content="ISSANEX0: una liga científica donde modelos de IA reparan vulnerabilidades reales ya divulgadas y solo cuenta la prueba ejecutable. Estado en vivo con comprobaciones reales."
+          data-en="ISSANEX0: a scientific league where AI models repair real, already-disclosed vulnerabilities and only executable proof counts. Live status from real checks."
+          data-pt="ISSANEX0: uma liga científica onde modelos de IA corrigem vulnerabilidades reais já divulgadas e só conta a prova executável. Status ao vivo com verificações reais.">
+    <link rel="canonical" href="https://issasodaweb.com/issanex0/">
+    <link rel="alternate" hreflang="es-419" href="https://issasodaweb.com/issanex0/?lang=es">
+    <link rel="alternate" hreflang="en-US" href="https://issasodaweb.com/issanex0/?lang=en">
+    <link rel="alternate" hreflang="pt-BR" href="https://issasodaweb.com/issanex0/?lang=pt">
+    <link rel="alternate" hreflang="x-default" href="https://issasodaweb.com/issanex0/">
+    <script src="../comun/idioma.js"></script>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" sizes="16x16 32x32 48x48 64x64 96x96">
+    <link rel="manifest" href="../manifiesto.json">
+    <meta name="theme-color" content="#080B10">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <script src="../comun/estilo.js"></script>
+    <script src="../comun/astros.js"></script>
+    <style>
+        :root {
+            --panel: rgba(10, 14, 22, 0.86);
+            --border: rgba(255, 255, 255, 0.12);
+            --text: #E9ECF1;
+            --muted: #9AA3B2;
+            --accent: #7FB2FF;
+            --ok: #3EE6B0;
+            --wip: #7FD1FF;
+            --err: #FF9A5C;
+            --font-title: 'Arial', sans-serif;
+            --font-text: 'Arial', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Tres idiomas: solo se ve el activo (sin JavaScript, el inglés) */
+        html:not([data-lang]) .tr:not([lang="en"]),
+        html[data-lang="es"] .tr:not([lang="es"]),
+        html[data-lang="en"] .tr:not([lang="en"]),
+        html[data-lang="pt"] .tr:not([lang="pt"]) {
+            display: none !important;
+        }
+
+        html {
+            background: #080B10;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            font-family: var(--font-text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        /* La galaxia del proyecto, detrás de todo */
+        #fondo {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .top {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(8, 11, 16, 0.78);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+        }
+
+            .top a.back {
+                padding: 4px 10px;
+                border: 1px solid var(--border);
+                border-radius: 999px;
+                color: var(--text);
+                font-size: 13px;
+                text-decoration: none;
+                white-space: nowrap;
+            }
+
+            .top b {
+                font-family: var(--font-title);
+                font-weight: normal;
+                color: var(--accent);
+            }
+
+        .idiomas {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+        }
+
+            .idiomas a {
+                color: var(--muted);
+                text-decoration: none;
+            }
+
+                .idiomas a[aria-current="true"],
+                .idiomas a:hover {
+                    color: var(--text);
+                }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 16px 48px;
+        }
+
+        .hero {
+            min-height: 78vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 48px 0 24px;
+            max-width: 640px;
+        }
+
+            .hero .eyebrow {
+                margin: 0 0 8px;
+                font-size: 12px;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--muted);
+            }
+
+            .hero h1 {
+                margin: 0;
+                font-family: var(--font-title);
+                font-weight: normal;
+                font-size: clamp(44px, 9vw, 84px);
+                line-height: 1.05;
+                color: var(--accent);
+            }
+
+            .hero .expand {
+                margin: 6px 0 18px;
+                font-size: clamp(15px, 2.2vw, 19px);
+                color: var(--text);
+            }
+
+            .hero .lead {
+                margin: 0 0 22px;
+                font-size: clamp(17px, 2.4vw, 21px);
+                text-shadow: 0 1px 12px #080B10;
+            }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .actions a {
+                padding: 8px 16px;
+                border: 1px solid var(--c, var(--accent));
+                border-radius: 999px;
+                background: rgba(8, 11, 16, 0.6);
+                color: var(--c, var(--accent));
+                text-decoration: none;
+            }
+
+                .actions a.primary,
+                .actions a:hover,
+                .actions a:focus-visible {
+                    background: var(--c, var(--accent));
+                    color: #080B10;
+                }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin: 0 0 18px;
+        }
+
+            .stats div {
+                padding: 14px 16px;
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                background: var(--panel);
+            }
+
+            .stats b {
+                display: block;
+                font-family: var(--font-title);
+                font-weight: normal;
+                font-size: 30px;
+                line-height: 1.2;
+                color: var(--accent);
+            }
+
+            .stats span {
+                font-size: 14px;
+                color: var(--muted);
+            }
+
+        .video {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            margin: 14px 0;
+        }
+
+            .video iframe {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+
+        .block {
+            margin: 18px 0;
+            padding: 20px 22px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--panel);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+            .block h2 {
+                margin: 0 0 10px;
+                font-family: var(--f, var(--font-title));
+                font-weight: normal;
+                font-size: 24px;
+                color: var(--c, var(--accent));
+            }
+
+            .block p {
+                margin: 0 0 10px;
+            }
+
+            .block code {
+                font-size: 0.92em;
+                color: var(--c, var(--accent));
+            }
+
+        .bullets {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+            .bullets li {
+                position: relative;
+                margin: 0 0 8px;
+                padding-left: 18px;
+            }
+
+                .bullets li::before {
+                    content: '';
+                    position: absolute;
+                    left: 2px;
+                    top: 0.62em;
+                    width: 7px;
+                    height: 7px;
+                    border-radius: 50%;
+                    background: var(--c, var(--accent));
+                }
+
+        /* El recorrido del agente, paso a paso */
+        .steps {
+            counter-reset: step;
+            margin: 6px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+            .steps li {
+                position: relative;
+                margin: 0;
+                padding: 0 0 16px 46px;
+            }
+
+                .steps li::before {
+                    counter-increment: step;
+                    content: counter(step);
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 30px;
+                    height: 30px;
+                    border: 1px solid var(--c, var(--accent));
+                    border-radius: 50%;
+                    color: var(--c, var(--accent));
+                    font-size: 14px;
+                    line-height: 28px;
+                    text-align: center;
+                }
+
+                .steps li::after {
+                    content: '';
+                    position: absolute;
+                    left: 15px;
+                    top: 32px;
+                    bottom: 2px;
+                    width: 1px;
+                    background: var(--border);
+                }
+
+                .steps li:last-child::after {
+                    display: none;
+                }
+
+            .steps b {
+                display: block;
+            }
+
+        .who {
+            display: inline-block;
+            margin-top: 2px;
+            padding: 1px 9px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+            .who.meta {
+                border-color: var(--c, var(--accent));
+                color: var(--c, var(--accent));
+            }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+            .cards > div {
+                padding: 14px 16px;
+                border: 1px solid var(--border);
+                border-radius: 14px;
+            }
+
+            .cards h3 {
+                margin: 0 0 6px;
+                font-size: 16px;
+            }
+
+            .cards p {
+                margin: 0 0 6px;
+                font-size: 15px;
+            }
+
+        .badge {
+            display: inline-block;
+            margin-bottom: 6px;
+            padding: 1px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            color: #080B10;
+        }
+
+            .badge.ok {
+                background: var(--ok);
+            }
+
+            .badge.wip {
+                background: var(--wip);
+            }
+
+            .badge.err {
+                background: var(--err);
+            }
+
+        pre {
+            overflow-x: auto;
+            margin: 8px 0 0;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #05070A;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .facts {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        details {
+            margin: 10px 0 0;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+            details summary {
+                padding: 10px 14px;
+                cursor: pointer;
+                color: var(--c, var(--accent));
+            }
+
+            details > div {
+                padding: 0 14px 14px;
+            }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table.triage {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+            table.triage th {
+                padding: 6px;
+                border-bottom: 1px solid var(--border);
+                color: var(--muted);
+                font-weight: normal;
+                text-align: left;
+                white-space: nowrap;
+            }
+
+            table.triage td {
+                padding: 6px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                vertical-align: top;
+            }
+
+                table.triage td.num {
+                    text-align: right;
+                    white-space: nowrap;
+                }
+
+            table.triage tr.picked td {
+                background: rgba(62, 230, 176, 0.1);
+            }
+
+            table.triage .why {
+                display: block;
+                margin-top: 2px;
+                color: var(--muted);
+                font-size: 12px;
+            }
+
+        .yes {
+            color: var(--ok);
+        }
+
+        .no {
+            color: var(--err);
+        }
+
+        pre.diff .add {
+            color: var(--ok);
+        }
+
+        pre.diff .del {
+            color: var(--err);
+        }
+
+        pre.diff .hunk {
+            color: var(--wip);
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 16px 32px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+    
+
+        /* ---------- ISSANEX0: estado en vivo ---------- */
+        .badge.pend {
+            background: var(--wip);
+        }
+
+        .summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 6px 0 12px;
+        }
+
+            .summary span {
+                padding: 3px 12px;
+                border-radius: 999px;
+                font-size: 13px;
+                color: #080B10;
+            }
+
+        .summary span.zero {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .r-PASS { background: var(--ok); }
+        .r-FAIL { background: var(--err); }
+        .r-PENDING { background: var(--wip); }
+
+        .checks {
+            margin: 0 0 14px;
+            padding: 0;
+            list-style: none;
+        }
+
+            .checks li {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                gap: 2px 10px;
+                padding: 8px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            }
+
+            .checks .res {
+                grid-row: span 2;
+                align-self: start;
+                min-width: 74px;
+                padding: 1px 8px;
+                border-radius: 999px;
+                font-size: 11px;
+                letter-spacing: 0.06em;
+                text-align: center;
+                color: #080B10;
+            }
+
+            .checks .detail {
+                font-size: 13px;
+                color: var(--muted);
+                overflow-wrap: anywhere;
+            }
+
+        .group-title {
+            margin: 14px 0 2px;
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        pre.log {
+            max-height: 340px;
+            overflow: auto;
+            white-space: pre;
+            font-size: 12px;
+        }
+
+            pre.log .PASS { color: var(--ok); }
+            pre.log .FAIL { color: var(--err); }
+            pre.log .PENDING { color: var(--wip); }
+
+        .chain-ok { color: var(--ok); }
+        .chain-bad { color: var(--err); }
+
+        .verdicts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+            .verdicts div {
+                padding: 10px 12px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                font-size: 14px;
+            }
+
+            .verdicts b {
+                display: block;
+                font-size: 13px;
+                letter-spacing: 0.06em;
+                color: var(--c, var(--accent));
+            }
+
+        .mono {
+            font-family: ui-monospace, 'Share Tech Mono', Consolas, monospace;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fondo" aria-hidden="true"></canvas>
+
+    <nav class="top">
+        <a class="back" href="../#p-issanex0">&larr; <span class="tr" lang="es">Universo</span><span class="tr" lang="en">Universe</span><span class="tr" lang="pt">Universo</span></a>
+        <b>ISSANEX0</b>
+        <span class="idiomas" data-idiomas></span>
+    </nav>
+
+    <main>
+        <header class="hero">
+            <p class="eyebrow">ISSASODA · <span class="tr" lang="es">En construcción</span><span class="tr" lang="en">Under construction</span><span class="tr" lang="pt">Em construção</span></p>
+            <h1>ISSANEX0</h1>
+            <p class="expand"><span class="tr" lang="es">Liga de reparación verificada de vulnerabilidades reales</span><span class="tr" lang="en">A league for verified repair of real vulnerabilities</span><span class="tr" lang="pt">Liga de correção verificada de vulnerabilidades reais</span></p>
+            <p class="lead tr" lang="es">Modelos de IA de frontera reparan vulnerabilidades reales, ya divulgadas y corregidas, sobre copias congeladas y aisladas del software. No gana quien explica mejor: gana quien demuestra, dentro de un presupuesto, que su corrección elimina la falla sin romper nada.</p>
+            <p class="lead tr" lang="en">Frontier AI models repair real vulnerabilities, already disclosed and fixed, on frozen, isolated copies of the software. The best explanation does not win: the model that proves, within a budget, that its fix removes the flaw without breaking anything does.</p>
+            <p class="lead tr" lang="pt">Modelos de IA de fronteira corrigem vulnerabilidades reais, já divulgadas e corrigidas, em cópias congeladas e isoladas do software. Não vence quem explica melhor: vence quem prova, dentro de um orçamento, que a sua correção elimina a falha sem quebrar nada.</p>
+            <div class="actions">
+                <a class="primary" href="#estado"><span class="tr" lang="es">Ver el estado en vivo</span><span class="tr" lang="en">See the live status</span><span class="tr" lang="pt">Ver o status ao vivo</span></a>
+                <a href="#como"><span class="tr" lang="es">Cómo funciona</span><span class="tr" lang="en">How it works</span><span class="tr" lang="pt">Como funciona</span></a>
+                <a href="#acerca"><span class="tr" lang="es">Hecho y pendiente</span><span class="tr" lang="en">Done and pending</span><span class="tr" lang="pt">Feito e pendente</span></a>
+            </div>
+        </header>
+
+        <div class="stats">
+            <div><b id="n-pass">—</b><span class="tr" lang="es">comprobaciones reales que pasan ahora</span><span class="tr" lang="en">real checks passing now</span><span class="tr" lang="pt">verificações reais passando agora</span></div>
+            <div><b id="n-fail">—</b><span class="tr" lang="es">comprobaciones que fallan ahora</span><span class="tr" lang="en">checks failing now</span><span class="tr" lang="pt">verificações falhando agora</span></div>
+            <div><b id="n-pend">—</b><span class="tr" lang="es">partes del motor aún sin construir</span><span class="tr" lang="en">engine parts not built yet</span><span class="tr" lang="pt">partes do motor ainda não construídas</span></div>
+            <div><b>5</b><span class="tr" lang="es">casos piloto reales, verificados contra OSV</span><span class="tr" lang="en">real pilot cases, verified against OSV</span><span class="tr" lang="pt">casos piloto reais, verificados no OSV</span></div>
+        </div>
+
+        <section class="block" id="estado">
+            <h2><span class="tr" lang="es">Estado en vivo</span><span class="tr" lang="en">Live status</span><span class="tr" lang="pt">Status ao vivo</span></h2>
+            <p class="tr" lang="es">Cada línea es una comprobación real que ejecuta <code>tools/status.py</code>: <b>PASS</b> funciona, <b>FAIL</b> está roto (y dice qué encontró), <b>PENDING</b> todavía no existe. Nada se marca como hecho sin una comprobación.</p>
+            <p class="tr" lang="en">Each line is a real check run by <code>tools/status.py</code>: <b>PASS</b> works, <b>FAIL</b> is broken (and says what it found), <b>PENDING</b> does not exist yet. Nothing is marked done without a check.</p>
+            <p class="tr" lang="pt">Cada linha é uma verificação real executada por <code>tools/status.py</code>: <b>PASS</b> funciona, <b>FAIL</b> está quebrado (e diz o que encontrou), <b>PENDING</b> ainda não existe. Nada é marcado como feito sem uma verificação.</p>
+            <p class="facts" id="estado-meta"></p>
+            <div class="summary" id="estado-resumen"></div>
+            <div id="estado-grupos"></div>
+            <details>
+                <summary><span class="tr" lang="es">Registro completo de la última ejecución</span><span class="tr" lang="en">Full log of the latest run</span><span class="tr" lang="pt">Registro completo da última execução</span></summary>
+                <div><pre class="log mono" id="estado-log"></pre></div>
+            </details>
+            <details>
+                <summary><span class="tr" lang="es">Historial encadenado con SHA-256</span><span class="tr" lang="en">SHA-256 hash-chained history</span><span class="tr" lang="pt">Histórico encadeado com SHA-256</span></summary>
+                <div>
+                    <p class="tr" lang="es">Cada ejecución guarda el hash de la anterior, así que un resultado viejo no se puede cambiar en silencio. Tu navegador vuelve a calcular la cadena aquí mismo:</p>
+                    <p class="tr" lang="en">Each run stores the hash of the previous one, so an old result cannot be changed silently. Your browser recomputes the chain right here:</p>
+                    <p class="tr" lang="pt">Cada execução guarda o hash da anterior, então um resultado antigo não pode ser alterado em silêncio. O seu navegador recalcula a cadeia aqui mesmo:</p>
+                    <p id="estado-cadena" class="mono"></p>
+                    <div class="table-wrap">
+                        <table class="triage">
+                            <thead>
+                                <tr>
+                                    <th><span class="tr" lang="es">Fecha (UTC)</span><span class="tr" lang="en">Date (UTC)</span><span class="tr" lang="pt">Data (UTC)</span></th>
+                                    <th>Commit</th>
+                                    <th>PASS</th>
+                                    <th>FAIL</th>
+                                    <th>PENDING</th>
+                                    <th>Hash</th>
+                                </tr>
+                            </thead>
+                            <tbody id="estado-historial"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <section class="block" id="como">
+            <h2><span class="tr" lang="es">Cómo será una partida</span><span class="tr" lang="en">How a match will work</span><span class="tr" lang="pt">Como será uma partida</span></h2>
+            <ol class="steps">
+                <li class="tr" lang="es"><b>Congelar.</b> Se toma una vulnerabilidad pública ya corregida y se congela la versión vulnerable del proyecto, con su huella criptográfica.</li>
+                <li class="tr" lang="en"><b>Freeze.</b> A public, already-fixed vulnerability is chosen and the vulnerable version of the project is frozen, with its cryptographic fingerprint.</li>
+                <li class="tr" lang="pt"><b>Congelar.</b> Escolhe-se uma vulnerabilidade pública já corrigida e congela-se a versão vulnerável do projeto, com a sua impressão criptográfica.</li>
+                <li class="tr" lang="es"><b>Informar.</b> Todos los modelos reciben lo mismo: el aviso de seguridad, el código y las pruebas. Nunca la corrección original.</li>
+                <li class="tr" lang="en"><b>Brief.</b> Every model gets the same package: the advisory, the code and the tests. Never the original fix.</li>
+                <li class="tr" lang="pt"><b>Informar.</b> Todos os modelos recebem o mesmo: o aviso de segurança, o código e os testes. Nunca a correção original.</li>
+                <li class="tr" lang="es"><b>Investigar.</b> Cada modelo trabaja en su propia máquina virtual aislada, sin red, con límite de tiempo, tokens, herramientas y dólares.</li>
+                <li class="tr" lang="en"><b>Investigate.</b> Each model works in its own isolated virtual machine, with no network, under limits on time, tokens, tool calls and dollars.</li>
+                <li class="tr" lang="pt"><b>Investigar.</b> Cada modelo trabalha na sua própria máquina virtual isolada, sem rede, com limites de tempo, tokens, ferramentas e dólares.</li>
+                <li class="tr" lang="es"><b>Entregar.</b> Una hipótesis, una prueba que reproduce la falla, un parche mínimo y pruebas nuevas. O una abstención razonada.</li>
+                <li class="tr" lang="en"><b>Submit.</b> A hypothesis, a test that reproduces the flaw, a minimal patch and new tests. Or a reasoned abstention.</li>
+                <li class="tr" lang="pt"><b>Entregar.</b> Uma hipótese, um teste que reproduz a falha, um patch mínimo e testes novos. Ou uma abstenção fundamentada.</li>
+                <li class="tr" lang="es"><b>Desafiar.</b> Un modelo del equipo rojo busca fallas, regresiones o trampas. Sus hallazgos solo cuentan si se pueden ejecutar.</li>
+                <li class="tr" lang="en"><b>Challenge.</b> A red-team model hunts for bypasses, regressions or tricks. Its findings only count if they execute.</li>
+                <li class="tr" lang="pt"><b>Desafiar.</b> Um modelo de equipe vermelha procura brechas, regressões ou truques. Os achados só contam se puderem ser executados.</li>
+                <li class="tr" lang="es"><b>Verificar.</b> Un verificador determinista, sin IA, ejecuta pruebas ocultas y variantes del ataque, y dicta el veredicto.</li>
+                <li class="tr" lang="en"><b>Verify.</b> A deterministic verifier, with no AI, runs hidden tests and attack variants, and issues the verdict.</li>
+                <li class="tr" lang="pt"><b>Verificar.</b> Um verificador determinístico, sem IA, executa testes ocultos e variantes do ataque, e dá o veredito.</li>
+            </ol>
+            <p class="tr" lang="es">La clasificación principal no es cuántas fallas se corrigen, sino <b>reparaciones verificadas por dólar y por minuto</b>.</p>
+            <p class="tr" lang="en">The main ranking is not how many bugs get fixed, but <b>verified repairs per dollar and per minute</b>.</p>
+            <p class="tr" lang="pt">A classificação principal não é quantas falhas são corrigidas, mas <b>correções verificadas por dólar e por minuto</b>.</p>
+        </section>
+
+        <section class="block">
+            <h2><span class="tr" lang="es">Los siete veredictos</span><span class="tr" lang="en">The seven verdicts</span><span class="tr" lang="pt">Os sete veredictos</span></h2>
+            <div class="verdicts">
+                <div><b>VERIFIED</b><span class="tr" lang="es">Falla antes, pasa después, sin regresiones.</span><span class="tr" lang="en">Fails before, passes after, no regressions.</span><span class="tr" lang="pt">Falha antes, passa depois, sem regressões.</span></div>
+                <div><b>REGRESSION</b><span class="tr" lang="es">Corrige la falla pero rompe algo que funcionaba.</span><span class="tr" lang="en">Fixes the flaw but breaks something that worked.</span><span class="tr" lang="pt">Corrige a falha mas quebra algo que funcionava.</span></div>
+                <div><b>UNPROVEN</b><span class="tr" lang="es">Sin evidencia ejecutable suficiente.</span><span class="tr" lang="en">Not enough executable evidence.</span><span class="tr" lang="pt">Sem evidência executável suficiente.</span></div>
+                <div><b>FALSE_POSITIVE</b><span class="tr" lang="es">La reproducción o la hipótesis era incorrecta.</span><span class="tr" lang="en">The reproduction or the hypothesis was wrong.</span><span class="tr" lang="pt">A reprodução ou a hipótese estava errada.</span></div>
+                <div><b>ABSTAINED</b><span class="tr" lang="es">El modelo reconoció que no tenía evidencia.</span><span class="tr" lang="en">The model admitted it lacked evidence.</span><span class="tr" lang="pt">O modelo reconheceu que não tinha evidência.</span></div>
+                <div><b>BUDGET_EXCEEDED</b><span class="tr" lang="es">Se pasó del presupuesto: queda registrado, no gana.</span><span class="tr" lang="en">Went over budget: logged, cannot win.</span><span class="tr" lang="pt">Estourou o orçamento: fica registrado, não vence.</span></div>
+                <div><b>DISQUALIFIED</b><span class="tr" lang="es">Rompió las reglas: borró pruebas, buscó la red o intentó escapar.</span><span class="tr" lang="en">Broke the rules: deleted tests, reached for the network or tried to escape.</span><span class="tr" lang="pt">Quebrou as regras: apagou testes, buscou a rede ou tentou escapar.</span></div>
+            </div>
+        </section>
+
+        <section class="block" id="pilotos">
+            <h2><span class="tr" lang="es">Los primeros casos reales</span><span class="tr" lang="en">The first real cases</span><span class="tr" lang="pt">Os primeiros casos reais</span></h2>
+            <p class="tr" lang="es">Candidatos comprobados el 7 de noviembre de 2026 contra OSV y el commit de corrección de cada proyecto, que incluye una prueba. Todos se divulgaron y corrigieron en 2023–2024.</p>
+            <p class="tr" lang="en">Candidates checked on November 7, 2026 against OSV and each project's fix commit, which includes a test. All were disclosed and fixed in 2023–2024.</p>
+            <p class="tr" lang="pt">Candidatos conferidos em 7 de novembro de 2026 no OSV e no commit de correção de cada projeto, que inclui um teste. Todos foram divulgados e corrigidos em 2023–2024.</p>
+            <div class="table-wrap">
+                <table class="triage">
+                    <thead>
+                        <tr>
+                            <th><span class="tr" lang="es">Caso</span><span class="tr" lang="en">Case</span><span class="tr" lang="pt">Caso</span></th>
+                            <th><span class="tr" lang="es">Aviso</span><span class="tr" lang="en">Advisory</span><span class="tr" lang="pt">Aviso</span></th>
+                            <th>CWE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Jinja <code>xmlattr</code><span class="why tr" lang="es">Inyección de atributos HTML. Su variante 1b será la prueba oculta.</span><span class="why tr" lang="en">HTML attribute injection. Its variant 1b becomes the hidden test.</span><span class="why tr" lang="pt">Injeção de atributos HTML. A variante 1b será o teste oculto.</span></td><td><a href="https://osv.dev/vulnerability/GHSA-h5c8-rqwp-cp95" target="_blank" rel="noopener">CVE-2024-22195</a></td><td>79</td></tr>
+                        <tr><td>Jinja <code>xmlattr</code> (1b)<span class="why tr" lang="es">La primera corrección quedó incompleta: detecta parches sobreajustados.</span><span class="why tr" lang="en">The first fix was incomplete: catches overfitted patches.</span><span class="why tr" lang="pt">A primeira correção ficou incompleta: detecta patches sobreajustados.</span></td><td><a href="https://osv.dev/vulnerability/GHSA-h75v-3vvj-5mfj" target="_blank" rel="noopener">CVE-2024-34064</a></td><td>79</td></tr>
+                        <tr><td>requests<span class="why tr" lang="es">Filtra la cabecera Proxy-Authorization al redirigir.</span><span class="why tr" lang="en">Leaks the Proxy-Authorization header on redirect.</span><span class="why tr" lang="pt">Vaza o cabeçalho Proxy-Authorization no redirecionamento.</span></td><td><a href="https://osv.dev/vulnerability/GHSA-j8r2-6x86-q33q" target="_blank" rel="noopener">CVE-2023-32681</a></td><td>200</td></tr>
+                        <tr><td>sqlparse<span class="why tr" lang="es">Recursión sin límite con listas anidadas (denegación de servicio).</span><span class="why tr" lang="en">Unbounded recursion on nested lists (denial of service).</span><span class="why tr" lang="pt">Recursão sem limite com listas aninhadas (negação de serviço).</span></td><td><a href="https://osv.dev/vulnerability/GHSA-2m57-hf25-phgg" target="_blank" rel="noopener">CVE-2024-4340</a></td><td>674</td></tr>
+                        <tr><td>urllib3<span class="why tr" lang="es">Conserva la cabecera Cookie en redirecciones a otro origen.</span><span class="why tr" lang="en">Keeps the Cookie header on cross-origin redirects.</span><span class="why tr" lang="pt">Mantém o cabeçalho Cookie em redirecionamentos para outra origem.</span></td><td><a href="https://osv.dev/vulnerability/GHSA-v845-jxx5-vc9f" target="_blank" rel="noopener">CVE-2023-43804</a></td><td>200</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="block">
+            <h2><span class="tr" lang="es">Construido sobre ISSA AS</span><span class="tr" lang="en">Built on ISSA AS</span><span class="tr" lang="pt">Construído sobre o ISSA AS</span></h2>
+            <p class="tr" lang="es">ISSANEX0 no empieza de cero. <a href="../issaas/">ISSA AS</a> ya demostró 4 correcciones de seguridad reales con un verificador determinista que rechazó 7 de 7 parches tramposos, y registros encadenados con SHA-256. ISSANEX0 reutiliza esas piezas y les suma lo nuevo: casos de avisos públicos con pruebas ocultas, varios modelos sobre el mismo caso, máquinas virtuales aisladas y la liga.</p>
+            <p class="tr" lang="en">ISSANEX0 does not start from zero. <a href="../issaas/">ISSA AS</a> already proved 4 real security fixes with a deterministic verifier that rejected 7 of 7 cheating patches, and SHA-256 hash-chained logs. ISSANEX0 reuses those pieces and adds what is new: cases from public advisories with hidden tests, several models on the same case, isolated virtual machines and the league.</p>
+            <p class="tr" lang="pt">O ISSANEX0 não começa do zero. O <a href="../issaas/">ISSA AS</a> já provou 4 correções de segurança reais com um verificador determinístico que rejeitou 7 de 7 patches trapaceiros, e registros encadeados com SHA-256. O ISSANEX0 reutiliza essas peças e soma o que é novo: casos de avisos públicos com testes ocultos, vários modelos no mesmo caso, máquinas virtuais isoladas e a liga.</p>
+        </section>
+
+        <section class="block">
+            <h2><span class="tr" lang="es">Legal y seguro por diseño</span><span class="tr" lang="en">Legal and safe by design</span><span class="tr" lang="pt">Legal e seguro por design</span></h2>
+            <ul class="bullets">
+                <li class="tr" lang="es"><b>Solo vulnerabilidades públicas y ya corregidas</b>, en código abierto con licencia que permite redistribuirlo.</li>
+                <li class="tr" lang="en"><b>Only public, already-fixed vulnerabilities</b>, in open-source code whose license allows redistribution.</li>
+                <li class="tr" lang="pt"><b>Só vulnerabilidades públicas e já corrigidas</b>, em código aberto com licença que permite redistribuição.</li>
+                <li class="tr" lang="es"><b>Nunca contra sistemas vivos.</b> Todo corre en máquinas virtuales sin red que se destruyen al terminar.</li>
+                <li class="tr" lang="en"><b>Never against live systems.</b> Everything runs in virtual machines with no network, destroyed when the run ends.</li>
+                <li class="tr" lang="pt"><b>Nunca contra sistemas em produção.</b> Tudo roda em máquinas virtuais sem rede, destruídas ao final.</li>
+                <li class="tr" lang="es"><b>Las claves nunca entran al aislamiento.</b> Un intermediario las añade fuera de la máquina virtual.</li>
+                <li class="tr" lang="en"><b>Keys never enter the sandbox.</b> A proxy adds them outside the virtual machine.</li>
+                <li class="tr" lang="pt"><b>As chaves nunca entram no isolamento.</b> Um intermediário as adiciona fora da máquina virtual.</li>
+                <li class="tr" lang="es"><b>Una persona revisa todo lo que sale.</b> Un hallazgo nuevo va en privado a quienes mantienen el proyecto, nunca a una publicación.</li>
+                <li class="tr" lang="en"><b>A person reviews everything that leaves.</b> A new finding goes privately to the project's maintainers, never to a public post.</li>
+                <li class="tr" lang="pt"><b>Uma pessoa revisa tudo o que sai.</b> Um achado novo vai em particular para quem mantém o projeto, nunca para uma publicação.</li>
+            </ul>
+        </section>
+
+        <section class="block" id="acerca">
+            <h2><span class="tr" lang="es">Proyectado, implementado y pendiente</span><span class="tr" lang="en">Projected, implemented and pending</span><span class="tr" lang="pt">Projetado, implementado e pendente</span></h2>
+            <div class="cards">
+                <div>
+                    <span class="badge pend"><span class="tr" lang="es">PROYECTADO</span><span class="tr" lang="en">PROJECTED</span><span class="tr" lang="pt">PROJETADO</span></span>
+                    <ul class="bullets">
+                        <li class="tr" lang="es">Catálogo de casos desde GHSA, OSV, NVD y CISA KEV.</li>
+                        <li class="tr" lang="en">Case catalog from GHSA, OSV, NVD and CISA KEV.</li>
+                        <li class="tr" lang="pt">Catálogo de casos a partir de GHSA, OSV, NVD e CISA KEV.</li>
+                        <li class="tr" lang="es">Escuadras: investigador, reparador, verificador y equipo rojo.</li>
+                        <li class="tr" lang="en">Squads: investigator, fixer, verifier and red team.</li>
+                        <li class="tr" lang="pt">Esquadrões: investigador, corretor, verificador e equipe vermelha.</li>
+                        <li class="tr" lang="es">Clasificaciones por dólar, por minuto y por honestidad.</li>
+                        <li class="tr" lang="en">Leaderboards per dollar, per minute and for honesty.</li>
+                        <li class="tr" lang="pt">Classificações por dólar, por minuto e por honestidade.</li>
+                        <li class="tr" lang="es">App para Android, iOS y escritorio.</li>
+                        <li class="tr" lang="en">App for Android, iOS and desktop.</li>
+                        <li class="tr" lang="pt">App para Android, iOS e desktop.</li>
+                    </ul>
+                </div>
+                <div>
+                    <span class="badge ok"><span class="tr" lang="es">IMPLEMENTADO</span><span class="tr" lang="en">IMPLEMENTED</span><span class="tr" lang="pt">IMPLEMENTADO</span></span>
+                    <ul class="bullets">
+                        <li class="tr" lang="es">Reglas, veredictos, puntaje y arquitectura (borrador).</li>
+                        <li class="tr" lang="en">Rules, verdicts, scoring and architecture (draft).</li>
+                        <li class="tr" lang="pt">Regras, veredictos, pontuação e arquitetura (rascunho).</li>
+                        <li class="tr" lang="es">Esquemas de datos para casos y resultados.</li>
+                        <li class="tr" lang="en">Data schemas for cases and results.</li>
+                        <li class="tr" lang="pt">Esquemas de dados para casos e resultados.</li>
+                        <li class="tr" lang="es">5 casos piloto verificados.</li>
+                        <li class="tr" lang="en">5 verified pilot cases.</li>
+                        <li class="tr" lang="pt">5 casos piloto verificados.</li>
+                        <li class="tr" lang="es">Entorno Linux con kernel 7.3.3 y KVM; esta página de estado.</li>
+                        <li class="tr" lang="en">Linux environment with kernel 7.3.3 and KVM; this status page.</li>
+                        <li class="tr" lang="pt">Ambiente Linux com kernel 7.3.3 e KVM; esta página de status.</li>
+                    </ul>
+                </div>
+                <div>
+                    <span class="badge err"><span class="tr" lang="es">PENDIENTE</span><span class="tr" lang="en">PENDING</span><span class="tr" lang="pt">PENDENTE</span></span>
+                    <ul class="bullets">
+                        <li class="tr" lang="es">Verificador determinista sobre los casos piloto.</li>
+                        <li class="tr" lang="en">Deterministic verifier on the pilot cases.</li>
+                        <li class="tr" lang="pt">Verificador determinístico nos casos piloto.</li>
+                        <li class="tr" lang="es">Máquinas virtuales Firecracker sin red.</li>
+                        <li class="tr" lang="en">Firecracker virtual machines with no network.</li>
+                        <li class="tr" lang="pt">Máquinas virtuais Firecracker sem rede.</li>
+                        <li class="tr" lang="es">Primer modelo jugando un caso con presupuesto.</li>
+                        <li class="tr" lang="en">First model playing a case under a budget.</li>
+                        <li class="tr" lang="pt">Primeiro modelo jogando um caso com orçamento.</li>
+                        <li class="tr" lang="es">First Light: 3 modelos × 10 casos, publicados.</li>
+                        <li class="tr" lang="en">First Light: 3 models × 10 cases, published.</li>
+                        <li class="tr" lang="pt">First Light: 3 modelos × 10 casos, publicados.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><span class="tr" lang="es">ISSANEX0 es un proyecto de ISSASODA, con licencia MIT. El repositorio todavía es privado; está previsto abrirlo con el primer resultado público.</span><span class="tr" lang="en">ISSANEX0 is an ISSASODA project, MIT licensed. The repository is still private; it is planned to open with the first public result.</span><span class="tr" lang="pt">O ISSANEX0 é um projeto da ISSASODA, com licença MIT. O repositório ainda é privado; a abertura está prevista com o primeiro resultado público.</span>
+            <a href="../#p-issanex0"><span class="tr" lang="es">Volver al universo</span><span class="tr" lang="en">Back to the universe</span><span class="tr" lang="pt">Voltar ao universo</span></a></p>
+    </footer>
+
+    <script>
+        (async function () {
+            'use strict';
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !new URLSearchParams(location.search).has('motion');
+            const PANEL = '#0E131C';
+            const T = IssaIdioma.t;
+
+            // ---------- Estilo de la visita: una tipografía y un color por bloque ----------
+            const blocks = Array.from(document.querySelectorAll('.block'));
+            const look = IssaEstilo.fonts(1 + blocks.length);
+            const colors = IssaEstilo.palette(1 + blocks.length, PANEL);
+            const stack = IssaEstilo.stack;
+            document.documentElement.style.setProperty('--font-text', stack(look.text));
+            document.documentElement.style.setProperty('--font-title', stack(look.display[0]));
+            document.documentElement.style.setProperty('--accent', colors[0]);
+            blocks.forEach((el, i) => {
+                el.style.setProperty('--f', stack(look.display[1 + i]));
+                el.style.setProperty('--c', colors[1 + i]);
+            });
+
+            // ---------- El estado real (issanex0/estado.json); todo texto externo entra como texto ----------
+            const GROUPS = {
+                repository: ['Repositorio', 'Repository', 'Repositório'],
+                environment: ['Entorno Linux', 'Linux environment', 'Ambiente Linux'],
+                engine: ['Motor de la liga', 'League engine', 'Motor da liga'],
+            };
+            const meta = document.getElementById('estado-meta');
+            let estado = null;
+            try {
+                const r = await fetch('estado.json', { cache: 'no-store' });
+                if (r.ok) estado = await r.json();
+            } catch (e) { /* sin red y sin copia en caché */ }
+
+            if (!estado) {
+                meta.textContent = T('No se pudo cargar el estado. Vuelve a intentarlo con conexión.',
+                    'Could not load the status. Try again with a connection.',
+                    'Não foi possível carregar o status. Tente de novo com conexão.');
+            } else {
+                const s = estado.summary;
+                document.getElementById('n-pass').textContent = s.PASS;
+                document.getElementById('n-fail').textContent = s.FAIL;
+                document.getElementById('n-pend').textContent = s.PENDING;
+                const when = new Date(estado.generated);
+                const locale = { es: 'es-419', en: 'en-US', pt: 'pt-BR' }[IssaIdioma.lang] || 'en-US';
+                meta.textContent = T('Última ejecución: ', 'Latest run: ', 'Última execução: ') +
+                    when.toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' }) +
+                    ' · commit ' + (estado.commit || '—') + ' · ' + estado.tool;
+
+                const resumen = document.getElementById('estado-resumen');
+                ['PASS', 'FAIL', 'PENDING'].forEach(k => {
+                    const chip = document.createElement('span');
+                    chip.className = 'r-' + k + (s[k] === 0 ? ' zero' : '');
+                    chip.textContent = k + ' ' + s[k];
+                    resumen.appendChild(chip);
+                });
+
+                const grupos = document.getElementById('estado-grupos');
+                Object.keys(GROUPS).forEach(g => {
+                    const items = estado.checks.filter(c => c.group === g);
+                    if (!items.length) return;
+                    const h = document.createElement('p');
+                    h.className = 'group-title';
+                    h.textContent = T(...GROUPS[g]);
+                    grupos.appendChild(h);
+                    const ul = document.createElement('ul');
+                    ul.className = 'checks';
+                    items.forEach(c => {
+                        const li = document.createElement('li');
+                        const res = document.createElement('span');
+                        res.className = 'res r-' + c.result;
+                        res.textContent = c.result;
+                        const title = document.createElement('span');
+                        title.textContent = c.title;
+                        const detail = document.createElement('span');
+                        detail.className = 'detail mono';
+                        detail.textContent = c.detail + (c.result === 'PENDING' ? '' : ' · ' + c.ms + ' ms');
+                        li.append(res, title, detail);
+                        ul.appendChild(li);
+                    });
+                    grupos.appendChild(ul);
+                });
+
+                const log = document.getElementById('estado-log');
+                estado.log.forEach(line => {
+                    const span = document.createElement('span');
+                    const m = line.match(/\] (PASS|FAIL|PENDING)/);
+                    if (m) span.className = m[1];
+                    span.textContent = line + '\n';
+                    log.appendChild(span);
+                });
+
+                const tbody = document.getElementById('estado-historial');
+                estado.history.slice().reverse().forEach(h => {
+                    const tr = document.createElement('tr');
+                    [h.at.replace('T', ' ').replace('Z', ''), h.commit || '—', h.PASS, h.FAIL, h.PENDING, h.hash.slice(0, 12)].forEach((v, i) => {
+                        const td = document.createElement('td');
+                        td.textContent = v;
+                        if (i >= 2 && i <= 4) td.className = 'num';
+                        if (i === 3 && v > 0) td.classList.add('no');
+                        if (i === 5) td.classList.add('mono');
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+
+                // Recalcular la cadena: el último hash con las comprobaciones publicadas, y los enlaces prev_hash
+                const out = document.getElementById('estado-cadena');
+                const canon = v => Array.isArray(v) ? '[' + v.map(canon).join(',') + ']'
+                    : v !== null && typeof v === 'object' ? '{' + Object.keys(v).sort().map(k => canon(k) + ':' + canon(v[k])).join(',') + '}'
+                    : typeof v === 'string' ? JSON.stringify(v).replace(/[\u0080-￿]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'))
+                    : JSON.stringify(v);
+                const sha256 = async text => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))))
+                    .map(b => b.toString(16).padStart(2, '0')).join('');
+                try {
+                    const hist = estado.history;
+                    const last = hist[hist.length - 1];
+                    const links = hist.every((h, i) => i === 0 || h.prev_hash === hist[i - 1].hash);
+                    const recomputed = await sha256(last.prev_hash + canon(estado.checks));
+                    const ok = links && recomputed === last.hash;
+                    out.className = 'mono ' + (ok ? 'chain-ok' : 'chain-bad');
+                    out.textContent = (ok ? '✓ ' : '✗ ') + T(
+                        ok ? `Cadena íntegra: ${hist.length} ejecuciones enlazadas y el último resultado coincide con su hash (${recomputed.slice(0, 12)}…).` : 'La cadena NO coincide: este estado fue alterado o está incompleto.',
+                        ok ? `Chain intact: ${hist.length} runs linked and the latest result matches its hash (${recomputed.slice(0, 12)}…).` : 'The chain does NOT match: this status was altered or is incomplete.',
+                        ok ? `Cadeia íntegra: ${hist.length} execuções encadeadas e o último resultado confere com o seu hash (${recomputed.slice(0, 12)}…).` : 'A cadeia NÃO confere: este status foi alterado ou está incompleto.');
+                } catch (e) {
+                    out.textContent = T('Este navegador no puede calcular SHA-256 aquí.', 'This browser cannot compute SHA-256 here.', 'Este navegador não consegue calcular SHA-256 aqui.');
+                }
+            }
+
+            // ---------- Fondo: un remanente de supernova girando despacio ----------
+            const objects = await d3.json('../universo/objetos.json').catch(() => []);
+            const body = objects.find(o => o.t === 'remanente-sn') || objects.find(o => o.t === 'galaxia');
+            const canvas = document.getElementById('fondo');
+            const ctx = canvas.getContext('2d');
+            let width = 0, height = 0, dpr = 1, time = 0;
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = Math.round(width * dpr);
+                canvas.height = Math.round(height * dpr);
+            }
+
+            function draw() {
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const bg = ctx.createRadialGradient(width * 0.7, height * 0.35, 0, width * 0.7, height * 0.35, Math.max(width, height));
+                bg.addColorStop(0, '#151A24');
+                bg.addColorStop(1, '#05070A');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, width, height);
+                if (!body) return;
+                const narrow = width < 800;
+                const r = narrow ? Math.min(width, height) * 0.32 : Math.min(width * 0.26, height * 0.36);
+                IssaAstros.draw(ctx, body, narrow ? width * 0.66 : width * 0.76, narrow ? height * 0.28 : height * 0.4, r, time);
+            }
+
+            window.addEventListener('resize', () => {
+                resize();
+                draw();
+            });
+            resize();
+            if (reduceMotion) {
+                draw();
+            } else {
+                let last = 0;
+                d3.timer(elapsed => {
+                    time += Math.min(0.05, (elapsed - last) / 1000);
+                    last = elapsed;
+                    draw();
+                });
+            }
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('../ServiceWorker.js').catch(error => {
+                    console.error('Fallo al registrar el Service Worker:', error);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

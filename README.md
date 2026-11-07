@@ -10,6 +10,9 @@ Brazilian Portuguese.
 - **Scale of the universe** (`universo/`): 307 objects from the observable universe to the Planck length, each at
   its typical size, with its own drawing and address (`universo/#molecula-de-agua`).
 - **About** (`acerca/`): what is implemented and what is pending, as in every ISSASODA app.
+- **ISSAAS** (`issaas/`) and **ISSANEX0** (`issanex0/`): project pages. ISSANEX0's live status comes from
+  `issanex0/estado.json`, written by `python tools/status.py --site <this repo>/issanex0/estado.json` in the
+  ISSANEX0 repository (real PASS / FAIL / PENDING checks, hash-chained; the page recomputes the chain in the browser).
 - **GUAT** (`guat/`, `Formulas.html`, `Ejercicios/`): the original GUAT University project, kept as a sub-page.
 
 ## How it is built
